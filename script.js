@@ -83,6 +83,7 @@ const numObserver = new IntersectionObserver((entries, observer) => {
 
 // We need a more robust observer callback to handle the specific HTML structures found.
 // Redefining the observer for clarity and correctness.
+// 1.5 Number Animation / Robust Observer
 const numberObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -97,11 +98,12 @@ const numberObserver = new IntersectionObserver((entries, observer) => {
 
             if (plusSpan) {
                 // Case: <span class="big-number">20<span class="plus">+</span></span>
-                endVal = parseFloat(el.firstChild.textContent);
-                suffix = '<span class="plus">+</span>'; // Re-inject the span structure
+                const textContent = el.firstChild ? el.firstChild.textContent : '';
+                endVal = parseFloat(textContent) || 0;
+                suffix = '<span class="plus">+</span>';
             } else {
                 // Case: Simple text "85%" or "5.2M+"
-                const rawText = el.innerText;
+                const rawText = el.innerText || '';
                 const match = rawText.match(/([\d\.]+)(.*)/);
                 if (match) {
                     endVal = parseFloat(match[1]);
@@ -140,22 +142,43 @@ const numberObserver = new IntersectionObserver((entries, observer) => {
 document.querySelectorAll('.big-number, .animate-num').forEach(el => numberObserver.observe(el));
 
 // 2. Smooth Scroll
+// 2. Smooth Scroll (Enhanced)
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        if (this.classList.contains('modal-cta')) return;
+        // Special handling for the Modal CTA button to allow scrolling + closing modal
+        const isModalCta = this.classList.contains('modal-cta');
 
         e.preventDefault();
         const targetId = this.getAttribute('href');
-        if (targetId.startsWith('#') && targetId.length > 1) {
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
+
+        if (isModalCta) {
+            closeModal();
+            // Small delay to allow modal to start closing before scrolling
+            setTimeout(() => {
+                scrollToTarget(targetId);
+            }, 300);
+            return;
         }
+
+        scrollToTarget(targetId);
     });
 });
+
+function scrollToTarget(targetId) {
+    if (targetId.startsWith('#') && targetId.length > 1) {
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+            const headerOffset = 60; // Adjust for fixed header
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+        }
+    }
+}
 
 // 3. FAQ Logic
 const faqQuestions = document.querySelectorAll('.faq-question');
@@ -269,12 +292,20 @@ if (hamburger && navMenu) {
     hamburger.addEventListener("click", () => {
         hamburger.classList.toggle("active");
         navMenu.classList.toggle("active");
+
+        // Disable body scroll when menu is active
+        if (navMenu.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
     });
 
     navLinks.forEach(link => {
         link.addEventListener("click", () => {
             hamburger.classList.remove("active");
             navMenu.classList.remove("active");
+            document.body.style.overflow = 'auto'; // Restore scroll
         });
     });
 }
