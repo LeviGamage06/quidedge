@@ -38,41 +38,17 @@ const numObserver = new IntersectionObserver((entries, observer) => {
         if (entry.isIntersecting) {
             const el = entry.target;
             const rawText = el.innerText;
-            // Extract number and suffix (e.g. "20+" -> 20, "+")
-            // Regex matches: digits, optional decimal, then optional suffix
             const match = rawText.match(/([\d\.]+)(.*)/);
             if (match) {
                 const val = parseFloat(match[1]);
                 const suffix = match[2];
-                // Only animate if not already animated to avoid resets on slight scroll
                 if (!el.classList.contains('animated')) {
                     animateValue(el, 0, val, 2000, suffix);
                     el.classList.add('animated');
-                    // Special case for big numbers with nested span for plus
-                    // If the structure is <span class="big-number">20<span class="plus">+</span></span>
-                    // The innerText is "20+". We overwrite it. 
-                    // To preserve styling of the plus sign if it was separate, we might need a more delicate approach.
-                    // However, observing the HTML: <span class="big-number">20<span class="plus">+</span></span>
-                    // `el.innerText` will be "20+". 
-                    // Re-writing nested HTML might lose the class "plus".
-                    // Better strategy: Only animate the *first text node* if possible, or reconstruct the HTML.
 
-                    // Specific fix for "big-number" structure:
-                    // If it has a child with class 'plus', we should keep it.
                     const plusSpan = el.querySelector('.plus');
                     if (plusSpan) {
-                        // Animate just the text node part
-                        // By standard, setting innerHTML wipes children.
-                        // Let's modify `animateValue` to accept a callback or handle text node.
-                        // SIMPLER: just animate the number and append the span back at the end? 
-                        // No, we want smooth counting. 
-                        // Let's target the text node directly? 
-                        // Text node might be hard to select.
 
-                        // Alternative: Re-create the HTML content string in the animation loop.
-                        // Loop: obj.innerHTML = currentVal + '<span class="plus">' + suffix.replace('+','') + '</span>'; 
-                        // Actually suffix from regex will be "+" from the child text.
-                        // Let's hardcode the suffix span if we detect it.
                     }
                 }
             }
@@ -81,28 +57,22 @@ const numObserver = new IntersectionObserver((entries, observer) => {
     });
 });
 
-// We need a more robust observer callback to handle the specific HTML structures found.
-// Redefining the observer for clarity and correctness.
-// 1.5 Number Animation / Robust Observer
 const numberObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             const el = entry.target;
             if (el.classList.contains('animated')) return;
 
-            // Check for specific structures
             const plusSpan = el.querySelector('.plus');
             let endVal = 0;
             let suffix = '';
             let isFloat = false;
 
             if (plusSpan) {
-                // Case: <span class="big-number">20<span class="plus">+</span></span>
                 const textContent = el.firstChild ? el.firstChild.textContent : '';
                 endVal = parseFloat(textContent) || 0;
                 suffix = '<span class="plus">+</span>';
             } else {
-                // Case: Simple text "85%" or "5.2M+"
                 const rawText = el.innerText || '';
                 const match = rawText.match(/([\d\.]+)(.*)/);
                 if (match) {
@@ -118,7 +88,6 @@ const numberObserver = new IntersectionObserver((entries, observer) => {
                 const step = (timestamp) => {
                     if (!startTimestamp) startTimestamp = timestamp;
                     const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                    // Easing (easeOutQuad)
                     const easeProgress = 1 - (1 - progress) * (1 - progress);
 
                     const currentVal = easeProgress * endVal;
@@ -141,11 +110,9 @@ const numberObserver = new IntersectionObserver((entries, observer) => {
 
 document.querySelectorAll('.big-number, .animate-num').forEach(el => numberObserver.observe(el));
 
-// 2. Smooth Scroll
 // 2. Smooth Scroll (Enhanced)
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        // Special handling for the Modal CTA button to allow scrolling + closing modal
         const isModalCta = this.classList.contains('modal-cta');
 
         e.preventDefault();
@@ -153,7 +120,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
         if (isModalCta) {
             closeModal();
-            // Small delay to allow modal to start closing before scrolling
             setTimeout(() => {
                 scrollToTarget(targetId);
             }, 300);
@@ -168,7 +134,7 @@ function scrollToTarget(targetId) {
     if (targetId.startsWith('#') && targetId.length > 1) {
         const targetElement = document.querySelector(targetId);
         if (targetElement) {
-            const headerOffset = 60; // Adjust for fixed header
+            const headerOffset = 60;
             const elementPosition = targetElement.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -204,33 +170,30 @@ faqQuestions.forEach(question => {
     });
 });
 
-// 4. MODAL LOGIC (Updated to switch images)
+// 4. MODAL LOGIC 
 const modal = document.getElementById('analysis-modal');
 const modalTitle = document.getElementById('modal-title');
 const modalImage = document.querySelector('.modal-media');
 
 function openModal(client) {
     if (modal) {
-        // Change content based on which button was clicked
         if (client === 'robert') {
             modalTitle.innerText = "Robert Herjavec";
-            modalImage.src = "images/image05.png"; // Robert's Evidence
+            modalImage.src = "images/image05.png";
         } else if (client === 'davie') {
             modalTitle.innerText = "Davie Fogarty";
-            modalImage.src = "images/image04.png"; // Davie's Evidence
+            modalImage.src = "images/image04.png";
         }
 
-        // Show Modal
         modal.classList.remove('hidden');
         setTimeout(() => {
             modal.classList.add('active');
 
-            // Trigger animation for modal stats
             const stats = modal.querySelectorAll('.stat-num');
             stats.forEach(el => {
-                el.classList.remove('animated'); // Reset
+                el.classList.remove('animated');
 
-                const rawText = el.innerText; // "5.2M+" or "300%"
+                const rawText = el.innerText;
                 const match = rawText.match(/([\d\.]+)(.*)/);
                 if (match) {
                     const endVal = parseFloat(match[1]);
@@ -293,7 +256,6 @@ if (hamburger && navMenu) {
         hamburger.classList.toggle("active");
         navMenu.classList.toggle("active");
 
-        // Disable body scroll when menu is active
         if (navMenu.classList.contains('active')) {
             document.body.style.overflow = 'hidden';
         } else {
@@ -305,7 +267,7 @@ if (hamburger && navMenu) {
         link.addEventListener("click", () => {
             hamburger.classList.remove("active");
             navMenu.classList.remove("active");
-            document.body.style.overflow = 'auto'; // Restore scroll
+            document.body.style.overflow = 'auto';
         });
     });
 }
