@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exclusive Portfolio | QuidEdge</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #050505;
@@ -24,7 +24,8 @@
             overflow-x: hidden;
         }
 
-        img, video {
+        img,
+        video {
             -webkit-user-drag: none;
             pointer-events: none;
         }
@@ -107,10 +108,41 @@
             margin-bottom: 20px;
         }
 
+        /* --- NEW: Premium Role List Styling --- */
+        .role-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .role-list li {
+            color: #a1a1aa;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .role-list li::before {
+            content: "✦";
+            color: var(--accent-gold);
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .role-list strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        /* -------------------------------------- */
+
         .ed-stats {
             display: flex;
             gap: 30px;
-            margin-top: 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding-top: 20px;
         }
@@ -154,45 +186,121 @@
             object-fit: cover;
         }
 
-        /* --- Responsive Design (Tablets & iPads) --- */
+        /* --- NEW: CTA & Footer Section --- */
+        .cta-section {
+            text-align: center;
+            padding: 100px 30px 80px;
+            background: linear-gradient(to top, #0a0a0a, transparent);
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+
+        .cta-section.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cta-section h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .cta-section p {
+            color: #a1a1aa;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: var(--accent-blue);
+            color: #fff;
+            padding: 18px 45px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 122, 255, 0.3);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 122, 255, 0.5);
+            background: #006ce0;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #555;
+            font-size: 0.9rem;
+            background: #050505;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        /* -------------------------------------- */
+
         @media (max-width: 900px) {
             .editorial-row,
             .editorial-row:nth-child(even) {
                 flex-direction: column;
                 gap: 40px;
-                text-align: center;
-                margin-bottom: 100px; /* Reduced gap for iPads */
+                text-align: left; /* Aligned left for better list readability on mobile */
+                margin-bottom: 100px;
             }
+
             .ed-text h2 {
                 font-size: 3rem;
             }
+
             .ed-stats {
-                justify-content: center;
+                justify-content: flex-start;
             }
+
             .top-nav {
                 padding: 30px 40px;
             }
+            .cta-section h2 {
+                font-size: 2.5rem;
+            }
         }
 
-        /* --- Responsive Design (Mobile Phones) --- */
         @media (max-width: 480px) {
             .editorial-row,
             .editorial-row:nth-child(even) {
-                margin-bottom: 80px; /* Further reduced gap for small phones */
+                margin-bottom: 80px;
                 gap: 25px;
             }
+
             .ed-text h2 {
-                font-size: 2.2rem; /* Adjusted for mobile screens */
+                font-size: 2.2rem;
             }
+
             .ed-text p {
                 font-size: 1rem;
             }
+
             .top-nav {
                 padding: 20px 25px;
             }
+
             .editorial-container {
-                padding: 0 20px 80px;
+                padding: 0 20px 0;
                 margin-top: 100px;
+            }
+            .cta-section {
+                padding: 80px 20px 60px;
+            }
+            .cta-section h2 {
+                font-size: 2rem;
             }
         }
     </style>
@@ -212,6 +320,12 @@
                 <h2>Robert<br>Herjavec</h2>
                 <p>Establishing authority through cinematic framing. We engineered a strategy that highlights business
                     wisdom with 100% data-backed retention hooks.</p>
+                <ul class="role-list">
+                    <li><span><strong>Spearheaded</strong> short-form strategies, consistently generating 10M+ views across platforms.</span></li>
+                    <li><span><strong>Produced & managed</strong> a strategic calendar of 30+ monthly content pieces.</span></li>
+                    <li><span><strong>Drove</strong> a 40% increase in overall engagement rates through weekly refinements.</span></li>
+                    <li><span><strong>Cultivated</strong> an organic audience growth of 15K+ targeted followers.</span></li>
+                </ul>
                 <div class="ed-stats">
                     <div class="stat"><strong>22M+</strong><span>30-Day Views</span></div>
                     <div class="stat"><strong>Top 1%</strong><span>Authority</span></div>
@@ -231,6 +345,11 @@
                 <h2>Ryan<br>Trahan</h2>
                 <p>Mastering the art of 'Invisible Editing.' We focus on seamless pacing and emotional storytelling
                     hooks that maintain industry-leading retention rates.</p>
+                <ul class="role-list">
+                    <li><span><strong>Mastered</strong> 'invisible editing' techniques to enhance narrative flow and pacing.</span></li>
+                    <li><span><strong>Optimized</strong> video structures and emotional hooks to maximize Average View Duration.</span></li>
+                    <li><span><strong>Analyzed</strong> retention graphs to pinpoint drop-off moments and refine editing styles.</span></li>
+                </ul>
                 <div class="ed-stats">
                     <div class="stat"><strong>15M+</strong><span>Avg. Views</span></div>
                     <div class="stat"><strong>Master</strong><span>Storytelling</span></div>
@@ -250,6 +369,11 @@
                 <h2>Enes<br>Yilmazer</h2>
                 <p>Curating a high-end luxury experience through cinematic pacing and visual grandeur, showcasing elite
                     properties to a global billionaire audience.</p>
+                <ul class="role-list">
+                    <li><span><strong>Curated</strong> cinematic visual experiences tailored for a high-net-worth demographic.</span></li>
+                    <li><span><strong>Optimized</strong> pacing and visual flow for ultra-luxury property tours worldwide.</span></li>
+                    <li><span><strong>Implemented</strong> high-end sound design and color grading for $50M+ properties.</span></li>
+                </ul>
                 <div class="ed-stats">
                     <div class="stat"><strong>Elite</strong><span>Cinematics</span></div>
                     <div class="stat"><strong>Global</strong><span>Audience</span></div>
@@ -269,6 +393,12 @@
                 <h2>Davie<br>Fogarty</h2>
                 <p>High-paced, viral-centric content strategy designed for the modern attention span. Focused on
                     aggressive hooks and high-energy growth transitions.</p>
+                <ul class="role-list">
+                    <li><span><strong>Engineered</strong> high-retention intros and viral hooks by reverse-engineering top formats.</span></li>
+                    <li><span><strong>Directed</strong> the end-to-end content production pipeline using Monday.com and Notion.</span></li>
+                    <li><span><strong>Scaled</strong> content output to 65+ high-performing short-form assets monthly.</span></li>
+                    <li><span><strong>Executed</strong> rigorous A/B testing for video titles and thumbnails to boost CTR.</span></li>
+                </ul>
                 <div class="ed-stats">
                     <div class="stat"><strong>300%</strong><span>Engagement</span></div>
                     <div class="stat"><strong>Viral</strong><span>Retention</span></div>
@@ -288,6 +418,11 @@
                 <h2>LMCT+<br>Global</h2>
                 <p>Premium lifestyle editing for Australia's largest rewards club. High-impact sound design and elite
                     aesthetics tailored for a luxury brand status.</p>
+                <ul class="role-list">
+                    <li><span><strong>Directed</strong> high-impact, fast-paced edits for major car giveaway campaigns.</span></li>
+                    <li><span><strong>Integrated</strong> dynamic sound design and elite motion graphics.</span></li>
+                    <li><span><strong>Optimized</strong> promotional video content to maximize ad conversion rates and ROI.</span></li>
+                </ul>
                 <div class="ed-stats">
                     <div class="stat"><strong>High</strong><span>Energy</span></div>
                     <div class="stat"><strong>Luxury</strong><span>Branding</span></div>
@@ -303,6 +438,16 @@
 
     </div>
 
+    <div class="cta-section editorial-row">
+        <h2>Ready to Scale Your Brand?</h2>
+        <p>Partner with QuidEdge to transform your raw footage into high-converting, world-class content that dominates your niche.</p>
+        <a href="mailto:contact@quidedge.com" class="cta-btn">Work With Me</a>
+    </div>
+
+    <footer class="footer">
+        &copy; 2026 QuidEdge. All Rights Reserved.
+    </footer>
+
     <script>
         // Security logic
         document.addEventListener('keydown', e => {
@@ -314,7 +459,7 @@
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 const video = entry.target.querySelector('video');
-                
+
                 if (entry.isIntersecting) {
                     // Show animation
                     entry.target.classList.add('show');
