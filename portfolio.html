@@ -24,8 +24,7 @@
             overflow-x: hidden;
         }
 
-        img,
-        video {
+        img, video {
             -webkit-user-drag: none;
             pointer-events: none;
         }
@@ -157,24 +156,19 @@
 
         /* --- Responsive Design (Tablets & iPads) --- */
         @media (max-width: 900px) {
-
             .editorial-row,
             .editorial-row:nth-child(even) {
                 flex-direction: column;
                 gap: 40px;
                 text-align: center;
-                margin-bottom: 100px;
-                /* Reduced gap for iPads */
+                margin-bottom: 100px; /* Reduced gap for iPads */
             }
-
             .ed-text h2 {
                 font-size: 3rem;
             }
-
             .ed-stats {
                 justify-content: center;
             }
-
             .top-nav {
                 padding: 30px 40px;
             }
@@ -182,27 +176,20 @@
 
         /* --- Responsive Design (Mobile Phones) --- */
         @media (max-width: 480px) {
-
             .editorial-row,
             .editorial-row:nth-child(even) {
-                margin-bottom: 80px;
-                /* Further reduced gap for small phones */
+                margin-bottom: 80px; /* Further reduced gap for small phones */
                 gap: 25px;
             }
-
             .ed-text h2 {
-                font-size: 2.2rem;
-                /* Adjusted for mobile screens */
+                font-size: 2.2rem; /* Adjusted for mobile screens */
             }
-
             .ed-text p {
                 font-size: 1rem;
             }
-
             .top-nav {
                 padding: 20px 25px;
             }
-
             .editorial-container {
                 padding: 0 20px 80px;
                 margin-top: 100px;
@@ -327,7 +314,7 @@
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 const video = entry.target.querySelector('video');
-
+                
                 if (entry.isIntersecting) {
                     // Show animation
                     entry.target.classList.add('show');
