@@ -40,6 +40,7 @@
             overflow: hidden;
             text-align: center;
         }
+
         .trust-banner p {
             font-size: 0.8rem;
             text-transform: uppercase;
@@ -48,12 +49,15 @@
             margin-bottom: 30px;
             font-weight: 600;
         }
+
         .logo-ticker {
             width: 100%;
             overflow: hidden;
             position: relative;
         }
-        .logo-ticker::before, .logo-ticker::after {
+
+        .logo-ticker::before,
+        .logo-ticker::after {
             content: "";
             position: absolute;
             top: 0;
@@ -61,14 +65,24 @@
             height: 100%;
             z-index: 2;
         }
-        .logo-ticker::before { left: 0; background: linear-gradient(to right, #0a0a0a, transparent); }
-        .logo-ticker::after { right: 0; background: linear-gradient(to left, #0a0a0a, transparent); }
+
+        .logo-ticker::before {
+            left: 0;
+            background: linear-gradient(to right, #0a0a0a, transparent);
+        }
+
+        .logo-ticker::after {
+            right: 0;
+            background: linear-gradient(to left, #0a0a0a, transparent);
+        }
+
         .logo-track {
             display: flex;
             align-items: center;
             width: calc(250px * 10);
             animation: scroll-ticker 30s linear infinite;
         }
+
         .logo-track img {
             width: 180px;
             height: auto;
@@ -78,23 +92,30 @@
             filter: grayscale(100%) opacity(0.6);
             transition: all 0.3s ease;
         }
+
         .logo-track img:hover {
             filter: grayscale(0%) opacity(1);
             transform: scale(1.05);
         }
+
         @keyframes scroll-ticker {
             0% { transform: translateX(0); }
             100% { transform: translateX(calc(-250px * 5)); }
         }
+
+        /* 2. Hover Effects */
         .bento-card {
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .bento-card:hover {
             transform: translateY(-8px) scale(1.01);
             border-color: rgba(212, 175, 55, 0.4);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.15);
         }
+
+        /* 3. Primary Glowing Button */
         .btn-glow {
             display: inline-block;
             background: var(--accent-blue);
@@ -112,21 +133,26 @@
             cursor: pointer;
             text-align: center;
         }
+
         .btn-glow:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(0, 122, 255, 0.6), 0 0 40px rgba(0, 122, 255, 0.3);
             background: #006ce0;
         }
+
+        /* 4. Packages Section */
         .packages-section {
             padding: 120px 0;
             background: #050505;
         }
+
         .packages-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 40px;
             margin-top: 50px;
         }
+
         .package-card {
             background: #0a0a0a;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -135,14 +161,17 @@
             position: relative;
             transition: 0.3s;
         }
+
         .package-card:hover {
             border-color: var(--accent-blue);
             transform: translateY(-5px);
         }
+
         .package-card.premium {
             background: linear-gradient(180deg, #0f0f0f 0%, #050505 100%);
             border: 1px solid rgba(212, 175, 55, 0.3);
         }
+
         .package-tag {
             position: absolute;
             top: -15px;
@@ -155,22 +184,26 @@
             border-radius: 20px;
             text-transform: uppercase;
         }
+
         .package-card h3 {
             font-size: 2rem;
             margin: 0 0 10px 0;
             color: #fff;
         }
+
         .package-card p {
             color: #a1a1aa;
             margin-bottom: 30px;
             font-size: 1rem;
             line-height: 1.5;
         }
+
         .package-features {
             list-style: none;
             padding: 0;
             margin: 0 0 40px 0;
         }
+
         .package-features li {
             color: #ccc;
             margin-bottom: 15px;
@@ -178,14 +211,17 @@
             align-items: center;
             gap: 10px;
         }
+
         .package-features li::before {
             content: "✓";
             color: var(--accent-blue);
             font-weight: bold;
         }
+
         .premium .package-features li::before {
             color: var(--accent-gold);
         }
+
         .risk-reversal {
             margin-top: 25px;
             color: #888;
@@ -196,22 +232,27 @@
             gap: 8px;
             text-align: center;
         }
+
+        /* Responsive */
         .reveal-element {
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
             will-change: opacity, transform;
         }
+
         .reveal-element.visible {
             opacity: 1;
             transform: translateY(0);
         }
+
         @media (max-width: 992px) {
             .headline { font-size: 3.5rem; }
             .packages-grid { grid-template-columns: 1fr; }
             .about-grid, .bento-grid { display: flex; flex-direction: column; gap: 20px; }
             .bento-card img { width: 100%; height: auto; position: relative; }
         }
+
         @media (max-width: 768px) {
             .headline { font-size: 2.8rem; line-height: 1.2; }
             .sub-headline { font-size: 1.1rem; padding: 0 15px; }
@@ -224,6 +265,7 @@
             .logo-track img { width: 130px; margin: 0 20px; }
             .package-card { padding: 40px 25px; }
         }
+
         @media (max-width: 480px) {
             .headline { font-size: 2.2rem; }
             .hero-buttons { display: flex; flex-direction: column; gap: 15px; width: 100%; }
@@ -465,7 +507,7 @@
                 <h2>Ready to scale?</h2>
                 <p>Limited availability for high-end clientele.</p>
                 
-                <button id="openFormBtn" class="btn-primary" style="padding: 20px 50px; font-size: 1.2rem; cursor: pointer; border: none; font-family: 'Inter', sans-serif;">Book Now</button>
+                <button onclick="openBookingModal()" class="btn-primary" style="padding: 20px 50px; font-size: 1.2rem; cursor: pointer; border: none; font-family: 'Inter', sans-serif;">Book Now</button>
 
                 <p class="risk-reversal">
                     <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
@@ -510,42 +552,56 @@
         </div>
     </div>
 
-    <div id="booking-modal" class="modal-overlay hidden" style="background: rgba(0,0,0,0.8); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; display: flex; justify-content: center; align-items: center; font-family: 'Inter', sans-serif;">
-        <div class="modal-content" style="background: #0a0a0a; max-width: 500px; width: 90%; text-align: left; padding: 40px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1); position: relative; max-height: 90vh; overflow-y: auto;">
-            <button class="close-btn" onclick="closeBookingModal()" style="position: absolute; top: 15px; right: 20px; background: transparent; border: none; color: white; font-size: 1.5rem; cursor: pointer;">&times;</button>
+    <div id="booking-modal" class="modal-overlay hidden" style="background: rgba(0,0,0,0.85); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: none; justify-content: center; align-items: center; font-family: 'Inter', sans-serif; backdrop-filter: blur(5px);">
+        <div class="modal-content" style="background: #0f0f0f; max-width: 500px; width: 90%; text-align: left; padding: 40px; border-radius: 20px; border: 1px solid rgba(0, 122, 255, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; max-height: 90vh; overflow-y: auto;">
+            <button onclick="closeBookingModal()" style="position: absolute; top: 15px; right: 20px; background: transparent; border: none; color: white; font-size: 1.8rem; cursor: pointer; transition: 0.3s;">&times;</button>
             
-            <h2 style="margin-bottom: 10px; font-size: 2rem; color: white;">Get Started</h2>
-            <p style="font-size: 0.9rem; color: #aaa; margin-bottom: 25px;">If you require information immediately, please contact us at inquiries.quidedge.au@gmail.com</p>
+            <h2 style="margin-bottom: 5px; font-size: 2rem; color: white;">Start Scaling</h2>
+            <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 25px;">Provide your details below to schedule your strategy session.</p>
 
             <form id="bookingForm">
-                <label style="display: block; margin-bottom: 5px; color: white;">Full Name? *</label>
-                <input type="text" id="fullName" name="fullName" required style="width: 100%; padding: 12px; margin-bottom: 15px; background: #111; border: 1px solid #333; color: white; border-radius: 5px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">Full Name *</label>
+                    <input type="text" id="fullName" name="fullName" required style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                </div>
 
-                <label style="display: block; margin-bottom: 5px; color: white;">Email *</label>
-                <input type="email" id="email" name="email" required style="width: 100%; padding: 12px; margin-bottom: 15px; background: #111; border: 1px solid #333; color: white; border-radius: 5px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">Email Address *</label>
+                    <input type="email" id="email" name="email" required style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                </div>
 
-                <label style="display: block; margin-bottom: 5px; color: white;">Phone Number *</label>
-                <input type="tel" id="phone" name="phone" required style="width: 100%; padding: 12px; margin-bottom: 15px; background: #111; border: 1px solid #333; color: white; border-radius: 5px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                    <div style="flex: 1;">
+                        <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">WhatsApp (Optional)</label>
+                        <input type="tel" id="whatsapp" name="whatsapp" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                    </div>
+                </div>
 
-                <label style="display: block; margin-bottom: 5px; color: white;">How much annual revenue are you making right now? *</label>
-                <select id="revenue" name="revenue" required style="width: 100%; padding: 12px; margin-bottom: 20px; background: #111; border: 1px solid #333; color: white; border-radius: 5px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
-                    <option value="">Select an option</option>
-                    <option value="$0 - $10k">$0 - $10k</option>
-                    <option value="$10k - $50k">$10k - $50k</option>
-                    <option value="$50k+">$50k+</option>
-                </select>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">Current Annual Revenue *</label>
+                    <select id="revenue" name="revenue" required style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                        <option value="">Select an option...</option>
+                        <option value="$0 - $10k">$0 - $10k</option>
+                        <option value="$10k - $50k">$10k - $50k</option>
+                        <option value="$50k+">$50k+</option>
+                    </select>
+                </div>
 
                 <div style="margin-bottom: 15px; display: flex; align-items: flex-start; gap: 10px;">
-                    <input type="checkbox" id="consent1" name="consent1" required style="margin-top: 5px;">
-                    <label style="font-size: 0.85rem; color: #ccc; line-height: 1.4;">I consent to receive marketing text messages from QuidEdge at the phone number provided. Frequency may vary. Message & data rates may apply.</label>
+                    <input type="checkbox" id="consent1" name="consent1" required style="margin-top: 4px; accent-color: #007aff;">
+                    <label style="font-size: 0.8rem; color: #888; line-height: 1.4;">I consent to receive marketing messages from QuidEdge. Message & data rates may apply.</label>
                 </div>
 
                 <div style="margin-bottom: 25px; display: flex; align-items: flex-start; gap: 10px;">
-                    <input type="checkbox" id="consent2" name="consent2" required style="margin-top: 5px;">
-                    <label style="font-size: 0.85rem; color: #ccc; line-height: 1.4;">I consent to receive non-marketing text messages about my order updates, appointment reminders etc.</label>
+                    <input type="checkbox" id="consent2" name="consent2" required style="margin-top: 4px; accent-color: #007aff;">
+                    <label style="font-size: 0.8rem; color: #888; line-height: 1.4;">I consent to receive non-marketing messages about order updates and reminders.</label>
                 </div>
 
-                <button type="submit" class="btn-glow" style="width: 100%; padding: 15px; border: none; cursor: pointer; font-family: 'Inter', sans-serif;">Submit</button>
+                <button type="submit" class="btn-glow" style="width: 100%; padding: 16px; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 1.1rem; border-radius: 8px;">Submit Application</button>
             </form>
             <p id="formStatus" style="display:none; color: #00ff88; margin-top: 15px; text-align: center; font-weight: bold;">Details submitted successfully!</p>
         </div>
@@ -562,8 +618,20 @@
             el.addEventListener('dragstart', e => e.preventDefault());
         });
 
+        // Booking Form Functions
+        function openBookingModal() {
+            const modal = document.getElementById('booking-modal');
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+        }
+
+        function closeBookingModal() {
+            const modal = document.getElementById('booking-modal');
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
-            // Video observer
             const videoObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -578,7 +646,6 @@
                 videoObserver.observe(video);
             });
 
-            // Reveal observer
             const revealObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -592,62 +659,51 @@
                 revealObserver.observe(el);
             });
 
-            // Booking Modal Logic
-            document.getElementById('booking-modal').style.display = 'none';
-        });
-
-        function closeBookingModal() {
-            const modal = document.getElementById('booking-modal');
-            modal.classList.add('hidden');
-            modal.style.display = 'none';
-        }
-
-        document.getElementById('openFormBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            const modal = document.getElementById('booking-modal');
-            modal.classList.remove('hidden');
-            modal.style.display = 'flex';
-        });
-
-        const form = document.getElementById('bookingForm');
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            
-            const submitBtn = form.querySelector('button[type="submit"]');
-            submitBtn.innerHTML = 'Submitting...';
-            submitBtn.disabled = true;
-
-            const formData = new FormData();
-            formData.append('fullName', document.getElementById('fullName').value);
-            formData.append('email', document.getElementById('email').value);
-            formData.append('phone', document.getElementById('phone').value);
-            formData.append('revenue', document.getElementById('revenue').value);
-            formData.append('consent1', document.getElementById('consent1').checked);
-            formData.append('consent2', document.getElementById('consent2').checked);
-
-            // ඔයාගේ Web App URL එක මෙතනට දාන්න (ඔයා කොපි කරගත්ත දිග ලින්ක් එක මෙතන ' ' ඇතුළට දාන්න)
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzAkEE2YSS5b8Qnjj5uzL2BxSQubGZ6PjenvRQqg69P-5EeWn61rYDxYLqKSEFhUhMG/exec';
-
-            fetch(scriptURL, { method: 'POST', body: formData })
-                .then(response => {
-                    document.getElementById('formStatus').style.display = 'block';
-                    form.reset();
-                    submitBtn.innerHTML = 'Submit';
-                    submitBtn.disabled = false;
+            // Form Submit Event
+            const form = document.getElementById('bookingForm');
+            if(form) {
+                form.addEventListener('submit', e => {
+                    e.preventDefault();
                     
-                    setTimeout(() => {
-                        closeBookingModal();
-                        document.getElementById('formStatus').style.display = 'none';
-                    }, 3000);
-                })
-                .catch(error => {
-                    console.error('Error!', error.message);
-                    submitBtn.innerHTML = 'Submit';
-                    submitBtn.disabled = false;
-                    alert("Something went wrong. Please try again.");
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    submitBtn.innerHTML = 'Submitting...';
+                    submitBtn.disabled = true;
+
+                    const formData = new FormData();
+                    formData.append('fullName', document.getElementById('fullName').value);
+                    formData.append('email', document.getElementById('email').value);
+                    formData.append('phone', document.getElementById('phone').value);
+                    formData.append('whatsapp', document.getElementById('whatsapp').value);
+                    formData.append('revenue', document.getElementById('revenue').value);
+                    formData.append('consent1', document.getElementById('consent1').checked);
+                    formData.append('consent2', document.getElementById('consent2').checked);
+
+                    // අලුත් Google Apps Script URL එක මෙතන තියෙනවා
+                    const scriptURL = 'https://script.google.com/macros/s/AKfycbyP2WNh0sp45wjqh_hoZYXvqL48VQIChpzivHRY1nT9mCGgHFG1lVPSUGrDMRZ6KlsV/exec';
+
+                    fetch(scriptURL, { method: 'POST', body: formData })
+                        .then(response => {
+                            document.getElementById('formStatus').style.display = 'block';
+                            form.reset();
+                            submitBtn.innerHTML = 'Submit Application';
+                            submitBtn.disabled = false;
+                            
+                            setTimeout(() => {
+                                closeBookingModal();
+                                document.getElementById('formStatus').style.display = 'none';
+                            }, 3000);
+                        })
+                        .catch(error => {
+                            console.error('Error!', error.message);
+                            submitBtn.innerHTML = 'Submit Application';
+                            submitBtn.disabled = false;
+                            alert("Something went wrong. Please try again.");
+                        });
                 });
+            }
         });
     </script>
     <script src="script.js"></script>
 </body>
+
 </html>
