@@ -69,114 +69,28 @@
         .premium .package-features li::before { color: var(--accent-gold); }
         .risk-reversal { margin-top: 25px; color: #888; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center; }
 
-        /* ==========================================
-           FORM ALIGNMENT & STYLING (NEW CSS)
-           ========================================== */
-        .form-group {
-            margin-bottom: 18px;
-        }
+        /* Form Styling */
+        .form-group { margin-bottom: 18px; }
+        .form-label { display: block; margin-bottom: 8px; color: #ccc; font-size: 0.9rem; font-weight: 500; }
+        .form-control { width: 100%; padding: 12px 15px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif; font-size: 0.95rem; height: 48px; transition: border-color 0.3s; outline: none; }
+        .form-control:focus { border-color: var(--accent-blue); }
+        .checkbox-group { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 15px; }
+        .checkbox-group input[type="checkbox"] { margin-top: 4px; width: 16px; height: 16px; accent-color: var(--accent-blue); flex-shrink: 0; cursor: pointer; }
+        .checkbox-group label { font-size: 0.85rem; color: #888; line-height: 1.5; cursor: pointer; }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            color: #ccc;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            color: white;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-            height: 48px;
-            transition: border-color 0.3s;
-            outline: none;
-        }
-
-        .form-control:focus {
-            border-color: var(--accent-blue);
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            margin-top: 4px;
-            width: 16px;
-            height: 16px;
-            accent-color: var(--accent-blue);
-            flex-shrink: 0;
-            cursor: pointer;
-        }
-
-        .checkbox-group label {
-            font-size: 0.85rem;
-            color: #888;
-            line-height: 1.5;
-            cursor: pointer;
-        }
-
-        /* intl-tel-input Overrides for Perfect Alignment */
+        /* intl-tel-input Overrides */
         .iti { width: 100%; display: block; height: 48px; }
         .iti__flag-container { z-index: 10; }
-        .iti__country-list { 
-            background-color: #1a1a1a !important; 
-            color: white !important; 
-            border: 1px solid #333 !important; 
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            z-index: 10000;
-        }
-        .iti__country:hover, .iti__country.iti__highlight { 
-            background-color: #333 !important; 
-        }
-        .iti__search-input { 
-            background: #111 !important; 
-            color: white !important; 
-            border: 1px solid #444 !important; 
-            border-radius: 5px;
-            padding: 10px !important;
-        }
+        .iti__country-list { background-color: #1a1a1a !important; color: white !important; border: 1px solid #333 !important; border-radius: 8px; font-family: 'Inter', sans-serif; z-index: 10000; }
+        .iti__country:hover, .iti__country.iti__highlight { background-color: #333 !important; }
+        .iti__search-input { background: #111 !important; color: white !important; border: 1px solid #444 !important; border-radius: 5px; padding: 10px !important; }
 
         /* Responsive */
         .reveal-element { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; will-change: opacity, transform; }
         .reveal-element.visible { opacity: 1; transform: translateY(0); }
 
         @media (max-width: 992px) { .headline { font-size: 3.5rem; } .packages-grid { grid-template-columns: 1fr; } .about-grid, .bento-grid { display: flex; flex-direction: column; gap: 20px; } .bento-card img { width: 100%; height: auto; position: relative; } }
-        
-        @media (max-width: 768px) { 
-            .headline { font-size: 2.8rem; line-height: 1.2; } 
-            .sub-headline { font-size: 1.1rem; padding: 0 15px; } 
-            .hero { padding: 120px 20px 60px; } 
-            .nav-links { display: none; } 
-            .hamburger { display: block; } 
-            .project-card { flex-direction: column; text-align: left; } 
-            .project-card img, .project-card video { width: 100%; border-radius: 16px; margin-top: 20px; } 
-            .trust-banner p { font-size: 0.7rem; } 
-            .logo-track img { width: 130px; margin: 0 20px; } 
-            .package-card { padding: 40px 25px; } 
-        }
-        
-        @media (max-width: 600px) {
-            .form-row { grid-template-columns: 1fr; } /* Mobile මත කොටු 2 එක යට එක වැටේ */
-        }
-        
+        @media (max-width: 768px) { .headline { font-size: 2.8rem; line-height: 1.2; } .sub-headline { font-size: 1.1rem; padding: 0 15px; } .hero { padding: 120px 20px 60px; } .nav-links { display: none; } .hamburger { display: block; } .project-card { flex-direction: column; text-align: left; } .project-card img, .project-card video { width: 100%; border-radius: 16px; margin-top: 20px; } .trust-banner p { font-size: 0.7rem; } .logo-track img { width: 130px; margin: 0 20px; } .package-card { padding: 40px 25px; } }
         @media (max-width: 480px) { .headline { font-size: 2.2rem; } .hero-buttons { display: flex; flex-direction: column; gap: 15px; width: 100%; } .btn-primary, .btn-link, .btn-glow { width: 100%; box-sizing: border-box; } .section-title { font-size: 2rem; } .package-card h3 { font-size: 1.5rem; } .stats-row { flex-direction: column; gap: 15px; } }
     </style>
 </head>
@@ -475,16 +389,10 @@
                     <input type="email" id="email" name="email" required class="form-control">
                 </div>
 
-                <div class="form-group form-row">
-                    <div>
-                        <label class="form-label" for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" class="form-control">
-                        <span id="phoneError" style="color: #ff4444; font-size: 0.8rem; display: none; margin-top: 5px;">Please enter a valid phone number.</span>
-                    </div>
-                    <div>
-                        <label class="form-label" for="whatsapp">WhatsApp (Optional)</label>
-                        <input type="tel" id="whatsapp" name="whatsapp" placeholder="Enter number" class="form-control">
-                    </div>
+                <div class="form-group">
+                    <label class="form-label" for="whatsapp">WhatsApp Number *</label>
+                    <input type="tel" id="whatsapp" name="whatsapp" required class="form-control">
+                    <span id="whatsappError" style="color: #ff4444; font-size: 0.8rem; display: none; margin-top: 5px;">Please enter a valid WhatsApp number.</span>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 25px;">
@@ -545,9 +453,8 @@
         }
 
         document.addEventListener("DOMContentLoaded", function () {
-            // Auto-Detect Location setup
-            const phoneInput = document.querySelector("#phone");
-            const iti = window.intlTelInput(phoneInput, {
+            const whatsappInput = document.querySelector("#whatsapp");
+            const iti = window.intlTelInput(whatsappInput, {
                 initialCountry: "auto",
                 geoIpLookup: callback => {
                     fetch("https://ipapi.co/json")
@@ -586,45 +493,42 @@
                 revealObserver.observe(el);
             });
 
-            // Form Submit Event with Validation
             const form = document.getElementById('bookingForm');
-            const phoneError = document.getElementById('phoneError');
+            const whatsappError = document.getElementById('whatsappError');
 
             if(form) {
                 form.addEventListener('submit', e => {
                     e.preventDefault();
                     
-                    // HTML5 validation
                     if (!form.checkValidity()) {
                         form.reportValidity();
                         return;
                     }
 
-                    const phoneVal = phoneInput.value.trim();
+                    const whatsappVal = whatsappInput.value.trim();
                     const submitBtn = form.querySelector('button[type="submit"]');
 
-                    // Validation for correct number format if a number is typed
-                    if (phoneVal !== "" && !iti.isValidNumber()) {
-                        phoneError.style.display = "block";
-                        phoneInput.style.borderColor = "#ff4444";
+                    if (whatsappVal !== "" && !iti.isValidNumber()) {
+                        whatsappError.style.display = "block";
+                        whatsappInput.style.borderColor = "#ff4444";
                         return;
                     } else {
-                        phoneError.style.display = "none";
-                        phoneInput.style.borderColor = "#333";
+                        whatsappError.style.display = "none";
+                        whatsappInput.style.borderColor = "#333";
                     }
 
                     submitBtn.innerHTML = 'Submitting...';
                     submitBtn.disabled = true;
                     
-                    const whatsappNum = document.getElementById('whatsapp').value;
-                    const fullPhoneNumber = phoneVal !== "" ? iti.getNumber() : "";
+                    // මෙතන තමයි වෙනස කළේ! International Format එකට අංකය ගන්නවා (උදා: +94 76 459 5796)
+                    const fullPhoneNumber = whatsappVal !== "" ? iti.getNumber(intlTelInputUtils.numberFormat.INTERNATIONAL) : "";
 
                     const formData = new FormData();
                     formData.append('fullName', document.getElementById('fullName').value);
                     formData.append('email', document.getElementById('email').value);
                     
                     formData.append('phone', fullPhoneNumber); 
-                    formData.append('whatsapp', whatsappNum);
+                    formData.append('whatsapp', fullPhoneNumber);
                     
                     formData.append('revenue', document.getElementById('revenue').value);
                     formData.append('consent1', document.getElementById('consent1').checked);
