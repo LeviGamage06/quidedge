@@ -570,12 +570,23 @@
                     <input type="email" id="email" name="email" required style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
                 </div>
 
-                <div style="display: flex; gap: 15px; margin-bottom: 15px;">
-                    <div style="flex: 1;">
+                <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 200px;">
                         <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">Phone Number *</label>
-                        <input type="tel" id="phone" name="phone" required style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                        <div style="display: flex; gap: 8px;">
+                            <select id="countryCode" name="countryCode" style="width: 100px; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                                <option value="+61">🇦🇺 +61</option>
+                                <option value="+1">🇺🇸 +1</option>
+                                <option value="+44">🇬🇧 +44</option>
+                                <option value="+94" selected>🇱🇰 +94</option>
+                                <option value="+65">🇸🇬 +65</option>
+                                <option value="+971">🇦🇪 +971</option>
+                                <option value="">Other</option>
+                            </select>
+                            <input type="tel" id="phone" name="phone" placeholder="Phone Number" required style="flex: 1; width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                        </div>
                     </div>
-                    <div style="flex: 1;">
+                    <div style="flex: 1; min-width: 200px;">
                         <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">WhatsApp (Optional)</label>
                         <input type="tel" id="whatsapp" name="whatsapp" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
                     </div>
@@ -585,9 +596,9 @@
                     <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">Current Annual Revenue *</label>
                     <select id="revenue" name="revenue" required style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
                         <option value="">Select an option...</option>
-                        <option value="$0 - $10k">$0 - $10k</option>
-                        <option value="$10k - $50k">$10k - $50k</option>
-                        <option value="$50k+">$50k+</option>
+                        <option value="$10K - $20K">$10K - $20K</option>
+                        <option value="$20K - $50K">$20K - $50K</option>
+                        <option value="More than $50K+">More than $50K+</option>
                     </select>
                 </div>
 
@@ -618,29 +629,22 @@
             el.addEventListener('dragstart', e => e.preventDefault());
         });
 
-        // 100% වැඩ කරන Booking Modal Function එක
         function openBookingModal() {
             const modal = document.getElementById('booking-modal');
-            modal.style.display = 'flex'; // මුලින්ම ඒක තියෙන තැන ගන්නවා
-            
-            // මිලි තත්පර 10කින් පස්සේ opacity එක වෙනස් කරනවා (style.css එකේ .active එකෙන්)
+            modal.style.display = 'flex';
             setTimeout(() => {
                 modal.classList.add('active');
             }, 10);
-            
-            document.body.style.overflow = 'hidden'; // යටින් තියෙන පිටුව ස්ක්‍රෝල් වෙන එක නවත්තනවා
+            document.body.style.overflow = 'hidden';
         }
 
         function closeBookingModal() {
             const modal = document.getElementById('booking-modal');
-            modal.classList.remove('active'); // opacity එක අයින් කරනවා
-            
-            // Animation එක ඉවරවෙන්න තත්පර 0.4ක් දීලා display:none කරනවා
+            modal.classList.remove('active');
             setTimeout(() => {
                 modal.style.display = 'none';
             }, 400);
-            
-            document.body.style.overflow = 'auto'; // ආපහු ස්ක්‍රෝල් කරන්න දෙනවා
+            document.body.style.overflow = 'auto';
         }
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -681,10 +685,15 @@
                     submitBtn.innerHTML = 'Submitting...';
                     submitBtn.disabled = true;
 
+                    // Combine Country Code + Phone Number
+                    const countryCode = document.getElementById('countryCode').value;
+                    const phoneNum = document.getElementById('phone').value;
+                    const fullPhoneNumber = countryCode + " " + phoneNum;
+
                     const formData = new FormData();
                     formData.append('fullName', document.getElementById('fullName').value);
                     formData.append('email', document.getElementById('email').value);
-                    formData.append('phone', document.getElementById('phone').value);
+                    formData.append('phone', fullPhoneNumber); // Send combined phone number
                     formData.append('whatsapp', document.getElementById('whatsapp').value);
                     formData.append('revenue', document.getElementById('revenue').value);
                     formData.append('consent1', document.getElementById('consent1').checked);
