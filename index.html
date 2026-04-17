@@ -390,8 +390,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="whatsapp">WhatsApp Number *</label>
-                    <input type="tel" id="whatsapp" name="whatsapp" required class="form-control">
+                    <label class="form-label" for="whatsapp">WhatsApp Number (Optional)</label>
+                    <input type="tel" id="whatsapp" name="whatsapp" class="form-control">
                     <span id="whatsappError" style="color: #ff4444; font-size: 0.8rem; display: none; margin-top: 5px;">Please enter a valid WhatsApp number.</span>
                 </div>
 
@@ -508,6 +508,7 @@
                     const whatsappVal = whatsappInput.value.trim();
                     const submitBtn = form.querySelector('button[type="submit"]');
 
+                    // Check validation ONLY if field is filled
                     if (whatsappVal !== "" && !iti.isValidNumber()) {
                         whatsappError.style.display = "block";
                         whatsappInput.style.borderColor = "#ff4444";
@@ -520,13 +521,19 @@
                     submitBtn.innerHTML = 'Submitting...';
                     submitBtn.disabled = true;
                     
-                    // මෙතන තමයි වෙනස කළේ! International Format එකට අංකය ගන්නවා (උදා: +94 76 459 5796)
-                    const fullPhoneNumber = whatsappVal !== "" ? iti.getNumber(intlTelInputUtils.numberFormat.INTERNATIONAL) : "";
+                    // Get formatted number if filled, else send empty string
+                    let fullPhoneNumber = whatsappVal !== "" ? iti.getNumber(intlTelInputUtils.numberFormat.INTERNATIONAL) : "";
+
+                    // Google Sheets ERROR Fix! (Prevent formulas)
+                    if (fullPhoneNumber) {
+                        fullPhoneNumber = "'" + fullPhoneNumber;
+                    }
 
                     const formData = new FormData();
                     formData.append('fullName', document.getElementById('fullName').value);
                     formData.append('email', document.getElementById('email').value);
                     
+                    // Send to both 'Phone Number' and 'WhatsApp' columns in Google Sheets
                     formData.append('phone', fullPhoneNumber); 
                     formData.append('whatsapp', fullPhoneNumber);
                     
