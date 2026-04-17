@@ -69,24 +69,114 @@
         .premium .package-features li::before { color: var(--accent-gold); }
         .risk-reversal { margin-top: 25px; color: #888; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center; }
 
-        /* intl-tel-input Dark Mode Overrides */
-        .iti { width: 100%; display: block; }
-        .iti__country-list { background-color: #1a1a1a !important; color: white !important; border: 1px solid #333 !important; border-radius: 8px; font-family: 'Inter', sans-serif; z-index: 10000; }
-        .iti__country:hover, .iti__country.iti__highlight { background-color: #333 !important; }
-        .iti__search-input { background: #111 !important; color: white !important; border: 1px solid #444 !important; border-radius: 5px; }
-        
-        #cc-wrapper .iti__flag-container { position: relative; width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 10.5px 12px; box-sizing: border-box; display: flex; }
-        #cc-wrapper .iti__selected-flag { width: 100%; padding: 0; display: flex; align-items: center; justify-content: space-between; background: transparent !important; }
-        #cc-wrapper .iti__selected-dial-code { color: #fff; margin-left: 8px; font-family: 'Inter', sans-serif; font-size: 1rem; }
-        #cc-wrapper input { display: none !important; }
-        #cc-wrapper .iti__country-list { width: 300px; top: 100%; left: 0; margin-top: 5px; }
+        /* ==========================================
+           FORM ALIGNMENT & STYLING (NEW CSS)
+           ========================================== */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: white;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            height: 48px;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 4px;
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent-blue);
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-size: 0.85rem;
+            color: #888;
+            line-height: 1.5;
+            cursor: pointer;
+        }
+
+        /* intl-tel-input Overrides for Perfect Alignment */
+        .iti { width: 100%; display: block; height: 48px; }
+        .iti__flag-container { z-index: 10; }
+        .iti__country-list { 
+            background-color: #1a1a1a !important; 
+            color: white !important; 
+            border: 1px solid #333 !important; 
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            z-index: 10000;
+        }
+        .iti__country:hover, .iti__country.iti__highlight { 
+            background-color: #333 !important; 
+        }
+        .iti__search-input { 
+            background: #111 !important; 
+            color: white !important; 
+            border: 1px solid #444 !important; 
+            border-radius: 5px;
+            padding: 10px !important;
+        }
 
         /* Responsive */
         .reveal-element { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; will-change: opacity, transform; }
         .reveal-element.visible { opacity: 1; transform: translateY(0); }
 
         @media (max-width: 992px) { .headline { font-size: 3.5rem; } .packages-grid { grid-template-columns: 1fr; } .about-grid, .bento-grid { display: flex; flex-direction: column; gap: 20px; } .bento-card img { width: 100%; height: auto; position: relative; } }
-        @media (max-width: 768px) { .headline { font-size: 2.8rem; line-height: 1.2; } .sub-headline { font-size: 1.1rem; padding: 0 15px; } .hero { padding: 120px 20px 60px; } .nav-links { display: none; } .hamburger { display: block; } .project-card { flex-direction: column; text-align: left; } .project-card img, .project-card video { width: 100%; border-radius: 16px; margin-top: 20px; } .trust-banner p { font-size: 0.7rem; } .logo-track img { width: 130px; margin: 0 20px; } .package-card { padding: 40px 25px; } #cc-wrapper .iti__country-list { width: 250px; } }
+        
+        @media (max-width: 768px) { 
+            .headline { font-size: 2.8rem; line-height: 1.2; } 
+            .sub-headline { font-size: 1.1rem; padding: 0 15px; } 
+            .hero { padding: 120px 20px 60px; } 
+            .nav-links { display: none; } 
+            .hamburger { display: block; } 
+            .project-card { flex-direction: column; text-align: left; } 
+            .project-card img, .project-card video { width: 100%; border-radius: 16px; margin-top: 20px; } 
+            .trust-banner p { font-size: 0.7rem; } 
+            .logo-track img { width: 130px; margin: 0 20px; } 
+            .package-card { padding: 40px 25px; } 
+        }
+        
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; } /* Mobile මත කොටු 2 එක යට එක වැටේ */
+        }
+        
         @media (max-width: 480px) { .headline { font-size: 2.2rem; } .hero-buttons { display: flex; flex-direction: column; gap: 15px; width: 100%; } .btn-primary, .btn-link, .btn-glow { width: 100%; box-sizing: border-box; } .section-title { font-size: 2rem; } .package-card h3 { font-size: 1.5rem; } .stats-row { flex-direction: column; gap: 15px; } }
     </style>
 </head>
@@ -374,31 +464,32 @@
             <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 25px;">Provide your details below to schedule your strategy session.</p>
 
             <form id="bookingForm" novalidate>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">Full Name *</label>
-                    <input type="text" id="fullName" name="fullName" required style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                
+                <div class="form-group">
+                    <label class="form-label" for="fullName">Full Name *</label>
+                    <input type="text" id="fullName" name="fullName" required class="form-control">
                 </div>
 
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">Email Address *</label>
-                    <input type="email" id="email" name="email" required style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required class="form-control">
                 </div>
 
-                <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
-                    <div id="cc-wrapper" style="flex: 1; min-width: 130px;">
-                        <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                <div class="form-group form-row">
+                    <div>
+                        <label class="form-label" for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-control">
                         <span id="phoneError" style="color: #ff4444; font-size: 0.8rem; display: none; margin-top: 5px;">Please enter a valid phone number.</span>
                     </div>
-                    <div style="flex: 1; min-width: 150px;">
-                        <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">WhatsApp (Optional)</label>
-                        <input type="tel" id="whatsapp" name="whatsapp" placeholder="Enter number" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                    <div>
+                        <label class="form-label" for="whatsapp">WhatsApp (Optional)</label>
+                        <input type="tel" id="whatsapp" name="whatsapp" placeholder="Enter number" class="form-control">
                     </div>
                 </div>
 
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">Current Annual Revenue *</label>
-                    <select id="revenue" name="revenue" required style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                <div class="form-group" style="margin-bottom: 25px;">
+                    <label class="form-label" for="revenue">Current Annual Revenue *</label>
+                    <select id="revenue" name="revenue" required class="form-control">
                         <option value="">Select an option...</option>
                         <option value="$10K - $20K">$10K - $20K</option>
                         <option value="$20K - $50K">$20K - $50K</option>
@@ -406,14 +497,14 @@
                     </select>
                 </div>
 
-                <div style="margin-bottom: 15px; display: flex; align-items: flex-start; gap: 10px;">
-                    <input type="checkbox" id="consent1" name="consent1" required style="margin-top: 4px; accent-color: #007aff;">
-                    <label style="font-size: 0.8rem; color: #888; line-height: 1.4;">I consent to receive marketing messages from QuidEdge. Message & data rates may apply.</label>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="consent1" name="consent1" required>
+                    <label for="consent1">I consent to receive marketing messages from QuidEdge. Message & data rates may apply.</label>
                 </div>
 
-                <div style="margin-bottom: 25px; display: flex; align-items: flex-start; gap: 10px;">
-                    <input type="checkbox" id="consent2" name="consent2" required style="margin-top: 4px; accent-color: #007aff;">
-                    <label style="font-size: 0.8rem; color: #888; line-height: 1.4;">I consent to receive non-marketing messages about order updates and reminders.</label>
+                <div class="checkbox-group" style="margin-bottom: 25px;">
+                    <input type="checkbox" id="consent2" name="consent2" required>
+                    <label for="consent2">I consent to receive non-marketing messages about order updates and reminders.</label>
                 </div>
 
                 <button type="submit" class="btn-glow" style="width: 100%; padding: 16px; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 1.1rem; border-radius: 8px;">Submit Application</button>
@@ -503,7 +594,7 @@
                 form.addEventListener('submit', e => {
                     e.preventDefault();
                     
-                    // Check standard HTML5 validation manually first
+                    // HTML5 validation
                     if (!form.checkValidity()) {
                         form.reportValidity();
                         return;
@@ -512,11 +603,11 @@
                     const phoneVal = phoneInput.value.trim();
                     const submitBtn = form.querySelector('button[type="submit"]');
 
-                    // අංකයක් ටයිප් කරලා තියෙනවා නම් විතරක් ඒක හරිද කියලා බලනවා
+                    // Validation for correct number format if a number is typed
                     if (phoneVal !== "" && !iti.isValidNumber()) {
                         phoneError.style.display = "block";
                         phoneInput.style.borderColor = "#ff4444";
-                        return; // වැරදි නම් මෙතනින් නවතිනවා (Submit වෙන්නේ නෑ)
+                        return;
                     } else {
                         phoneError.style.display = "none";
                         phoneInput.style.borderColor = "#333";
