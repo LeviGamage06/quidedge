@@ -169,8 +169,34 @@
             border: 1px solid #444 !important; 
             border-radius: 5px;
         }
-        .iti__selected-dial-code { color: #fff; }
-        .iti__dial-code { color: #aaa; }
+        
+        /* Custom Country Code Dropdown Styling (වම් පැත්තේ කොටුව සඳහා) */
+        #cc-wrapper .iti__flag-container {
+            position: relative;
+            width: 100%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 10.5px 12px;
+            box-sizing: border-box;
+            display: flex;
+        }
+        #cc-wrapper .iti__selected-flag {
+            width: 100%;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: transparent !important;
+        }
+        #cc-wrapper .iti__selected-dial-code {
+            color: #fff;
+            margin-left: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+        #cc-wrapper input { display: none !important; }
+        #cc-wrapper .iti__country-list { width: 300px; top: 100%; left: 0; margin-top: 5px; }
 
         /* Responsive */
         .reveal-element { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; will-change: opacity, transform; }
@@ -194,6 +220,7 @@
             .trust-banner p { font-size: 0.7rem; }
             .logo-track img { width: 130px; margin: 0 20px; }
             .package-card { padding: 40px 25px; }
+            #cc-wrapper .iti__country-list { width: 250px; }
         }
 
         @media (max-width: 480px) {
@@ -501,13 +528,13 @@
                 </div>
 
                 <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 200px;">
-                        <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">Phone Number *</label>
-                        <input type="tel" id="phone" name="phone" required style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                    <div id="cc-wrapper" style="flex: 1; min-width: 130px;">
+                        <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">Country Code *</label>
+                        <input type="tel" id="countryCodeDisplay">
                     </div>
-                    <div style="flex: 1; min-width: 200px;">
+                    <div style="flex: 2; min-width: 200px;">
                         <label style="display: block; margin-bottom: 5px; color: #ccc; font-size: 0.9rem;">WhatsApp (Optional)</label>
-                        <input type="tel" id="whatsapp" name="whatsapp" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
+                        <input type="tel" id="whatsapp" name="whatsapp" placeholder="Enter number" style="width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif;">
                     </div>
                 </div>
 
@@ -569,19 +596,18 @@
         }
 
         document.addEventListener("DOMContentLoaded", function () {
-            // Auto-Detect Location setup
-            const phoneInputField = document.querySelector("#phone");
-            const iti = window.intlTelInput(phoneInputField, {
+            // Auto-Detect Location setup (වම් පැත්තේ Country Code Dropdown එකට)
+            const ccInput = document.querySelector("#countryCodeDisplay");
+            const iti = window.intlTelInput(ccInput, {
                 initialCountry: "auto",
                 geoIpLookup: callback => {
                     fetch("https://ipapi.co/json")
                         .then(res => res.json())
                         .then(data => callback(data.country_code))
-                        .catch(() => callback("us")); // Error ආවොත් US වැටෙන්න හදලා තියෙන්නේ
+                        .catch(() => callback("lk")); // Error ආවොත් ලංකාව වැටෙන්න හදලා තියෙන්නේ
                 },
                 utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/utils.js",
-                strictMode: true,
-                separateDialCode: true // Country code එක කොඩියට එහාපැත්තෙන් පෙන්වන්න
+                separateDialCode: true // මේකෙන් තමයි Code එක (+94) කොඩියට එහාපැත්තෙන් පෙන්වන්නේ
             });
 
             const videoObserver = new IntersectionObserver((entries) => {
@@ -621,14 +647,24 @@
                     submitBtn.innerHTML = 'Submitting...';
                     submitBtn.disabled = true;
 
-                    // intl-tel-input එක හරහා Full Number එක ගන්නවා (Country Code එකත් එක්කම)
-                    const fullPhoneNumber = iti.getNumber();
+                    // වම් පැත්තේ කොටුවෙන් Country Code එක ගන්නවා (+94, +61 වගේ)
+                    const selectedCountryData = iti.getSelectedCountryData();
+                    const dialCode = selectedCountryData.dialCode ? "+" + selectedCountryData.dialCode : "";
+                    
+                    // දකුණු පැත්තේ කොටුවෙන් WhatsApp Number එක ගන්නවා
+                    const whatsappNum = document.getElementById('whatsapp').value;
+                    
+                    // ඒ දෙක එකතු කරලා සම්පූර්ණ අංකය හදාගන්නවා
+                    const fullPhoneNumber = whatsappNum ? (dialCode + " " + whatsappNum) : dialCode;
 
                     const formData = new FormData();
                     formData.append('fullName', document.getElementById('fullName').value);
                     formData.append('email', document.getElementById('email').value);
-                    formData.append('phone', fullPhoneNumber); // Country code + Phone number
-                    formData.append('whatsapp', document.getElementById('whatsapp').value);
+                    
+                    // සම්පූර්ණ අංකය (fullPhoneNumber) ඔයාගේ Google Sheet එකේ Phone Number column එකටයි WhatsApp column එකටයි දෙකටම යවනවා.
+                    formData.append('phone', fullPhoneNumber); 
+                    formData.append('whatsapp', whatsappNum);
+                    
                     formData.append('revenue', document.getElementById('revenue').value);
                     formData.append('consent1', document.getElementById('consent1').checked);
                     formData.append('consent2', document.getElementById('consent2').checked);
