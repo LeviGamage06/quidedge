@@ -626,7 +626,7 @@
             formData.append('consent2', document.getElementById('consent2').checked);
 
             // ඔයාගේ Web App URL එක මෙතනට දාන්න (ඔයා කොපි කරගත්ත දිග ලින්ක් එක මෙතන ' ' ඇතුළට දාන්න)
-            const scriptURL = 'YOUR_WEB_APP_URL_HERE';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbzAkEE2YSS5b8Qnjj5uzL2BxSQubGZ6PjenvRQqg69P-5EeWn61rYDxYLqKSEFhUhMG/exec';
 
             fetch(scriptURL, { method: 'POST', body: formData })
                 .then(response => {
