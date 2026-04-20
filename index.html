@@ -4,7 +4,6 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>QuidEdge — Engineered for Viral Impact</title>
-<!-- Meta Pixel -->
 <script>
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
   n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -60,7 +59,7 @@
     background: rgba(10, 9, 8, 0.55);
     border-bottom: 1px solid var(--line);
   }
-  nav.top .row { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+  nav.top .row { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; transition: padding 0.3s ease; }
   .wordmark { display: flex; align-items: baseline; gap: 8px; }
   .wordmark .mark { font-family: var(--serif); font-size: 24px; letter-spacing: -0.02em; }
   .wordmark .mark .e { font-style: italic; }
@@ -86,19 +85,19 @@
     background: radial-gradient(circle, color-mix(in oklch, var(--accent) 18%, transparent), transparent 60%);
     filter: blur(40px); pointer-events: none;
   }
-  .hero-meta { display: flex; justify-content: space-between; align-items: center; padding-bottom: 28px; }
-  .hero-meta .left { display: flex; gap: 32px; align-items: center; }
+  .hero-meta { display: flex; justify-content: space-between; align-items: center; padding-bottom: 28px; flex-wrap: wrap; gap: 16px; }
+  .hero-meta .left { display: flex; gap: 32px; align-items: center; flex-wrap: wrap; }
   .hero-meta .date { font-family: var(--mono); font-size: 11px; color: var(--ink-mute); letter-spacing: 0.12em; }
   .hero-title {
     font-family: var(--serif); font-weight: 400;
-    font-size: clamp(64px, 13vw, 200px);
+    font-size: clamp(56px, 11vw, 200px);
     line-height: 0.88; letter-spacing: -0.03em;
     margin-top: 40px; margin-bottom: 28px;
   }
   .hero-title .it { font-style: italic; color: var(--accent); font-weight: 400; }
   .hero-title .amp { font-style: italic; opacity: 0.4; }
   .hero-sub-row { display: grid; grid-template-columns: 1fr 1.3fr 1fr; gap: 48px; align-items: end; padding-top: 36px; border-top: 1px solid var(--line); }
-  .hero-lede { font-family: var(--serif); font-size: clamp(22px, 2.2vw, 30px); line-height: 1.25; font-weight: 400; color: var(--ink); max-width: 42ch; }
+  .hero-lede { font-family: var(--serif); font-size: clamp(20px, 2vw, 30px); line-height: 1.25; font-weight: 400; color: var(--ink); max-width: 42ch; }
   .hero-lede .em { font-style: italic; color: var(--accent); }
   .hero-credits { font-family: var(--mono); font-size: 10.5px; color: var(--ink-dim); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.9; }
   .hero-credits strong { color: var(--ink); font-weight: 500; letter-spacing: 0.04em; text-transform: none; font-family: var(--serif); font-size: 15px; display: block; margin-top: 4px; }
@@ -135,9 +134,10 @@
   .reel-card:hover .play-ring { background: var(--accent); border-color: var(--accent); }
   .play-ring svg { width: 18px; height: 18px; fill: var(--ink); transition: fill .3s; }
   .reel-card:hover .play-ring svg { fill: var(--accent-ink); }
-  .reel-meta { position: absolute; left: 16px; right: 16px; bottom: 14px; display: flex; justify-content: space-between; align-items: end; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); }
+  .reel-meta { position: absolute; left: 16px; right: 16px; bottom: 14px; display: flex; justify-content: space-between; align-items: end; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); z-index: 2; }
   .reel-meta .title { color: var(--ink); font-family: var(--serif); font-size: 18px; text-transform: none; letter-spacing: -0.01em; }
-  .reel-top { position: absolute; top: 14px; left: 16px; right: 16px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mute); }
+  .reel-top { position: absolute; top: 14px; left: 16px; right: 16px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mute); z-index: 2; }
+  .reel-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.8) 100%); pointer-events: none; z-index: 1; }
 
   /* ===== Trust bar ===== */
   .trust { padding: 56px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); overflow: hidden; }
@@ -174,14 +174,12 @@
   .eco-cell:nth-child(1) { grid-column: 1; grid-row: 1; min-height: 320px; }
   /* Card 2 — tall top-right spans 2 rows */
   .eco-cell:nth-child(2) { grid-column: 2; grid-row: 1 / 3; min-height: 100%; }
-  /* Card 3 — bottom-left */
-  .eco-cell:nth-child(3) { grid-column: 1; grid-row: 2; display: grid; grid-template-columns: 1fr 1fr; min-height: 300px; }
-  /* Card 4 inline with card 3 */
-  .eco-cell:nth-child(4) { display: none; }
-
-  /* Split card 3 into two halves */
-  .eco-cell:nth-child(3) .eco-cell-bg { grid-column: 1; }
-  .eco-cell:nth-child(3) .eco-content { grid-column: 2; }
+  
+  /* Bottom row wrapper for responsiveness */
+  .eco-bottom-row {
+    grid-column: 1; grid-row: 2; 
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
 
   /* Blur backdrop */
   .eco-cell-bg {
@@ -214,7 +212,6 @@
   .eco-cell:nth-child(1) .eco-img { object-position: center 30%; }
   /* Portrait images — centered */
   .eco-cell:nth-child(2) .eco-img { object-position: center top; }
-  .eco-cell:nth-child(3) .eco-img { object-position: center center; }
 
   .eco-cell:hover .eco-img { transform: scale(1.03); opacity: 1; }
 
@@ -274,7 +271,6 @@
     transition: opacity 0.3s ease 0.05s, transform 0.3s ease 0.05s;
   }
   .eco-cell:hover p { opacity: 1; transform: translateY(0); }
-  .eco-cell .icon { display: none; }
 
   .eco-bottom-cell {
     position: relative; overflow: hidden; border-radius: 4px;
@@ -374,7 +370,7 @@
   .pkg li .n { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.12em; width: 28px; }
   .pkg li .d { color: var(--ink); }
   .pkg li .small { color: var(--ink-mute); font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; margin-left: auto; text-transform: uppercase; }
-  .pkg-foot { margin-top: auto; padding-top: 36px; display: flex; justify-content: space-between; align-items: end; }
+  .pkg-foot { margin-top: auto; padding-top: 36px; display: flex; justify-content: space-between; align-items: end; flex-wrap: wrap; gap: 16px; }
   .pkg-foot .pricing { font-family: var(--mono); font-size: 10px; color: var(--ink-mute); letter-spacing: 0.14em; text-transform: uppercase; }
   .pkg-foot .pricing strong { display: block; font-family: var(--serif); color: var(--ink); font-size: 22px; letter-spacing: -0.01em; text-transform: none; margin-top: 4px; }
   .pkg-cta {
@@ -406,10 +402,6 @@
   .founder-visual .watermark {
     position: absolute; top: 20px; left: 20px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--ink-mute); text-transform: uppercase;
   }
-  .founder-visual .centermark {
-    position: absolute; inset: 0; display: grid; place-items: center;
-    font-family: var(--serif); font-style: italic; font-size: 64px; color: var(--ink-mute); opacity: 0.5;
-  }
   .founder-copy h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(44px, 5vw, 72px); line-height: 1; letter-spacing: -0.02em; margin-bottom: 28px; }
   .founder-copy h2 .it { font-style: italic; color: var(--accent); }
   .founder-copy p { font-size: 16px; line-height: 1.7; color: var(--ink-dim); margin-bottom: 24px; max-width: 52ch; }
@@ -434,7 +426,7 @@
   .work.w3 .work-bg { background: url('images/enes%20yilmazer.png') center/cover no-repeat; }
   .work.w4 .work-bg { background: url('images/daniel.jpg') center/cover no-repeat; }
   .work-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(10,9,8,0.85)); }
-  .work-meta { position: absolute; left: 28px; right: 28px; bottom: 24px; display: flex; justify-content: space-between; align-items: end; gap: 16px; }
+  .work-meta { position: absolute; left: 28px; right: 28px; bottom: 24px; display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap;}
   .work-meta .title { font-family: var(--serif); font-size: 32px; line-height: 1; letter-spacing: -0.01em; margin-bottom: 6px; }
   .work-meta .title .it { font-style: italic; color: var(--accent); }
   .work-meta .sub { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); }
@@ -484,7 +476,7 @@
   .faq-a {
     max-height: 0; overflow: hidden; transition: max-height .5s ease;
   }
-  .faq-item.open .faq-a { max-height: 400px; }
+  .faq-item.open .faq-a { max-height: 600px; }
   .faq-a-inner {
     padding: 0 0 36px 84px; max-width: 64ch; color: var(--ink-dim); font-size: 15px; line-height: 1.7;
   }
@@ -513,7 +505,7 @@
   footer li a:hover { color: var(--accent); }
   footer .brand-col .serif { font-size: 44px; line-height: 1; margin-bottom: 20px; }
   footer .brand-col p { font-size: 14px; color: var(--ink-dim); max-width: 36ch; line-height: 1.6; }
-  footer .foot-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mute); }
+  footer .foot-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mute); flex-wrap: wrap; gap: 16px; }
 
   /* ===== Tweaks panel ===== */
   #tweaks {
@@ -545,25 +537,7 @@
     transform: translate(-50%, -50%); transition: width .25s, height .25s;
   }
 
-  /* responsive */
-  @media (max-width: 900px) {
-    nav.top ul { display: none; }
-    .hero-sub-row { grid-template-columns: 1fr; gap: 24px; }
-    .hero-cta { align-items: flex-start; }
-    .reel-strip { grid-template-columns: 1fr 1fr; }
-    .reel-card:nth-child(3) { display: none; }
-    .sect-head { grid-template-columns: 1fr; gap: 20px; }
-    .eco-grid { grid-template-columns: 1fr 1fr; }
-    .eco-cell:nth-child(2), .eco-cell:last-child { border-right: none; }
-    .eco-content { padding: 28px 20px 28px 0; }
-    .eco-bottom-cell { min-height: 220px; }
-    .metrics { grid-template-columns: 1fr 1fr; }
-    .pkg-grid, .founders, .works { grid-template-columns: 1fr; }
-    .work.tall { grid-row: auto; aspect-ratio: 5 / 4; }
-    footer .foot-grid { grid-template-columns: 1fr 1fr; }
-  }
-
-  /* Entrance reveal — only hide when JS has marked document ready */
+  /* Entrance reveal */
   .js-ready .reveal:not(.in) { opacity: 0; transform: translateY(20px); }
   .reveal { transition: opacity .8s ease, transform .8s ease; }
 
@@ -631,13 +605,71 @@
   .iti__selected-dial-code { color: var(--ink-dim); font-size: 13px; }
   .iti__country-list { background: #1a1917; border: 1px solid var(--line-strong); color: var(--ink); }
   .iti__country:hover { background: var(--bg-3); }
+
+  /* ===== RESPONSIVE FIXES ===== */
+  @media (max-width: 900px) {
+    nav.top ul { display: none; }
+    .hero-sub-row { grid-template-columns: 1fr; gap: 24px; }
+    .hero-cta { align-items: flex-start; }
+    .reel-strip { grid-template-columns: 1fr 1fr; }
+    .reel-card:nth-child(3) { display: none; }
+    .sect-head { grid-template-columns: 1fr; gap: 20px; }
+    .eco-grid { grid-template-columns: 1fr 1fr; }
+    .eco-cell:nth-child(2), .eco-cell:last-child { border-right: none; }
+    .eco-bottom-row { grid-column: 1 / -1; }
+    .eco-content { padding: 28px 20px 28px 0; }
+    .eco-bottom-cell { min-height: 220px; }
+    .metrics { grid-template-columns: 1fr 1fr; }
+    .pkg-grid, .founders, .works { grid-template-columns: 1fr; }
+    .work.tall { grid-row: auto; aspect-ratio: 5 / 4; }
+    footer .foot-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Ultra-Mobile Friendly (Phones) */
+  @media (max-width: 600px) {
+    nav.top .row { padding: 12px 0; }
+    .wordmark .tag { display: none; }
+    .hero { padding-top: 100px; padding-bottom: 40px; }
+    .hero-title { font-size: clamp(48px, 14vw, 80px); margin-top: 20px; }
+    .hero-lede { font-size: 18px; }
+    .reel-strip { grid-template-columns: 1fr; gap: 24px; margin-top: 40px; }
+    .reel-card:nth-child(2) { transform: translateY(0); }
+    .trust-track { gap: 40px; }
+    .trust-row { gap: 40px; }
+    .trust-item { font-size: 20px; }
+    section.sect { padding: 80px 0; }
+    .sect-head { margin-bottom: 40px; }
+    .sect-head h2 { font-size: clamp(40px, 10vw, 64px); }
+    .eco-grid { display: flex; flex-direction: column; gap: 16px; }
+    .eco-bottom-row { display: flex; flex-direction: column; gap: 16px; }
+    .eco-bottom-cell { min-height: 250px; }
+    .metrics { grid-template-columns: 1fr; }
+    .metric-cell { padding: 32px 24px; text-align: center; }
+    .metric-cell .desc { margin: 10px auto 0; }
+    .pkg-grid { gap: 16px; }
+    .pkg { padding: 30px 20px; min-height: auto; }
+    .pkg h3 { font-size: 36px; }
+    .founder-copy h2 { font-size: 40px; }
+    .founder-stats { grid-template-columns: 1fr; }
+    .work-meta .title { font-size: 26px; }
+    .work-meta .stats b { font-size: 22px; }
+    .faq-q { font-size: 18px; grid-template-columns: 40px 1fr 40px; gap: 16px; padding: 24px 0; }
+    .faq-a-inner { padding: 0 0 24px 0; font-size: 14px; }
+    .finale h2 { font-size: clamp(48px, 12vw, 80px); }
+    .finale .cta-row { flex-direction: column; width: 100%; }
+    .finale .cta-primary { width: 100%; justify-content: center; }
+    footer .foot-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+    footer .brand-col p { margin: 0 auto; }
+    .btn-book { padding: 10px 16px; }
+    .bk-modal { padding: 32px 24px; width: 95%; }
+    .bk-title { font-size: 28px; }
+  }
 </style>
 </head>
 <body>
 
 <div class="cursor-dot" id="cursor"></div>
 
-<!-- Nav -->
 <nav class="top">
   <div class="wrap row">
     <a href="#top" class="wordmark">
@@ -658,7 +690,6 @@
   </div>
 </nav>
 
-<!-- Hero -->
 <header class="hero" id="top" data-screen-label="Hero">
   <div class="hero-grain"></div>
   <div class="hero-glow"></div>
@@ -696,24 +727,23 @@
       </div>
     </div>
 
-    <!-- Reel strip -->
     <div class="reel-strip">
       <div class="reel-card reveal">
-        <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <video autoplay muted loop playsinline poster="images/robert_poster.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
           <source src="images/Robert%20Herjavec_Footage001.mp4" type="video/mp4">
         </video>
         <div class="reel-top"><span>REEL · 001</span><span>0:42</span></div>
         <div class="reel-meta"><span class="title">Robert H.</span><span>Shark Tank</span></div>
       </div>
       <div class="reel-card reveal">
-        <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <video autoplay muted loop playsinline poster="images/enes_poster.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
           <source src="images/Enes%20Yilmazer.mp4" type="video/mp4">
         </video>
         <div class="reel-top"><span>REEL · 002</span><span>0:28</span></div>
         <div class="reel-meta"><span class="title">Enes Y.</span><span>Real Estate</span></div>
       </div>
       <div class="reel-card reveal">
-        <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <video autoplay muted loop playsinline poster="images/ryan_poster.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
           <source src="images/ryan_trahan.mp4" type="video/mp4">
         </video>
         <div class="reel-top"><span>LONG-FORM · 003</span><span>12:04</span></div>
@@ -723,7 +753,6 @@
   </div>
 </header>
 
-<!-- Trust bar -->
 <section class="trust">
   <div class="wrap trust-label">
     <span class="kicker"><span class="dot"></span>Trusted by industry titans &amp; global brands</span>
@@ -733,18 +762,18 @@
     <div style="position:absolute;top:0;right:0;width:120px;height:100%;background:linear-gradient(to left,var(--bg),transparent);z-index:2;pointer-events:none;"></div>
     <div class="trust-track">
       <div class="trust-row">
-        <img src="images/robert%20logo.png" alt="Robert Herjavec" style="height:48px;width:auto;max-width:160px;object-fit:contain;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
-        <img src="images/Ryan.jpg" alt="Ryan Trahan" style="height:48px;width:48px;object-fit:cover;border-radius:50%;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
-        <img src="images/enes%20yilmazer.png" alt="Enes Yilmazer" style="height:48px;width:auto;max-width:160px;object-fit:contain;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
-        <img src="images/daniel.jpg" alt="Daniel" style="height:48px;width:48px;object-fit:cover;border-radius:50%;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <img src="images/robert%20logo.png" loading="lazy" decoding="async" alt="Robert Herjavec" style="height:48px;width:auto;max-width:160px;object-fit:contain;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <img src="images/Ryan.jpg" loading="lazy" decoding="async" alt="Ryan Trahan" style="height:48px;width:48px;object-fit:cover;border-radius:50%;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <img src="images/enes%20yilmazer.png" loading="lazy" decoding="async" alt="Enes Yilmazer" style="height:48px;width:auto;max-width:160px;object-fit:contain;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <img src="images/daniel.jpg" loading="lazy" decoding="async" alt="Daniel" style="height:48px;width:48px;object-fit:cover;border-radius:50%;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
         <span class="trust-item">Shark Tank Ventures</span>
         <span class="trust-item">Luxury Presence</span>
       </div>
       <div class="trust-row" aria-hidden="true">
-        <img src="images/robert%20logo.png" alt="Robert Herjavec" style="height:48px;width:auto;max-width:160px;object-fit:contain;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
-        <img src="images/Ryan.jpg" alt="Ryan Trahan" style="height:48px;width:48px;object-fit:cover;border-radius:50%;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
-        <img src="images/enes%20yilmazer.png" alt="Enes Yilmazer" style="height:48px;width:auto;max-width:160px;object-fit:contain;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
-        <img src="images/daniel.jpg" alt="Daniel" style="height:48px;width:48px;object-fit:cover;border-radius:50%;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <img src="images/robert%20logo.png" loading="lazy" decoding="async" alt="Robert Herjavec" style="height:48px;width:auto;max-width:160px;object-fit:contain;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <img src="images/Ryan.jpg" loading="lazy" decoding="async" alt="Ryan Trahan" style="height:48px;width:48px;object-fit:cover;border-radius:50%;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <img src="images/enes%20yilmazer.png" loading="lazy" decoding="async" alt="Enes Yilmazer" style="height:48px;width:auto;max-width:160px;object-fit:contain;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <img src="images/daniel.jpg" loading="lazy" decoding="async" alt="Daniel" style="height:48px;width:48px;object-fit:cover;border-radius:50%;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
         <span class="trust-item">Shark Tank Ventures</span>
         <span class="trust-item">Luxury Presence</span>
       </div>
@@ -752,7 +781,6 @@
   </div>
 </section>
 
-<!-- Ecosystem -->
 <section class="sect" id="ecosystem" data-screen-label="Ecosystem">
   <div class="wrap">
     <div class="sect-head">
@@ -761,13 +789,12 @@
       <p class="intro">Four disciplines, one team. We don't outsource or freelance — every pillar of your brand is engineered in-house by specialists who've spent a decade doing this.</p>
     </div>
 
-    <div style="display:grid; grid-template-columns:1.5fr 1fr; grid-template-rows:auto auto; gap:16px; border-top:1px solid var(--line); padding-top:0;">
+    <div class="eco-grid">
 
-      <!-- Card 1 — Wide, Personal Branding -->
-      <div class="eco-cell" style="grid-column:1; grid-row:1; min-height:300px;">
+      <div class="eco-cell">
         <div class="eco-cell-bg">
-          <img src="images/image06.png" alt="" class="eco-img-blur" aria-hidden="true">
-          <img src="images/image06.png" alt="Personal Branding" class="eco-img" style="object-position:center 30%;">
+          <img src="images/image06.png" loading="lazy" decoding="async" alt="" class="eco-img-blur" aria-hidden="true">
+          <img src="images/image06.png" loading="lazy" decoding="async" alt="Personal Branding" class="eco-img">
         </div>
         <div class="eco-content">
           <div class="eco-content-inner">
@@ -778,11 +805,10 @@
         </div>
       </div>
 
-      <!-- Card 2 — Tall right column, Viral Engineering -->
-      <div class="eco-cell" style="grid-column:2; grid-row:1/3; min-height:620px;">
+      <div class="eco-cell">
         <div class="eco-cell-bg">
-          <img src="images/image05.png" alt="" class="eco-img-blur" aria-hidden="true">
-          <img src="images/image05.png" alt="Viral Engineering" class="eco-img" style="object-position:center top;">
+          <img src="images/image05.png" loading="lazy" decoding="async" alt="" class="eco-img-blur" aria-hidden="true">
+          <img src="images/image05.png" loading="lazy" decoding="async" alt="Viral Engineering" class="eco-img">
         </div>
         <div class="eco-content">
           <div class="eco-content-inner">
@@ -793,13 +819,11 @@
         </div>
       </div>
 
-      <!-- Bottom row — two cards side by side -->
-      <div style="grid-column:1; grid-row:2; display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+      <div class="eco-bottom-row">
 
-        <!-- Card 3 — Video Editing -->
         <div class="eco-bottom-cell">
-          <img src="images/image08.png" alt="" class="eco-img-blur" aria-hidden="true">
-          <img src="images/image08.png" alt="Video Editing" class="eco-img">
+          <img src="images/image08.png" loading="lazy" decoding="async" alt="" class="eco-img-blur" aria-hidden="true">
+          <img src="images/image08.png" loading="lazy" decoding="async" alt="Video Editing" class="eco-img">
           <div class="eco-bottom-content">
             <div class="eco-bottom-content-inner">
               <div class="num-col"><span class="num">→ 03</span><span class="num">PRODUCTION</span></div>
@@ -809,10 +833,9 @@
           </div>
         </div>
 
-        <!-- Card 4 — Growth -->
         <div class="eco-bottom-cell">
-          <img src="images/image07.png" alt="" class="eco-img-blur" aria-hidden="true">
-          <img src="images/image07.png" alt="Audience Growth" class="eco-img">
+          <img src="images/image07.png" loading="lazy" decoding="async" alt="" class="eco-img-blur" aria-hidden="true">
+          <img src="images/image07.png" loading="lazy" decoding="async" alt="Audience Growth" class="eco-img">
           <div class="eco-bottom-content">
             <div class="eco-bottom-content-inner">
               <div class="num-col"><span class="num">→ 04</span><span class="num">DISTRIBUTION</span></div>
@@ -828,7 +851,6 @@
   </div>
 </section>
 
-<!-- Metrics -->
 <section style="border-top: 1px solid var(--line);">
   <div class="metrics">
     <div class="metric-cell">
@@ -854,7 +876,6 @@
   </div>
 </section>
 
-<!-- Packages -->
 <section class="sect" id="packages" data-screen-label="Partnership">
   <div class="wrap">
     <div class="sect-head">
@@ -907,7 +928,6 @@
   </div>
 </section>
 
-<!-- Founders -->
 <section class="sect" id="about" data-screen-label="Founders">
   <div class="wrap">
     <div class="sect-head">
@@ -940,7 +960,6 @@
   </div>
 </section>
 
-<!-- Selected Works -->
 <section class="sect" id="work" data-screen-label="Work">
   <div class="wrap">
     <div class="sect-head">
@@ -960,7 +979,7 @@
         <div class="work-play"><svg viewBox="0 0 16 16"><path d="M4 3L13 8L4 13V3Z"/></svg></div>
         <div class="work-meta">
           <div>
-            <div class="work-chip" style="margin-bottom:14px">INVESTOR · AUTHORITY BRAND</div>
+            <div class="work-chip" style="margin-bottom:14px; display:inline-block;">INVESTOR · AUTHORITY BRAND</div>
             <div class="title">Robert <span class="it">Herjavec.</span></div>
             <div class="sub">Optimizing content for a billionaire's personal brand</div>
           </div>
@@ -1016,7 +1035,6 @@
   </div>
 </section>
 
-<!-- FAQ -->
 <section class="sect" id="faq" data-screen-label="FAQ">
   <div class="wrap">
     <div class="sect-head">
@@ -1054,7 +1072,6 @@
   </div>
 </section>
 
-<!-- Finale -->
 <section class="finale" id="contact" data-screen-label="Contact">
   <div class="finale-glow"></div>
   <div class="wrap">
@@ -1070,7 +1087,6 @@
   </div>
 </section>
 
-<!-- Footer -->
 <footer>
   <div class="wrap">
     <div class="foot-grid">
@@ -1112,7 +1128,6 @@
   </div>
 </footer>
 
-<!-- Tweaks Panel -->
 <div id="tweaks">
   <h4>Tweaks <span class="chip">● LIVE</span></h4>
   <div class="group">
@@ -1255,7 +1270,6 @@
   });
   try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch {}
 </script>
-<!-- ===== Booking Modal ===== -->
 <div id="booking-modal" class="bk-overlay" aria-modal="true" role="dialog" aria-labelledby="bk-heading">
   <div class="bk-modal">
     <button class="bk-close" onclick="closeBookingModal()" aria-label="Close">&times;</button>
