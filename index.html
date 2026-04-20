@@ -1,594 +1,1169 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>QuidEdge — Engineered for Viral Impact</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ===== Tokens (tweakable) ===== */
+  :root {
+    --bg: #0a0908;
+    --bg-2: #121110;
+    --bg-3: #1a1917;
+    --ink: #f4efe6;
+    --ink-dim: #a8a199;
+    --ink-mute: #6b655e;
+    --line: rgba(244, 239, 230, 0.12);
+    --line-strong: rgba(244, 239, 230, 0.28);
+    --accent: oklch(0.75 0.13 75);       /* warm gold */
+    --accent-ink: #0a0908;
+    --serif: "Instrument Serif", "Times New Roman", serif;
+    --sans: "Geist", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --mono: "Geist Mono", ui-monospace, Menlo, monospace;
+    --density: 1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  body { overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  img, video, svg { display: block; max-width: 100%; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  ::selection { background: var(--accent); color: var(--accent-ink); }
 
-    <title>QuidEdge | Elite Global Content Team & Video Editing Agency</title>
-    <meta name="title" content="QuidEdge | Elite Global Content Team & Video Editing Agency">
-    <meta name="description" content="QuidEdge engineers viral impact for elite entrepreneurs. We build digital empires through world-class video production, retention editing, and strategic storytelling.">
-    <meta name="keywords" content="video editing agency, content strategy, personal branding, viral video editor, YouTube shorts editor, Robert Herjavec editor, QuidEdge, retention editing">
-    <meta name="author" content="QuidEdge Team">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://quidedge.github.io/">
+  .wrap { max-width: 1440px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 56px); }
+  .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); }
+  .kicker .dot { display: inline-block; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; transform: translateY(-2px); margin-right: 10px; }
+  .num { font-family: var(--mono); font-size: 11px; color: var(--ink-mute); letter-spacing: 0.1em; }
+  .serif { font-family: var(--serif); font-weight: 400; letter-spacing: -0.01em; line-height: 0.95; }
+  .serif .it { font-style: italic; font-family: var(--serif); }
+  .hairline { height: 1px; background: var(--line); width: 100%; }
 
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://quidedge.github.io/">
-    <meta property="og:title" content="QuidEdge | Engineered for Viral Impact">
-    <meta property="og:description" content="Helping elite entrepreneurs build digital empires through world-class video production and strategic storytelling.">
-    <meta property="og:image" content="https://quidedge.github.io/images/image05.png">
+  /* ===== Nav ===== */
+  nav.top {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    background: rgba(10, 9, 8, 0.55);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.top .row { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+  .wordmark { display: flex; align-items: baseline; gap: 8px; }
+  .wordmark .mark { font-family: var(--serif); font-size: 24px; letter-spacing: -0.02em; }
+  .wordmark .mark .e { font-style: italic; }
+  .wordmark .tag { font-family: var(--mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--ink-mute); border-left: 1px solid var(--line-strong); padding-left: 8px; }
+  nav.top ul { display: flex; gap: 28px; list-style: none; }
+  nav.top ul a { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); transition: color .2s; position: relative; }
+  nav.top ul a:hover { color: var(--ink); }
+  nav.top ul a::after { content:""; position:absolute; left:0; right:100%; bottom:-6px; height:1px; background: var(--accent); transition: right .3s ease; }
+  nav.top ul a:hover::after { right: 0; }
+  .btn-book { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 18px; border: 1px solid var(--line-strong); border-radius: 999px; transition: all .25s; display: inline-flex; align-items: center; gap: 8px; }
+  .btn-book:hover { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .btn-book .arrow { width: 14px; height: 14px; }
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  /* ===== Hero ===== */
+  .hero { padding-top: 120px; padding-bottom: 80px; position: relative; overflow: hidden; }
+  .hero-grain {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.35;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.9 0 0 0 0 0.85 0 0 0 0 0.75 0 0 0 0.35 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    mix-blend-mode: overlay;
+  }
+  .hero-glow {
+    position: absolute; width: 900px; height: 900px; right: -300px; top: -200px;
+    background: radial-gradient(circle, color-mix(in oklch, var(--accent) 18%, transparent), transparent 60%);
+    filter: blur(40px); pointer-events: none;
+  }
+  .hero-meta { display: flex; justify-content: space-between; align-items: center; padding-bottom: 28px; }
+  .hero-meta .left { display: flex; gap: 32px; align-items: center; }
+  .hero-meta .date { font-family: var(--mono); font-size: 11px; color: var(--ink-mute); letter-spacing: 0.12em; }
+  .hero-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(64px, 13vw, 200px);
+    line-height: 0.88; letter-spacing: -0.03em;
+    margin-top: 40px; margin-bottom: 28px;
+  }
+  .hero-title .it { font-style: italic; color: var(--accent); font-weight: 400; }
+  .hero-title .amp { font-style: italic; opacity: 0.4; }
+  .hero-sub-row { display: grid; grid-template-columns: 1fr 1.3fr 1fr; gap: 48px; align-items: end; padding-top: 36px; border-top: 1px solid var(--line); }
+  .hero-lede { font-family: var(--serif); font-size: clamp(22px, 2.2vw, 30px); line-height: 1.25; font-weight: 400; color: var(--ink); max-width: 42ch; }
+  .hero-lede .em { font-style: italic; color: var(--accent); }
+  .hero-credits { font-family: var(--mono); font-size: 10.5px; color: var(--ink-dim); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.9; }
+  .hero-credits strong { color: var(--ink); font-weight: 500; letter-spacing: 0.04em; text-transform: none; font-family: var(--serif); font-size: 15px; display: block; margin-top: 4px; }
+  .hero-cta { display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
+  .cta-primary {
+    background: var(--accent); color: var(--accent-ink); padding: 18px 28px; border-radius: 999px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 10px; transition: transform .25s, box-shadow .25s;
+  }
+  .cta-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -20px color-mix(in oklch, var(--accent) 60%, transparent); }
+  .cta-ghost { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); display: inline-flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .cta-ghost:hover { color: var(--ink); border-color: var(--accent); }
 
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="style.css">
+  /* Featured reel strip */
+  .reel-strip { margin-top: 80px; display: grid; grid-template-columns: 1.1fr 1fr 1.4fr; gap: 18px; }
+  .reel-card {
+    position: relative; aspect-ratio: 3 / 4; border-radius: 2px; overflow: hidden;
+    background: var(--bg-3); border: 1px solid var(--line);
+  }
+  .reel-card:nth-child(2) { aspect-ratio: 3 / 4; transform: translateY(40px); }
+  .reel-card:nth-child(3) { aspect-ratio: 16 / 10; align-self: end; }
+  .reel-placeholder {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    background:
+      repeating-linear-gradient(-45deg, transparent 0 14px, rgba(244,239,230,0.035) 14px 15px),
+      linear-gradient(180deg, #1f1c18, #0e0d0c);
+  }
+  .reel-placeholder .play-ring {
+    width: 72px; height: 72px; border: 1px solid var(--line-strong); border-radius: 50%;
+    display: grid; place-items: center; backdrop-filter: blur(8px);
+    background: rgba(10,9,8,0.35);
+    transition: background .3s, border-color .3s;
+  }
+  .reel-card:hover .play-ring { background: var(--accent); border-color: var(--accent); }
+  .play-ring svg { width: 18px; height: 18px; fill: var(--ink); transition: fill .3s; }
+  .reel-card:hover .play-ring svg { fill: var(--accent-ink); }
+  .reel-meta { position: absolute; left: 16px; right: 16px; bottom: 14px; display: flex; justify-content: space-between; align-items: end; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); }
+  .reel-meta .title { color: var(--ink); font-family: var(--serif); font-size: 18px; text-transform: none; letter-spacing: -0.01em; }
+  .reel-top { position: absolute; top: 14px; left: 16px; right: 16px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mute); }
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/css/intlTelInput.css">
+  /* ===== Trust bar ===== */
+  .trust { padding: 56px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); overflow: hidden; }
+  .trust-label { text-align: center; margin-bottom: 28px; }
+  .trust-track { display: flex; gap: 80px; animation: scroll 40s linear infinite; white-space: nowrap; align-items: center; }
+  .trust-row { display: flex; gap: 80px; align-items: center; flex-shrink: 0; }
+  .trust-item { font-family: var(--serif); font-size: 28px; color: var(--ink-dim); font-style: italic; letter-spacing: -0.01em; display: inline-flex; align-items: center; gap: 18px; }
+  .trust-item::before { content: "★"; font-size: 10px; color: var(--accent); font-style: normal; }
+  @keyframes scroll { to { transform: translateX(-50%); } }
 
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  /* ===== Section header pattern ===== */
+  section.sect { padding: 120px 0; border-top: 1px solid var(--line); position: relative; }
+  .sect-head { display: grid; grid-template-columns: 120px 1fr 1fr; gap: 48px; margin-bottom: 64px; align-items: start; }
+  .sect-head .idx { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.14em; }
+  .sect-head h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(48px, 7vw, 96px); line-height: 0.95; letter-spacing: -0.02em; }
+  .sect-head h2 .it { font-style: italic; color: var(--ink-dim); }
+  .sect-head .intro { font-family: var(--sans); font-size: 15px; line-height: 1.6; color: var(--ink-dim); max-width: 42ch; padding-top: 14px; }
 
-    <style>
-        /* Trust Banner Styles */
-        .trust-banner { padding: 40px 0; background: linear-gradient(to bottom, var(--bg-color), #0a0a0a); border-bottom: 1px solid rgba(255, 255, 255, 0.05); overflow: hidden; text-align: center; }
-        .trust-banner p { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: #666; margin-bottom: 30px; font-weight: 600; }
-        .logo-ticker { width: 100%; overflow: hidden; position: relative; }
-        .logo-ticker::before, .logo-ticker::after { content: ""; position: absolute; top: 0; width: 150px; height: 100%; z-index: 2; }
-        .logo-ticker::before { left: 0; background: linear-gradient(to right, #0a0a0a, transparent); }
-        .logo-ticker::after { right: 0; background: linear-gradient(to left, #0a0a0a, transparent); }
-        .logo-track { display: flex; align-items: center; width: calc(250px * 10); animation: scroll-ticker 30s linear infinite; }
-        .logo-track img { width: 180px; height: auto; max-height: 60px; object-fit: contain; margin: 0 40px; filter: grayscale(100%) opacity(0.6); transition: all 0.3s ease; }
-        .logo-track img:hover { filter: grayscale(0%) opacity(1); transform: scale(1.05); }
-        @keyframes scroll-ticker { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-250px * 5)); } }
+  /* ===== Ecosystem Bento ===== */
+  .eco-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 16px;
+    border-top: none;
+  }
+  .eco-cell {
+    position: relative; overflow: hidden; border-radius: 4px;
+    border: 1px solid var(--line);
+    min-height: 360px; display: flex; flex-direction: column;
+    cursor: pointer; background: var(--bg-3);
+  }
+  /* Card 1 — wide top-left */
+  .eco-cell:nth-child(1) { grid-column: 1; grid-row: 1; min-height: 320px; }
+  /* Card 2 — tall top-right spans 2 rows */
+  .eco-cell:nth-child(2) { grid-column: 2; grid-row: 1 / 3; min-height: 100%; }
+  /* Card 3 — bottom-left */
+  .eco-cell:nth-child(3) { grid-column: 1; grid-row: 2; display: grid; grid-template-columns: 1fr 1fr; min-height: 300px; }
+  /* Card 4 inline with card 3 */
+  .eco-cell:nth-child(4) { display: none; }
 
-        /* Hover Effects */
-        .bento-card { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .bento-card:hover { transform: translateY(-8px) scale(1.01); border-color: rgba(212, 175, 55, 0.4); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.15); }
+  /* Split card 3 into two halves */
+  .eco-cell:nth-child(3) .eco-cell-bg { grid-column: 1; }
+  .eco-cell:nth-child(3) .eco-content { grid-column: 2; }
 
-        /* Primary Glowing Button */
-        .btn-glow { display: inline-block; background: var(--accent-blue); color: #fff; padding: 18px 45px; font-size: 1.1rem; font-weight: 700; border-radius: 50px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 0 20px rgba(0, 122, 255, 0.4); text-transform: uppercase; letter-spacing: 1px; border: none; cursor: pointer; text-align: center; }
-        .btn-glow:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 122, 255, 0.6), 0 0 40px rgba(0, 122, 255, 0.3); background: #006ce0; }
+  /* Blur backdrop */
+  .eco-cell-bg {
+    position: absolute; inset: 0; overflow: hidden; z-index: 0;
+  }
+  .eco-img-blur {
+    position: absolute; inset: -30px;
+    width: calc(100% + 60px); height: calc(100% + 60px);
+    object-fit: cover;
+    filter: blur(24px) saturate(0.5) brightness(0.5);
+    opacity: 0.6;
+    transition: opacity 0.5s ease, filter 0.5s ease;
+  }
+  .eco-cell:hover .eco-img-blur {
+    opacity: 0.75;
+    filter: blur(18px) saturate(0.8) brightness(0.55);
+  }
 
-        /* Packages Section */
-        .packages-section { padding: 120px 0; background: #050505; }
-        .packages-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; margin-top: 50px; }
-        .package-card { background: #0a0a0a; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 50px 40px; position: relative; transition: 0.3s; }
-        .package-card:hover { border-color: var(--accent-blue); transform: translateY(-5px); }
-        .package-card.premium { background: linear-gradient(180deg, #0f0f0f 0%, #050505 100%); border: 1px solid rgba(212, 175, 55, 0.3); }
-        .package-tag { position: absolute; top: -15px; right: 30px; background: var(--accent-gold); color: #000; font-size: 0.8rem; font-weight: 800; padding: 5px 15px; border-radius: 20px; text-transform: uppercase; }
-        .package-card h3 { font-size: 2rem; margin: 0 0 10px 0; color: #fff; }
-        .package-card p { color: #a1a1aa; margin-bottom: 30px; font-size: 1rem; line-height: 1.5; }
-        .package-features { list-style: none; padding: 0; margin: 0 0 40px 0; }
-        .package-features li { color: #ccc; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .package-features li::before { content: "✓"; color: var(--accent-blue); font-weight: bold; }
-        .premium .package-features li::before { color: var(--accent-gold); }
-        .risk-reversal { margin-top: 25px; color: #888; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center; }
+  /* Main visible image — no crop */
+  .eco-img {
+    position: absolute;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    object-position: center center;
+    transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), opacity 0.5s ease;
+    opacity: 0.9;
+    z-index: 1;
+  }
+  /* Landscape image (card 1) — fill width, position top */
+  .eco-cell:nth-child(1) .eco-img { object-position: center 30%; }
+  /* Portrait images — centered */
+  .eco-cell:nth-child(2) .eco-img { object-position: center top; }
+  .eco-cell:nth-child(3) .eco-img { object-position: center center; }
 
-        /* Form Styling */
-        .form-group { margin-bottom: 18px; }
-        .form-label { display: block; margin-bottom: 8px; color: #ccc; font-size: 0.9rem; font-weight: 500; }
-        .form-control { width: 100%; padding: 12px 15px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; font-family: 'Inter', sans-serif; font-size: 0.95rem; height: 48px; transition: border-color 0.3s; outline: none; }
-        .form-control:focus { border-color: var(--accent-blue); }
-        .checkbox-group { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 15px; }
-        .checkbox-group input[type="checkbox"] { margin-top: 4px; width: 16px; height: 16px; accent-color: var(--accent-blue); flex-shrink: 0; cursor: pointer; }
-        .checkbox-group label { font-size: 0.85rem; color: #888; line-height: 1.5; cursor: pointer; }
+  .eco-cell:hover .eco-img { transform: scale(1.03); opacity: 1; }
 
-        /* intl-tel-input Overrides */
-        .iti { width: 100%; display: block; height: 48px; }
-        .iti__flag-container { z-index: 10; }
-        .iti__country-list { background-color: #1a1a1a !important; color: white !important; border: 1px solid #333 !important; border-radius: 8px; font-family: 'Inter', sans-serif; z-index: 10000; }
-        .iti__country:hover, .iti__country.iti__highlight { background-color: #333 !important; }
-        .iti__search-input { background: #111 !important; color: white !important; border: 1px solid #444 !important; border-radius: 5px; padding: 10px !important; }
+  /* Dark gradient so text readable */
+  .eco-cell::before {
+    content: ''; position: absolute; z-index: 2; pointer-events: none;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10,9,8,0.1) 0%, rgba(10,9,8,0.15) 50%, rgba(10,9,8,0.88) 100%);
+    transition: background 0.4s ease;
+  }
+  .eco-cell:hover::before {
+    background: linear-gradient(180deg, rgba(10,9,8,0.05) 0%, rgba(10,9,8,0.1) 40%, rgba(10,9,8,0.82) 100%);
+  }
 
-        /* Responsive */
-        .reveal-element { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; will-change: opacity, transform; }
-        .reveal-element.visible { opacity: 1; transform: translateY(0); }
+  /* Gold accent line on hover */
+  .eco-cell::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 100%;
+    height: 2px; background: var(--accent); z-index: 5;
+    transition: right 0.55s cubic-bezier(0.16,1,0.3,1);
+  }
+  .eco-cell:hover::after { right: 0; }
 
-        @media (max-width: 992px) { .headline { font-size: 3.5rem; } .packages-grid { grid-template-columns: 1fr; } .about-grid, .bento-grid { display: flex; flex-direction: column; gap: 20px; } .bento-card img { width: 100%; height: auto; position: relative; } }
-        @media (max-width: 768px) { .headline { font-size: 2.8rem; line-height: 1.2; } .sub-headline { font-size: 1.1rem; padding: 0 15px; } .hero { padding: 120px 20px 60px; } .nav-links { display: none; } .hamburger { display: block; } .project-card { flex-direction: column; text-align: left; } .project-card img, .project-card video { width: 100%; border-radius: 16px; margin-top: 20px; } .trust-banner p { font-size: 0.7rem; } .logo-track img { width: 130px; margin: 0 20px; } .package-card { padding: 40px 25px; } }
-        @media (max-width: 480px) { .headline { font-size: 2.2rem; } .hero-buttons { display: flex; flex-direction: column; gap: 15px; width: 100%; } .btn-primary, .btn-link, .btn-glow { width: 100%; box-sizing: border-box; } .section-title { font-size: 2rem; } .package-card h3 { font-size: 1.5rem; } .stats-row { flex-direction: column; gap: 15px; } }
-    </style>
+  /* Content sits at bottom */
+  .eco-content {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
+    padding: 28px 28px 28px 28px;
+    transform: translateY(4px);
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  .eco-cell:hover .eco-content { transform: translateY(0); }
 
-    <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1666135001086024');
-    fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1666135001086024&ev=PageView&noscript=1"
-    /></noscript>
-    </head>
+  .eco-cell .num-col {
+    display: flex; justify-content: space-between; margin-bottom: 10px;
+  }
+  .eco-cell h3 {
+    font-family: var(--serif); font-weight: 400; font-size: 30px;
+    line-height: 1; letter-spacing: -0.01em; margin-bottom: 8px;
+  }
+  .eco-cell:nth-child(2) h3 { font-size: 26px; }
+  .eco-cell h3 .it { font-style: italic; color: var(--accent); }
+  .eco-cell p {
+    font-size: 13px; color: var(--ink-dim); line-height: 1.6;
+    max-width: 38ch; margin: 0;
+    opacity: 0; transform: translateY(6px);
+    transition: opacity 0.35s ease 0.05s, transform 0.35s ease 0.05s;
+  }
+  .eco-cell:hover p { opacity: 1; transform: translateY(0); }
 
-<body oncontextmenu="return false;">
+  .eco-cell .icon {
+    display: none;
+  }
 
-    <nav class="navbar">
-        <div class="nav-content">
-            <a href="#" class="logo">QuidEdge</a>
-            <div class="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#work">Work</a></li>
-                <li><a href="#packages">Solutions</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#faq">FAQ</a></li>
-                <li><a href="#contact" class="btn-cta">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
+  /* Bottom row — cards 3 & 4 side by side */
+  .eco-bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .eco-bottom-cell {
+    position: relative; overflow: hidden; border-radius: 4px;
+    border: 1px solid var(--line);
+    min-height: 300px;
+    background: var(--bg-3); cursor: pointer;
+  }
+  .eco-bottom-cell::before {
+    content: ''; position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(180deg, rgba(10,9,8,0.1) 0%, rgba(10,9,8,0.15) 50%, rgba(10,9,8,0.88) 100%);
+    transition: background 0.4s ease;
+  }
+  .eco-bottom-cell:hover::before {
+    background: linear-gradient(180deg, rgba(10,9,8,0.05) 0%, rgba(10,9,8,0.1) 40%, rgba(10,9,8,0.82) 100%);
+  }
+  .eco-bottom-cell::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 100%;
+    height: 2px; background: var(--accent); z-index: 5;
+    transition: right 0.55s cubic-bezier(0.16,1,0.3,1);
+  }
+  .eco-bottom-cell:hover::after { right: 0; }
+  .eco-bottom-cell .eco-img-blur {
+    position: absolute; inset: -30px;
+    width: calc(100% + 60px); height: calc(100% + 60px);
+    object-fit: cover;
+    filter: blur(24px) saturate(0.5) brightness(0.5);
+    opacity: 0.6; z-index: 0;
+    transition: opacity 0.5s ease;
+  }
+  .eco-bottom-cell:hover .eco-img-blur { opacity: 0.75; }
+  .eco-bottom-cell .eco-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: contain; object-position: center center;
+    opacity: 0.9; z-index: 1;
+    transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), opacity 0.5s ease;
+  }
+  .eco-bottom-cell:hover .eco-img { transform: scale(1.03); opacity: 1; }
+  .eco-bottom-content {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
+    padding: 24px 24px;
+    transform: translateY(4px);
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  .eco-bottom-cell:hover .eco-bottom-content { transform: translateY(0); }
+  .eco-bottom-content .num-col { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .eco-bottom-content h3 {
+    font-family: var(--serif); font-weight: 400; font-size: 26px;
+    line-height: 1; letter-spacing: -0.01em; margin-bottom: 6px;
+  }
+  .eco-bottom-content h3 .it { font-style: italic; color: var(--accent); }
+  .eco-bottom-content p {
+    font-size: 13px; color: var(--ink-dim); line-height: 1.5; margin: 0;
+    max-width: 28ch;
+    opacity: 0; transform: translateY(6px);
+    transition: opacity 0.35s ease 0.05s, transform 0.35s ease 0.05s;
+  }
+  .eco-bottom-cell:hover p { opacity: 1; transform: translateY(0); }
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <p class="eyebrow">Content Strategy & Personal Branding</p>
-                <h1 class="headline">Engineered for <br><span class="gradient-text">Viral Impact.</span></h1>
-                <p class="sub-headline">Helping elite entrepreneurs build digital empires through world-class video production and strategic storytelling.</p>
-                <div class="hero-buttons">
-                    <a href="#contact" class="btn-primary" aria-label="Work with QuidEdge">Work with Us</a>
-                    <a href="#work" class="btn-link" aria-label="View our case studies">View Case Studies ></a>
-                </div>
-            </div>
-        </section>
+  /* ===== Stats/metric band ===== */
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .metric-cell { background: var(--bg); padding: 56px 32px; }
+  .metric-cell .big { font-family: var(--serif); font-size: clamp(56px, 7vw, 88px); line-height: 1; letter-spacing: -0.03em; }
+  .metric-cell .big .it { font-style: italic; color: var(--accent); }
+  .metric-cell .lbl { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-dim); margin-top: 14px; }
+  .metric-cell .desc { font-size: 13px; color: var(--ink-mute); margin-top: 6px; max-width: 24ch; line-height: 1.5; }
 
-        <section class="trust-banner">
-            <p>Trusted by Industry Titans & Global Brands</p>
-            <div class="logo-ticker">
-                <div class="logo-track">
-                    <img src="images/robert%20logo.png" alt="Robert Herjavec - Shark Tank Investor & Client">
-                    <img src="images/Ryan.jpg" alt="Ryan Trahan - Elite YouTube Creator" style="border-radius: 10px;">
-                    <img src="images/enes%20yilmazer.png" alt="Enes Yilmazer - Luxury Real Estate Creator">
-                    <img src="images/daniel.jpg" alt="Daniel - Personal Brand Client" style="border-radius: 10px;">
-                    <img src="images/robert%20logo.png" alt="Robert Herjavec - Shark Tank Investor & Client">
-                    <img src="images/Ryan.jpg" alt="Ryan Trahan - Elite YouTube Creator" style="border-radius: 10px;">
-                    <img src="images/enes%20yilmazer.png" alt="Enes Yilmazer - Luxury Real Estate Creator">
-                    <img src="images/daniel.jpg" alt="Daniel - Personal Brand Client" style="border-radius: 10px;">
-                </div>
-            </div>
-        </section>
+  /* ===== Packages ===== */
+  .pkg-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 24px; }
+  .pkg {
+    border: 1px solid var(--line); border-radius: 3px; padding: 40px; position: relative;
+    background: linear-gradient(180deg, rgba(244,239,230,0.02), transparent);
+    display: flex; flex-direction: column;
+    min-height: 520px;
+  }
+  .pkg.featured {
+    background: linear-gradient(180deg, rgba(from var(--accent) r g b / 0.1), rgba(from var(--accent) r g b / 0.02) 40%, transparent);
+    border-color: color-mix(in oklch, var(--accent) 40%, transparent);
+  }
+  .pkg-badge {
+    position: absolute; top: -1px; right: 32px;
+    background: var(--accent); color: var(--accent-ink);
+    padding: 6px 14px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .pkg-head { display: flex; justify-content: space-between; align-items: start; margin-bottom: 40px; }
+  .pkg-head .kick { color: var(--ink-mute); }
+  .pkg h3 { font-family: var(--serif); font-size: clamp(40px, 4.5vw, 60px); line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 16px; }
+  .pkg h3 .it { font-style: italic; color: var(--accent); }
+  .pkg .pkg-sub { color: var(--ink-dim); font-size: 15px; line-height: 1.5; max-width: 42ch; margin-bottom: 32px; }
+  .pkg ul { list-style: none; border-top: 1px solid var(--line); }
+  .pkg li { padding: 16px 0; border-bottom: 1px solid var(--line); display: flex; gap: 18px; align-items: center; font-size: 14px; }
+  .pkg li .n { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.12em; width: 28px; }
+  .pkg li .d { color: var(--ink); }
+  .pkg li .small { color: var(--ink-mute); font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; margin-left: auto; text-transform: uppercase; }
+  .pkg-foot { margin-top: auto; padding-top: 36px; display: flex; justify-content: space-between; align-items: end; }
+  .pkg-foot .pricing { font-family: var(--mono); font-size: 10px; color: var(--ink-mute); letter-spacing: 0.14em; text-transform: uppercase; }
+  .pkg-foot .pricing strong { display: block; font-family: var(--serif); color: var(--ink); font-size: 22px; letter-spacing: -0.01em; text-transform: none; margin-top: 4px; }
+  .pkg-cta {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 14px 24px; border: 1px solid var(--line-strong); border-radius: 999px; display: inline-flex; align-items: center; gap: 8px;
+    transition: all .25s;
+  }
+  .pkg-cta:hover { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .pkg.featured .pkg-cta { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .pkg.featured .pkg-cta:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
-        <section id="expertise" class="bento-section reveal-element">
-            <div class="container">
-                <h2 class="section-title">The Ecosystem.</h2>
-                <div class="bento-grid">
-                    <div class="bento-card large">
-                        <div class="card-content">
-                            <h3>Personal Branding</h3>
-                            <p>We turn founders into industry icons.</p>
-                        </div>
-                        <img src="images/image06.png" alt="Personal Branding Strategy for Founders" class="card-image-fill" loading="lazy" decoding="async">
-                    </div>
-                    <div class="bento-card tall">
-                        <div class="card-content">
-                            <h3>Viral Engineering</h3>
-                            <p>Data-backed hooks and retention strategies.</p>
-                        </div>
-                        <img src="images/image05.png" alt="Viral Video Engineering and Analytics" class="card-image-fill" width="400" height="400" loading="lazy" decoding="async">
-                    </div>
-                    <div class="bento-card">
-                        <div class="card-content">
-                            <h3>Video Editing</h3>
-                            <p>Retention-focused high-end editing.</p>
-                        </div>
-                        <img src="images/image08.png" alt="High-End Retention Video Editing" class="card-image-fill" width="400" height="400" loading="lazy" decoding="async">
-                    </div>
-                    <div class="bento-card">
-                        <div class="card-content">
-                            <h3>Growth</h3>
-                            <p>Scaling reach across all platforms.</p>
-                        </div>
-                        <img src="images/image07.png" alt="Social Media Audience Growth" class="card-image-fill" width="400" height="400" loading="lazy" decoding="async">
-                    </div>
-                </div>
-            </div>
-        </section>
+  /* ===== Founders ===== */
+  .founders { display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; align-items: stretch; }
+  .founder-visual {
+    position: relative; aspect-ratio: 4 / 5;
+    border: 1px solid var(--line); overflow: hidden;
+    background: url('images/image01.jpg') center top / cover no-repeat;
+  }
+  .founder-visual::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(10,9,8,0.75));
+    pointer-events: none;
+  }
+  .founder-visual .caption {
+    position: absolute; left: 20px; bottom: 20px; right: 20px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim);
+    display: flex; justify-content: space-between;
+  }
+  .founder-visual .watermark {
+    position: absolute; top: 20px; left: 20px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--ink-mute); text-transform: uppercase;
+  }
+  .founder-visual .centermark {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    font-family: var(--serif); font-style: italic; font-size: 64px; color: var(--ink-mute); opacity: 0.5;
+  }
+  .founder-copy h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(44px, 5vw, 72px); line-height: 1; letter-spacing: -0.02em; margin-bottom: 28px; }
+  .founder-copy h2 .it { font-style: italic; color: var(--accent); }
+  .founder-copy p { font-size: 16px; line-height: 1.7; color: var(--ink-dim); margin-bottom: 24px; max-width: 52ch; }
+  .founder-copy .sig { font-family: var(--serif); font-style: italic; font-size: 26px; color: var(--ink); margin-top: 8px; }
+  .founder-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); margin-top: 48px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .founder-stats .s { padding: 24px 20px; background: var(--bg); }
+  .founder-stats .s .n { font-family: var(--serif); font-size: 48px; line-height: 1; }
+  .founder-stats .s .n .plus { color: var(--accent); font-style: italic; }
+  .founder-stats .s .l { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-top: 10px; }
+  .founder-stats .s .d { font-size: 12px; color: var(--ink-mute); margin-top: 4px; }
 
-        <section id="packages" class="packages-section reveal-element">
-            <div class="container">
-                <div style="text-align: center;">
-                    <p class="eyebrow">Partnership Models</p>
-                    <h2 class="section-title">Scale Without the Headaches.</h2>
-                </div>
-                <div class="packages-grid">
-                    <div class="package-card">
-                        <h3>The Viral Sprint</h3>
-                        <p>Perfect for founders looking to dominate TikTok, Reels, and YouTube Shorts.</p>
-                        <ul class="package-features">
-                            <li>In-depth Channel Audit & Strategy</li>
-                            <li>Up to 15 Elite Short-form Videos</li>
-                            <li>Data-driven Title & Hook Generation</li>
-                            <li>Bi-weekly Performance Review</li>
-                        </ul>
-                        <a href="#contact" class="btn-text link-arrow" style="color: var(--accent-blue);" aria-label="Inquire about The Viral Sprint pricing">Inquire Pricing</a>
-                    </div>
-                    <div class="package-card premium">
-                        <span class="package-tag">Most Popular</span>
-                        <h3>The Digital Empire</h3>
-                        <p>The ultimate ecosystem for absolute authority. Long-form + Short-form domination.</p>
-                        <ul class="package-features">
-                            <li>Dedicated Creative Director</li>
-                            <li>4 High-Retention YouTube Long-forms</li>
-                            <li>30 Viral Repurposed Shorts</li>
-                            <li>A/B Thumbnail & Title Testing</li>
-                            <li>Free LinkedIn Management Bonus</li>
-                        </ul>
-                        <a href="#contact" class="btn-primary" style="display: block; text-align: center;" aria-label="Apply for The Digital Empire Partnership">Apply for Partnership</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+  /* ===== Works ===== */
+  .works { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .work {
+    position: relative; aspect-ratio: 5 / 4; overflow: hidden; border: 1px solid var(--line);
+    background: var(--bg-3); cursor: pointer;
+  }
+  .work.tall { grid-row: span 2; aspect-ratio: 5 / 8; }
+  .work-bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
+  .work.w1 .work-bg { background: url('images/robert%20logo.png') center/contain no-repeat, radial-gradient(ellipse at 30% 40%, rgba(212,175,55,0.2), transparent 60%), linear-gradient(160deg, #2a231a, #0c0a08); }
+  .work.w2 .work-bg { background: url('images/Ryan.jpg') center/cover no-repeat; }
+  .work.w3 .work-bg { background: url('images/enes%20yilmazer.png') center/cover no-repeat; }
+  .work.w4 .work-bg { background: url('images/daniel.jpg') center/cover no-repeat; }
+  .work-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(10,9,8,0.85)); }
+  .work-meta { position: absolute; left: 28px; right: 28px; bottom: 24px; display: flex; justify-content: space-between; align-items: end; gap: 16px; }
+  .work-meta .title { font-family: var(--serif); font-size: 32px; line-height: 1; letter-spacing: -0.01em; margin-bottom: 6px; }
+  .work-meta .title .it { font-style: italic; color: var(--accent); }
+  .work-meta .sub { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); }
+  .work-meta .stats { font-family: var(--mono); font-size: 10px; color: var(--ink-dim); text-align: right; letter-spacing: 0.12em; text-transform: uppercase; }
+  .work-meta .stats b { display: block; font-family: var(--serif); font-size: 26px; color: var(--ink); letter-spacing: -0.01em; text-transform: none; margin-bottom: 4px; }
+  .work-top { position: absolute; top: 24px; left: 28px; right: 28px; display: flex; justify-content: space-between; }
+  .work-chip {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 6px 10px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--ink-dim);
+    background: rgba(10,9,8,0.4); backdrop-filter: blur(6px);
+  }
+  .work-chip.accent { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .work-num { font-family: var(--mono); font-size: 10px; color: var(--ink-mute); letter-spacing: 0.14em; }
+  .work-play {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 64px; height: 64px; border-radius: 50%; background: rgba(10,9,8,0.4);
+    border: 1px solid var(--line-strong); backdrop-filter: blur(10px);
+    display: grid; place-items: center; transition: all .3s;
+  }
+  .work:hover .work-play { background: var(--accent); border-color: var(--accent); transform: translate(-50%, -50%) scale(1.1); }
+  .work-play svg { width: 18px; height: 18px; fill: var(--ink); transition: fill .3s; margin-left: 3px; }
+  .work:hover .work-play svg { fill: var(--accent-ink); }
 
-        <section id="about" class="about-premium reveal-element">
-            <div class="container">
-                <div class="about-header">
-                    <p class="eyebrow">The Visionaries</p>
-                    <h2 class="section-title">More than an Agency.<br>We are your <span class="gradient-text-gold">Growth Partners.</span></h2>
-                </div>
-                <div class="about-grid">
-                    <div class="about-card duo-card">
-                        <div class="duo-overlay"></div>
-                        <img src="images/image01.jpg" alt="Levi & Chami - Founders of QuidEdge" class="duo-image-bg" loading="lazy" decoding="async">
-                        <div class="duo-content">
-                            <span class="badge">FOUNDERS</span>
-                            <h3>The Power Duo.</h3>
-                            <p>Founded by Levi & Chami, we combine strategic vision with creative direction. For over 5 years, we’ve built a family-led business that treats your brand like our own legacy.</p>
-                            <div class="signature">Levi & Chami</div>
-                        </div>
-                    </div>
-                    <div class="about-card stat-card">
-                        <div class="stat-content">
-                            <span class="big-number">20<span class="plus">+</span></span>
-                            <p class="stat-label">Elite Global Editors</p>
-                            <p class="stat-sub">Hand-picked talent across timezones.</p>
-                        </div>
-                    </div>
-                    <div class="about-card stat-card">
-                        <div class="stat-content">
-                            <span class="big-number">10<span class="plus">+</span></span>
-                            <p class="stat-label">Specialists</p>
-                            <p class="stat-sub">Script Writers & Ad Managers.</p>
-                        </div>
-                    </div>
-                    <div class="about-card philosophy-card">
-                        <div class="card-content">
-                            <h3>Our Standard.</h3>
-                            <p>We don't just "edit." We engineer attention. Our in-house global team operates <strong><span class="animate-num">85</span>% more efficiently</strong> than traditional agencies, ensuring speed without sacrificing quality.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+  /* ===== FAQ ===== */
+  .faq { border-top: 1px solid var(--line-strong); }
+  .faq-item { border-bottom: 1px solid var(--line); }
+  .faq-q {
+    width: 100%; text-align: left; padding: 32px 0;
+    display: grid; grid-template-columns: 60px 1fr 60px; gap: 24px; align-items: center;
+    font-family: var(--serif); font-size: clamp(22px, 2.5vw, 32px); letter-spacing: -0.01em; font-weight: 400;
+    transition: color .25s;
+  }
+  .faq-q:hover { color: var(--accent); }
+  .faq-q .q-n { font-family: var(--mono); font-size: 11px; color: var(--ink-mute); letter-spacing: 0.12em; }
+  .faq-q .q-toggle {
+    width: 36px; height: 36px; border: 1px solid var(--line-strong); border-radius: 50%;
+    display: grid; place-items: center; justify-self: end; transition: all .3s;
+  }
+  .faq-q .q-toggle::before, .faq-q .q-toggle::after {
+    content: ""; position: absolute; background: var(--ink); width: 12px; height: 1px; transition: transform .3s;
+  }
+  .faq-q .q-toggle { position: relative; }
+  .faq-q .q-toggle::after { transform: rotate(90deg); }
+  .faq-item.open .q-toggle { background: var(--accent); border-color: var(--accent); }
+  .faq-item.open .q-toggle::before, .faq-item.open .q-toggle::after { background: var(--accent-ink); }
+  .faq-item.open .q-toggle::after { transform: rotate(0); }
+  .faq-a {
+    max-height: 0; overflow: hidden; transition: max-height .5s ease;
+  }
+  .faq-item.open .faq-a { max-height: 400px; }
+  .faq-a-inner {
+    padding: 0 0 36px 84px; max-width: 64ch; color: var(--ink-dim); font-size: 15px; line-height: 1.7;
+  }
 
-        <section id="work" class="showcase reveal-element">
-            <div class="container">
-                <h2 class="section-title">Selected Works.</h2>
-                <div class="project-card">
-                    <div class="project-info">
-                        <span class="tag">SHARK TANK INVESTOR</span>
-                        <h3>Robert Herjavec</h3>
-                        <p>Optimizing content for a billionaire's personal brand. Focusing on authority, trust, and business wisdom.</p>
-                        <button class="link-arrow btn-text" aria-label="View Robert Herjavec Case Study Analysis" onclick="openModal('robert')">View Analysis</button>
-                    </div>
-                    <video loop muted playsinline preload="metadata" class="project-image-fill lazy-video">
-                        <source src="images/Robert%20Herjavec_Footage001.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div style="text-align: center; margin-top: 40px;">
-                    <a href="portfolio.html" target="_blank" class="btn-glow" aria-label="Explore QuidEdge Full Exclusive Portfolio">Explore Full Portfolio</a>
-                </div>
-            </div>
-        </section>
+  /* ===== Final CTA ===== */
+  .finale { padding: 160px 0 80px; border-top: 1px solid var(--line); position: relative; overflow: hidden; text-align: center; }
+  .finale-glow {
+    position: absolute; width: 1200px; height: 1200px; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, color-mix(in oklch, var(--accent) 14%, transparent), transparent 50%);
+    filter: blur(60px); pointer-events: none;
+  }
+  .finale .kicker { margin-bottom: 40px; }
+  .finale h2 { font-family: var(--serif); font-size: clamp(64px, 11vw, 180px); line-height: 0.9; letter-spacing: -0.03em; margin-bottom: 48px; position: relative; }
+  .finale h2 .it { font-style: italic; color: var(--accent); }
+  .finale .cta-row { display: inline-flex; gap: 16px; align-items: center; position: relative; }
+  .finale .micro { margin-top: 32px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mute); }
+  .finale .micro span { color: var(--accent); }
 
-        <section id="faq" class="faq-section reveal-element">
-            <div class="container">
-                <h2 class="section-title">Frequently Asked Questions.</h2>
-                <div class="faq-grid">
-                    <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">Who is behind the team?<span class="icon">+</span></button>
-                        <div class="faq-answer">
-                            <p>We are a husband-and-wife duo with over <span class="animate-num">5</span> years of industry experience. My wife serves as the Creative Director, and together we lead a global team of <span class="animate-num">20+</span> elite Video Editors & Graphic Designers, along with <span class="animate-num">5</span> specialist Script Writers and <span class="animate-num">5</span> Social Media Ads Specialists.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">Why choose you over an in-house team or agency?<span class="icon">+</span></button>
-                        <div class="faq-answer">
-                            <p>Traditional agencies charge premium fees for slow output, and in-house teams are expensive to maintain. We offer a hybrid solution: a dedicated global team that operates <span class="animate-num">85%</span> more efficiently than in-house staff. We work across all time zones to deliver high standards at a fraction of the cost.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">What is your client protection policy?<span class="icon">+</span></button>
-                        <div class="faq-answer">
-                            <p>Our motto is "Client First." We believe your growth is our growth. We are committed to protecting your brand integrity while providing affordable, high-end services. As a bonus, we even offer free LinkedIn management as an after-service.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">How does the contract work?<span class="icon">+</span></button>
-                        <div class="faq-answer">
-                            <p>We believe in flexibility. We operate on a contract basis to ensure professional commitment, but you have the freedom to pause or cancel the contract at any time. No long-term lock-ins if you aren't satisfied.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">How do I send my content?<span class="icon">+</span></button>
-                        <div class="faq-answer">
-                            <p>Once you’re in, an account guru will introduce you to ClickUp, our project hub. Drop your content & feedback there. Easy peasy.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">Will this boost my brand?<span class="icon">+</span></button>
-                        <div class="faq-answer">
-                            <p>Growth isn’t guaranteed, but odds are good! Our vids typically outperform by <span class="animate-num">10x</span>. Content’s king, so it’s got to resonate. Need guidance? We’ve got you.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+  /* ===== Footer ===== */
+  footer { border-top: 1px solid var(--line); padding: 56px 0 36px; }
+  footer .foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
+  footer h5 { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 20px; }
+  footer ul { list-style: none; }
+  footer li { margin-bottom: 10px; font-size: 14px; color: var(--ink-dim); }
+  footer li a:hover { color: var(--accent); }
+  footer .brand-col .serif { font-size: 44px; line-height: 1; margin-bottom: 20px; }
+  footer .brand-col p { font-size: 14px; color: var(--ink-dim); max-width: 36ch; line-height: 1.6; }
+  footer .foot-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mute); }
 
-        <section id="contact" class="footer-cta reveal-element">
-            <div class="container">
-                <h2>Ready to scale?</h2>
-                <p>Limited availability for high-end clientele.</p>
-                
-                <button type="button" onclick="openBookingModal()" class="btn-primary" style="padding: 20px 50px; font-size: 1.2rem; cursor: pointer; border: none; font-family: 'Inter', sans-serif;">Book Now</button>
+  /* ===== Tweaks panel ===== */
+  #tweaks {
+    position: fixed; right: 24px; bottom: 24px; z-index: 100;
+    background: rgba(18, 17, 16, 0.92); backdrop-filter: blur(16px);
+    border: 1px solid var(--line-strong); border-radius: 8px;
+    padding: 18px 20px; width: 280px;
+    font-family: var(--sans); font-size: 13px;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
+    display: none;
+  }
+  #tweaks.visible { display: block; }
+  #tweaks h4 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+  #tweaks h4 .chip { font-size: 9px; color: var(--accent); }
+  #tweaks .group { margin-bottom: 14px; }
+  #tweaks label { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 8px; }
+  #tweaks .swatches { display: flex; gap: 8px; }
+  #tweaks .sw { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--line-strong); cursor: pointer; transition: transform .2s; }
+  #tweaks .sw.active { border-color: var(--ink); transform: scale(1.15); box-shadow: 0 0 0 2px var(--bg); }
+  #tweaks .segs { display: flex; gap: 0; border: 1px solid var(--line-strong); border-radius: 4px; overflow: hidden; }
+  #tweaks .seg { flex: 1; padding: 8px; text-align: center; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); cursor: pointer; border-right: 1px solid var(--line); }
+  #tweaks .seg:last-child { border-right: none; }
+  #tweaks .seg.active { background: var(--accent); color: var(--accent-ink); }
 
-                <p class="risk-reversal">
-                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
-                    </svg>
-                    Contract based partnership. Cancel anytime. We earn your business every 30 days.
-                </p>
+  /* ===== Cursor ===== */
+  .cursor-dot {
+    position: fixed; width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+    pointer-events: none; z-index: 200; mix-blend-mode: difference;
+    transform: translate(-50%, -50%); transition: width .25s, height .25s;
+  }
 
-                <div class="footer-bottom" style="margin-top: 50px;">
-                    <p>&copy; 2026 QuidEdge (Levi & Chami) All rights reserved</p>
-                </div>
-            </div>
-        </section>
-    </main>
+  /* responsive */
+  @media (max-width: 900px) {
+    nav.top ul { display: none; }
+    .hero-sub-row { grid-template-columns: 1fr; gap: 24px; }
+    .hero-cta { align-items: flex-start; }
+    .reel-strip { grid-template-columns: 1fr 1fr; }
+    .reel-card:nth-child(3) { display: none; }
+    .sect-head { grid-template-columns: 1fr; gap: 20px; }
+    .eco-grid { grid-template-columns: 1fr 1fr; }
+    .eco-cell:nth-child(2), .eco-cell:last-child { border-right: none; }
+    .eco-content { padding: 28px 20px 28px 0; }
+    .eco-bottom-cell { min-height: 220px; }
+    .metrics { grid-template-columns: 1fr 1fr; }
+    .pkg-grid, .founders, .works { grid-template-columns: 1fr; }
+    .work.tall { grid-row: auto; aspect-ratio: 5 / 4; }
+    footer .foot-grid { grid-template-columns: 1fr 1fr; }
+  }
 
-    <div id="analysis-modal" class="modal-overlay hidden" aria-hidden="true">
-        <div class="modal-content">
-            <button class="close-btn" aria-label="Close Case Study Modal" onclick="closeModal()">&times;</button>
-            <div class="modal-grid">
-                <div class="modal-visual">
-                    <img src="images/image05.png" class="modal-media" alt="Viral Engineering Case Study Evidence" loading="lazy" decoding="async">
-                </div>
-                <div class="modal-info">
-                    <span class="modal-tag">CASE STUDY ANALYSIS</span>
-                    <h2 id="modal-title">Client Name</h2>
-                    <div class="stats-row">
-                        <div class="stat"><span class="stat-num">5.2M+</span><span class="stat-label">Views Generated</span></div>
-                        <div class="stat"><span class="stat-num">300%</span><span class="stat-label">Engagement Spike</span></div>
-                    </div>
-                    <div class="strategy-box">
-                        <h3>The Strategy</h3>
-                        <p>We identified that the audience values "Direct Business Wisdom." We stripped away over-editing and focused on:</p>
-                        <ul class="strategy-list">
-                            <li>⚡ <strong>The 3-Second Hook:</strong> Immediate value proposition.</li>
-                            <li>📉 <strong>Retention Editing:</strong> Visual changes every 5 seconds to hold attention.</li>
-                            <li>📢 <strong>Authority Framing:</strong> Low angle shots to establish dominance.</li>
-                        </ul>
-                    </div>
-                    <a href="#contact" class="btn-primary modal-cta" aria-label="Get Similar Results by contacting us" onclick="closeModal()">Get Similar Results</a>
-                </div>
-            </div>
-        </div>
+  /* Entrance reveal — only hide when JS has marked document ready */
+  .js-ready .reveal:not(.in) { opacity: 0; transform: translateY(20px); }
+  .reveal { transition: opacity .8s ease, transform .8s ease; }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursor"></div>
+
+<!-- Nav -->
+<nav class="top">
+  <div class="wrap row">
+    <a href="#top" class="wordmark">
+      <span class="mark">Quid<span class="e it">E</span>dge<span style="color:var(--accent)">.</span></span>
+      <span class="tag">Personal Branding Guru</span>
+    </a>
+    <ul>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#ecosystem">Ecosystem</a></li>
+      <li><a href="#packages">Partnership</a></li>
+      <li><a href="#about">Founders</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a href="#contact" class="btn-book">
+      Book a Call
+      <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.2"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero" id="top" data-screen-label="Hero">
+  <div class="hero-grain"></div>
+  <div class="hero-glow"></div>
+  <div class="wrap">
+    <div class="hero-meta">
+      <div class="left">
+        <span class="kicker"><span class="dot"></span>Est. 2020 · Global Studio</span>
+        <span class="date" id="date"></span>
+      </div>
+      <span class="kicker">Vol. 07 · Personal Brand Issue</span>
     </div>
 
-    <div id="booking-modal" class="modal-overlay" style="display: none; z-index: 9999; font-family: 'Inter', sans-serif;">
-        <div class="modal-content" style="background: #0f0f0f; max-width: 500px; width: 90%; text-align: left; padding: 40px; border-radius: 20px; border: 1px solid rgba(0, 122, 255, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; max-height: 90vh; overflow-y: auto;">
-            <button type="button" onclick="closeBookingModal()" style="position: absolute; top: 15px; right: 20px; background: transparent; border: none; color: white; font-size: 1.8rem; cursor: pointer; transition: 0.3s;">&times;</button>
-            
-            <h2 style="margin-bottom: 5px; font-size: 2rem; color: white;">Start Scaling</h2>
-            <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 25px;">Provide your details below to schedule your strategy session.</p>
+    <h1 class="hero-title reveal">
+      Engineered<br/>
+      for <span class="it">Viral</span><br/>
+      Impact<span style="color:var(--accent)">.</span>
+    </h1>
 
-            <form id="bookingForm" novalidate>
-                
-                <div class="form-group">
-                    <label class="form-label" for="fullName">Full Name *</label>
-                    <input type="text" id="fullName" name="fullName" required class="form-control">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="email">Email Address *</label>
-                    <input type="email" id="email" name="email" required class="form-control">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="whatsapp">WhatsApp Number (Optional)</label>
-                    <input type="tel" id="whatsapp" name="whatsapp" class="form-control">
-                    <span id="whatsappError" style="color: #ff4444; font-size: 0.8rem; display: none; margin-top: 5px;">Please enter a valid WhatsApp number.</span>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 25px;">
-                    <label class="form-label" for="revenue">Current Annual Revenue *</label>
-                    <select id="revenue" name="revenue" required class="form-control">
-                        <option value="">Select an option...</option>
-                        <option value="$10K - $20K">$10K - $20K</option>
-                        <option value="$20K - $50K">$20K - $50K</option>
-                        <option value="More than $50K+">More than $50K+</option>
-                    </select>
-                </div>
-
-                <div class="checkbox-group">
-                    <input type="checkbox" id="consent1" name="consent1" required>
-                    <label for="consent1">I consent to receive marketing messages from QuidEdge. Message & data rates may apply.</label>
-                </div>
-
-                <div class="checkbox-group" style="margin-bottom: 25px;">
-                    <input type="checkbox" id="consent2" name="consent2" required>
-                    <label for="consent2">I consent to receive non-marketing messages about order updates and reminders.</label>
-                </div>
-
-                <button type="submit" class="btn-glow" style="width: 100%; padding: 16px; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 1.1rem; border-radius: 8px;">Submit Application</button>
-            </form>
-            <p id="formStatus" style="display:none; color: #00ff88; margin-top: 15px; text-align: center; font-weight: bold;">Details submitted successfully!</p>
-        </div>
+    <div class="hero-sub-row">
+      <p class="hero-lede reveal">
+        A content studio for the <span class="em">top 1%</span> — we build digital empires for founders, investors &amp; elite creators through cinematic storytelling.
+      </p>
+      <div class="hero-credits reveal">
+        <div>Directed by</div>
+        <strong>Levi &amp; Chami</strong>
+        <div style="margin-top:14px">Specialties</div>
+        <strong style="font-size:14px">Personal Branding · Viral Engineering · Retention Editing · Growth</strong>
+      </div>
+      <div class="hero-cta reveal">
+        <a href="#contact" class="cta-primary">
+          Apply for Partnership
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.4"/></svg>
+        </a>
+        <a href="#work" class="cta-ghost">View Case Studies</a>
+      </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/intlTelInput.min.js"></script>
+    <!-- Reel strip -->
+    <div class="reel-strip">
+      <div class="reel-card reveal">
+        <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <source src="images/Robert%20Herjavec_Footage001.mp4" type="video/mp4">
+        </video>
+        <div class="reel-top"><span>REEL · 001</span><span>0:42</span></div>
+        <div class="reel-meta"><span class="title">Robert H.</span><span>Shark Tank</span></div>
+      </div>
+      <div class="reel-card reveal">
+        <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <source src="images/Enes%20Yilmazer.mp4" type="video/mp4">
+        </video>
+        <div class="reel-top"><span>REEL · 002</span><span>0:28</span></div>
+        <div class="reel-meta"><span class="title">Enes Y.</span><span>Real Estate</span></div>
+      </div>
+      <div class="reel-card reveal">
+        <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <source src="images/ryan_trahan.mp4" type="video/mp4">
+        </video>
+        <div class="reel-top"><span>LONG-FORM · 003</span><span>12:04</span></div>
+        <div class="reel-meta"><span class="title">Ryan T.</span><span>YouTube</span></div>
+      </div>
+    </div>
+  </div>
+</header>
 
-    <script>
-        document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'F12') e.preventDefault();
-            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) e.preventDefault();
-            if (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.key === 'S' || e.key === 's' || e.key === 'P' || e.key === 'p')) e.preventDefault();
-        });
-        document.querySelectorAll('img, video').forEach(el => {
-            el.addEventListener('dragstart', e => e.preventDefault());
-        });
+<!-- Trust bar -->
+<section class="trust">
+  <div class="wrap trust-label">
+    <span class="kicker"><span class="dot"></span>Trusted by industry titans &amp; global brands</span>
+  </div>
+  <div style="overflow:hidden; position:relative;">
+    <div style="position:absolute;top:0;left:0;width:120px;height:100%;background:linear-gradient(to right,var(--bg),transparent);z-index:2;pointer-events:none;"></div>
+    <div style="position:absolute;top:0;right:0;width:120px;height:100%;background:linear-gradient(to left,var(--bg),transparent);z-index:2;pointer-events:none;"></div>
+    <div class="trust-track">
+      <div class="trust-row">
+        <img src="images/robert%20logo.png" alt="Robert Herjavec" style="height:48px;width:auto;max-width:160px;object-fit:contain;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <img src="images/Ryan.jpg" alt="Ryan Trahan" style="height:48px;width:48px;object-fit:cover;border-radius:50%;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <img src="images/enes%20yilmazer.png" alt="Enes Yilmazer" style="height:48px;width:auto;max-width:160px;object-fit:contain;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <img src="images/daniel.jpg" alt="Daniel" style="height:48px;width:48px;object-fit:cover;border-radius:50%;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <span class="trust-item">Shark Tank Ventures</span>
+        <span class="trust-item">Luxury Presence</span>
+      </div>
+      <div class="trust-row" aria-hidden="true">
+        <img src="images/robert%20logo.png" alt="Robert Herjavec" style="height:48px;width:auto;max-width:160px;object-fit:contain;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <img src="images/Ryan.jpg" alt="Ryan Trahan" style="height:48px;width:48px;object-fit:cover;border-radius:50%;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <img src="images/enes%20yilmazer.png" alt="Enes Yilmazer" style="height:48px;width:auto;max-width:160px;object-fit:contain;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <img src="images/daniel.jpg" alt="Daniel" style="height:48px;width:48px;object-fit:cover;border-radius:50%;filter:grayscale(1) opacity(0.55);transition:filter .3s;" onmouseenter="this.style.filter='grayscale(0) opacity(1)'" onmouseleave="this.style.filter='grayscale(1) opacity(0.55)'">
+        <span class="trust-item">Shark Tank Ventures</span>
+        <span class="trust-item">Luxury Presence</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-        function openBookingModal() {
-            const modal = document.getElementById('booking-modal');
-            modal.style.display = 'flex';
-            setTimeout(() => {
-                modal.classList.add('active');
-            }, 10);
-            document.body.style.overflow = 'hidden';
-        }
+<!-- Ecosystem -->
+<section class="sect" id="ecosystem" data-screen-label="Ecosystem">
+  <div class="wrap">
+    <div class="sect-head">
+      <span class="idx">§ 01 / ECOSYSTEM</span>
+      <h2>A studio built for <span class="it">attention.</span></h2>
+      <p class="intro">Four disciplines, one team. We don't outsource or freelance — every pillar of your brand is engineered in-house by specialists who've spent a decade doing this.</p>
+    </div>
 
-        function closeBookingModal() {
-            const modal = document.getElementById('booking-modal');
-            modal.classList.remove('active');
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 400);
-            document.body.style.overflow = 'auto';
-        }
+    <div style="display:grid; grid-template-columns:1.5fr 1fr; grid-template-rows:auto auto; gap:16px; border-top:1px solid var(--line); padding-top:0;">
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const whatsappInput = document.querySelector("#whatsapp");
-            const iti = window.intlTelInput(whatsappInput, {
-                initialCountry: "auto",
-                geoIpLookup: callback => {
-                    fetch("https://ipapi.co/json")
-                        .then(res => res.json())
-                        .then(data => callback(data.country_code))
-                        .catch(() => callback("lk")); 
-                },
-                utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/utils.js",
-                separateDialCode: true 
-            });
+      <!-- Card 1 — Wide, Personal Branding -->
+      <div class="eco-cell" style="grid-column:1; grid-row:1; min-height:300px;">
+        <div class="eco-cell-bg">
+          <img src="images/image06.png" alt="" class="eco-img-blur" aria-hidden="true">
+          <img src="images/image06.png" alt="Personal Branding" class="eco-img" style="object-position:center 30%;">
+        </div>
+        <div class="eco-content">
+          <div class="num-col"><span class="num">→ 01</span><span class="num">STRATEGY</span></div>
+          <h3>Personal <span class="it">Branding</span></h3>
+          <p>We turn founders into industry icons. Positioning, narrative architecture, and the kind of brand equity that compounds.</p>
+        </div>
+      </div>
 
-            const videoObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.play().catch(e => console.log("Autoplay blocked."));
-                    } else {
-                        entry.target.pause();
-                    }
-                });
-            }, { threshold: 0.1 });
+      <!-- Card 2 — Tall right column, Viral Engineering -->
+      <div class="eco-cell" style="grid-column:2; grid-row:1/3; min-height:620px;">
+        <div class="eco-cell-bg">
+          <img src="images/image05.png" alt="" class="eco-img-blur" aria-hidden="true">
+          <img src="images/image05.png" alt="Viral Engineering" class="eco-img" style="object-position:center top;">
+        </div>
+        <div class="eco-content">
+          <div class="num-col"><span class="num">→ 02</span><span class="num">ANALYTICS</span></div>
+          <h3>Viral <span class="it">Engineering</span></h3>
+          <p>Data-backed hooks, retention graphs, and frame-by-frame analysis. We treat the algorithm like a system, not a rumor.</p>
+        </div>
+      </div>
 
-            document.querySelectorAll('.lazy-video').forEach(video => {
-                videoObserver.observe(video);
-            });
+      <!-- Bottom row — two cards side by side -->
+      <div style="grid-column:1; grid-row:2; display:grid; grid-template-columns:1fr 1fr; gap:16px;">
 
-            const revealObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.05, rootMargin: "0px 0px -50px 0px" });
+        <!-- Card 3 — Video Editing -->
+        <div class="eco-bottom-cell">
+          <img src="images/image08.png" alt="" class="eco-img-blur" aria-hidden="true">
+          <img src="images/image08.png" alt="Video Editing" class="eco-img">
+          <div class="eco-bottom-content">
+            <div class="num-col"><span class="num">→ 03</span><span class="num">PRODUCTION</span></div>
+            <h3>Video <span class="it">Editing</span></h3>
+            <p>Retention-focused, cinema-grade cutting. Color, sound, motion — the full post pipeline.</p>
+          </div>
+        </div>
 
-            document.querySelectorAll('.reveal-element').forEach(el => {
-                revealObserver.observe(el);
-            });
+        <!-- Card 4 — Growth -->
+        <div class="eco-bottom-cell">
+          <img src="images/image07.png" alt="" class="eco-img-blur" aria-hidden="true">
+          <img src="images/image07.png" alt="Audience Growth" class="eco-img">
+          <div class="eco-bottom-content">
+            <div class="num-col"><span class="num">→ 04</span><span class="num">DISTRIBUTION</span></div>
+            <h3>Audience <span class="it">Growth</span></h3>
+            <p>Cross-platform scale. TikTok, Reels, Shorts, YouTube, LinkedIn — one narrative.</p>
+          </div>
+        </div>
 
-            const form = document.getElementById('bookingForm');
-            const whatsappError = document.getElementById('whatsappError');
+      </div>
 
-            if(form) {
-                form.addEventListener('submit', e => {
-                    e.preventDefault();
-                    
-                    if (!form.checkValidity()) {
-                        form.reportValidity();
-                        return;
-                    }
+    </div>
+  </div>
+</section>
 
-                    const whatsappVal = whatsappInput.value.trim();
-                    const submitBtn = form.querySelector('button[type="submit"]');
+<!-- Metrics -->
+<section style="border-top: 1px solid var(--line);">
+  <div class="metrics">
+    <div class="metric-cell">
+      <div class="big">5.2<span class="it">M+</span></div>
+      <div class="lbl">Views / Month</div>
+      <div class="desc">Generated across partner channels in Q1 2026.</div>
+    </div>
+    <div class="metric-cell">
+      <div class="big">10<span class="it">×</span></div>
+      <div class="lbl">Outperformance</div>
+      <div class="desc">Client videos vs. their prior baseline retention.</div>
+    </div>
+    <div class="metric-cell">
+      <div class="big">85<span class="it">%</span></div>
+      <div class="lbl">More Efficient</div>
+      <div class="desc">Global in-house team vs. traditional agencies.</div>
+    </div>
+    <div class="metric-cell">
+      <div class="big">20<span class="it">+</span></div>
+      <div class="lbl">Elite Operators</div>
+      <div class="desc">Editors, strategists, script writers, ad leads.</div>
+    </div>
+  </div>
+</section>
 
-                    // Check validation ONLY if field is filled
-                    if (whatsappVal !== "" && !iti.isValidNumber()) {
-                        whatsappError.style.display = "block";
-                        whatsappInput.style.borderColor = "#ff4444";
-                        return;
-                    } else {
-                        whatsappError.style.display = "none";
-                        whatsappInput.style.borderColor = "#333";
-                    }
+<!-- Packages -->
+<section class="sect" id="packages" data-screen-label="Partnership">
+  <div class="wrap">
+    <div class="sect-head">
+      <span class="idx">§ 02 / PARTNERSHIP</span>
+      <h2>Scale without the <span class="it">headaches.</span></h2>
+      <p class="intro">Two ways to work with us. Both run on month-to-month contracts — no lock-in. We earn your business every 30 days.</p>
+    </div>
 
-                    submitBtn.innerHTML = 'Submitting...';
-                    submitBtn.disabled = true;
-                    
-                    // Get formatted number if filled, else send empty string
-                    let fullPhoneNumber = whatsappVal !== "" ? iti.getNumber(intlTelInputUtils.numberFormat.INTERNATIONAL) : "";
+    <div class="pkg-grid">
+      <div class="pkg">
+        <div class="pkg-head">
+          <span class="kicker kick"><span class="dot"></span>Tier 01</span>
+          <span class="num">A / SPRINT</span>
+        </div>
+        <h3>The Viral <span class="it">Sprint.</span></h3>
+        <p class="pkg-sub">Dominate TikTok, Reels and YouTube Shorts. Ideal for founders testing short-form at scale.</p>
+        <ul>
+          <li><span class="n">01</span><span class="d">In-depth Channel Audit &amp; Strategy</span><span class="small">Week 1</span></li>
+          <li><span class="n">02</span><span class="d">Up to 15 Elite Short-form Videos</span><span class="small">Monthly</span></li>
+          <li><span class="n">03</span><span class="d">Data-driven Title &amp; Hook Generation</span><span class="small">Weekly</span></li>
+          <li><span class="n">04</span><span class="d">Bi-weekly Performance Review</span><span class="small">14 Days</span></li>
+        </ul>
+        <div class="pkg-foot">
+          <div class="pricing">Starting from<strong>Inquire</strong></div>
+          <a href="#contact" class="pkg-cta">Inquire Pricing →</a>
+        </div>
+      </div>
 
-                    // Google Sheets ERROR Fix! (Prevent formulas)
-                    if (fullPhoneNumber) {
-                        fullPhoneNumber = "'" + fullPhoneNumber;
-                    }
+      <div class="pkg featured">
+        <div class="pkg-badge">Most Popular</div>
+        <div class="pkg-head">
+          <span class="kicker kick"><span class="dot"></span>Tier 02 — Flagship</span>
+          <span class="num">B / EMPIRE</span>
+        </div>
+        <h3>The Digital <span class="it">Empire.</span></h3>
+        <p class="pkg-sub">The complete ecosystem for absolute authority. Long-form YouTube plus a full short-form distribution engine.</p>
+        <ul>
+          <li><span class="n">01</span><span class="d">Dedicated Creative Director</span><span class="small">Weekly</span></li>
+          <li><span class="n">02</span><span class="d">4 High-Retention YouTube Long-forms</span><span class="small">Monthly</span></li>
+          <li><span class="n">03</span><span class="d">30 Viral Repurposed Shorts</span><span class="small">Monthly</span></li>
+          <li><span class="n">04</span><span class="d">A/B Thumbnail &amp; Title Testing</span><span class="small">Per Drop</span></li>
+          <li><span class="n">05</span><span class="d">Free LinkedIn Management Bonus</span><span class="small">Included</span></li>
+        </ul>
+        <div class="pkg-foot">
+          <div class="pricing">By application<strong>Limited seats</strong></div>
+          <a href="#contact" class="pkg-cta">Apply for Partnership →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-                    const formData = new FormData();
-                    formData.append('fullName', document.getElementById('fullName').value);
-                    formData.append('email', document.getElementById('email').value);
-                    
-                    // Send to both 'Phone Number' and 'WhatsApp' columns in Google Sheets
-                    formData.append('phone', fullPhoneNumber); 
-                    formData.append('whatsapp', fullPhoneNumber);
-                    
-                    formData.append('revenue', document.getElementById('revenue').value);
-                    formData.append('consent1', document.getElementById('consent1').checked);
-                    formData.append('consent2', document.getElementById('consent2').checked);
+<!-- Founders -->
+<section class="sect" id="about" data-screen-label="Founders">
+  <div class="wrap">
+    <div class="sect-head">
+      <span class="idx">§ 03 / THE VISIONARIES</span>
+      <h2>More than an agency. <span class="it">Growth partners.</span></h2>
+      <p class="intro">Family-led, built like a studio. Five years of compounding craft, trusted by investors and creators who can pick anyone.</p>
+    </div>
 
-                    const scriptURL = 'https://script.google.com/macros/s/AKfycbyP2WNh0sp45wjqh_hoZYXvqL48VQIChpzivHRY1nT9mCGgHFG1lVPSUGrDMRZ6KlsV/exec';
+    <div class="founders">
+      <div class="founder-visual">
+        <span class="watermark">— Founders, Portrait I</span>
+        <div class="caption">
+          <span>Levi &amp; Chami</span>
+          <span>QuidEdge HQ · 2026</span>
+        </div>
+      </div>
+      <div class="founder-copy">
+        <span class="kicker"><span class="dot"></span>The Power Duo</span>
+        <h2 style="margin-top:20px">Hand-picked talent, <span class="it">family-led</span> ops.</h2>
+        <p>Founded by Levi &amp; Chami, QuidEdge combines strategic vision with creative direction. Over five years we've built a studio that treats your brand like our own legacy — a standard we can't fake because we staked our name on it.</p>
+        <p>My wife leads the creative; I run strategy. Behind us is a global team of twenty-plus elite editors, graphic designers, script writers, and ad specialists operating across every time zone.</p>
+        <div class="sig">— Levi &amp; Chami</div>
 
-                    fetch(scriptURL, { method: 'POST', body: formData })
-                        .then(response => {
-                            document.getElementById('formStatus').style.display = 'block';
-                            form.reset();
-                            submitBtn.innerHTML = 'Submit Application';
-                            submitBtn.disabled = false;
-                            
-                            // --- Meta Pixel Lead Event Trigger ---
-                            if (typeof fbq === 'function') {
-                                fbq('track', 'Lead');
-                                console.log("Meta Pixel 'Lead' Event Fired!");
-                            }
-                            // -------------------------------------
-                            
-                            setTimeout(() => {
-                                closeBookingModal();
-                                document.getElementById('formStatus').style.display = 'none';
-                            }, 3000);
-                        })
-                        .catch(error => {
-                            console.error('Error!', error.message);
-                            submitBtn.innerHTML = 'Submit Application';
-                            submitBtn.disabled = false;
-                            alert("Something went wrong. Please try again.");
-                        });
-                });
-            }
-        });
-    </script>
-    <script src="script.js"></script>
+        <div class="founder-stats">
+          <div class="s"><div class="n">20<span class="plus">+</span></div><div class="l">Elite Global Editors</div><div class="d">Hand-picked across timezones.</div></div>
+          <div class="s"><div class="n">10<span class="plus">+</span></div><div class="l">Strategy Specialists</div><div class="d">Script writers &amp; ad managers.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Selected Works -->
+<section class="sect" id="work" data-screen-label="Work">
+  <div class="wrap">
+    <div class="sect-head">
+      <span class="idx">§ 04 / SELECTED WORKS</span>
+      <h2>A <span class="it">library</span> of viral moments.</h2>
+      <p class="intro">Every piece below is a case study in retention, hook design, and narrative compression. Click any card for the teardown.</p>
+    </div>
+
+    <div class="works">
+      <div class="work w1 tall">
+        <div class="work-bg"></div>
+        <div class="work-overlay"></div>
+        <div class="work-top">
+          <span class="work-chip accent">Shark Tank</span>
+          <span class="work-num">— 001 / 12</span>
+        </div>
+        <div class="work-play"><svg viewBox="0 0 16 16"><path d="M4 3L13 8L4 13V3Z"/></svg></div>
+        <div class="work-meta">
+          <div>
+            <div class="work-chip" style="margin-bottom:14px">INVESTOR · AUTHORITY BRAND</div>
+            <div class="title">Robert <span class="it">Herjavec.</span></div>
+            <div class="sub">Optimizing content for a billionaire's personal brand</div>
+          </div>
+          <div class="stats">
+            <b>5.2M+</b>views generated
+          </div>
+        </div>
+      </div>
+      <div class="work w2">
+        <div class="work-bg"></div>
+        <div class="work-overlay"></div>
+        <div class="work-top"><span class="work-chip">YouTube</span><span class="work-num">— 002 / 12</span></div>
+        <div class="work-play"><svg viewBox="0 0 16 16"><path d="M4 3L13 8L4 13V3Z"/></svg></div>
+        <div class="work-meta">
+          <div>
+            <div class="title">Ryan <span class="it">Trahan.</span></div>
+            <div class="sub">Long-form retention design</div>
+          </div>
+          <div class="stats"><b>+300%</b>engagement</div>
+        </div>
+      </div>
+      <div class="work w3">
+        <div class="work-bg"></div>
+        <div class="work-overlay"></div>
+        <div class="work-top"><span class="work-chip">Real Estate</span><span class="work-num">— 003 / 12</span></div>
+        <div class="work-play"><svg viewBox="0 0 16 16"><path d="M4 3L13 8L4 13V3Z"/></svg></div>
+        <div class="work-meta">
+          <div>
+            <div class="title">Enes <span class="it">Yilmazer.</span></div>
+            <div class="sub">Luxury walkthrough repositioning</div>
+          </div>
+          <div class="stats"><b>2.1M</b>shorts views</div>
+        </div>
+      </div>
+      <div class="work w4">
+        <div class="work-bg"></div>
+        <div class="work-overlay"></div>
+        <div class="work-top"><span class="work-chip">Podcast</span><span class="work-num">— 004 / 12</span></div>
+        <div class="work-play"><svg viewBox="0 0 16 16"><path d="M4 3L13 8L4 13V3Z"/></svg></div>
+        <div class="work-meta">
+          <div>
+            <div class="title">Daniel <span class="it">A.</span></div>
+            <div class="sub">Podcast brand authority build</div>
+          </div>
+          <div class="stats"><b>+180%</b>reach</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:48px; text-align:center">
+      <a href="#" class="cta-ghost" style="display:inline-flex">Explore Full Portfolio →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sect" id="faq" data-screen-label="FAQ">
+  <div class="wrap">
+    <div class="sect-head">
+      <span class="idx">§ 05 / FREQUENTLY ASKED</span>
+      <h2>The <span class="it">fine print,</span> honestly.</h2>
+      <p class="intro">Short answers, no fluff. If something isn't here, book a call — we'd rather talk it through than pad this page.</p>
+    </div>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-q"><span class="q-n">Q 01</span><span>Who's actually behind the team?</span><span class="q-toggle"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">A husband-and-wife duo with 5+ years in the industry. Chami leads creative direction; Levi runs strategy. Behind us: 20+ elite editors and designers, 5 script writers, and 5 social ads specialists — all hand-picked, all in-house.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="q-n">Q 02</span><span>Why you over an agency or an in-house hire?</span><span class="q-toggle"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">Traditional agencies charge premium for slow output. In-house teams are expensive to maintain and scale. We're a hybrid — a dedicated global team operating 85% more efficiently than internal staff, at a fraction of the cost, with senior creative direction on every piece.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="q-n">Q 03</span><span>How does the contract work?</span><span class="q-toggle"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">Month-to-month. Professional commitment, zero lock-in. Pause or cancel anytime — we earn your business every 30 days.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="q-n">Q 04</span><span>How do I send raw content?</span><span class="q-toggle"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">When you're in, a dedicated account lead onboards you to ClickUp — our project hub. Drop footage, briefs, and feedback in one place. Simple.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="q-n">Q 05</span><span>Will this actually grow my brand?</span><span class="q-toggle"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">Growth isn't guaranteed — anyone promising otherwise is lying. What we can say: our work typically outperforms prior baselines by 10×. Content has to resonate with your audience; we engineer everything we can control to load the dice.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="q-n">Q 06</span><span>What's the client protection policy?</span><span class="q-toggle"></span></button>
+        <div class="faq-a"><div class="faq-a-inner">Client-first, always. NDAs by default, brand integrity protected, and free LinkedIn management thrown in as an after-service. Your growth is our growth.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Finale -->
+<section class="finale" id="contact" data-screen-label="Contact">
+  <div class="finale-glow"></div>
+  <div class="wrap">
+    <span class="kicker"><span class="dot"></span>Limited availability · High-end clientele only</span>
+    <h2>Ready to <span class="it">scale?</span></h2>
+    <div class="cta-row">
+      <a href="#" class="cta-primary" style="font-size:13px; padding:22px 36px">
+        Book Your Strategy Session
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.4"/></svg>
+      </a>
+    </div>
+    <div class="micro">Month-to-month · Cancel anytime · <span>4 seats open, Q2 2026</span></div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="brand-col">
+        <div class="serif">Quid<span class="it" style="font-style:italic">E</span>dge<span style="color:var(--accent)">.</span></div>
+        <p>A global content studio engineering personal brands for founders, investors, and elite creators.</p>
+      </div>
+      <div>
+        <h5>Navigate</h5>
+        <ul>
+          <li><a href="#work">Selected Works</a></li>
+          <li><a href="#ecosystem">Ecosystem</a></li>
+          <li><a href="#packages">Partnership</a></li>
+          <li><a href="#about">Founders</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Connect</h5>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">TikTok</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="mailto:hello@quidedge.com">hello@quidedge.com</a></li>
+          <li>Global · All timezones</li>
+          <li><a href="#contact">Book a call →</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 QuidEdge — Levi &amp; Chami. All rights reserved.</span>
+      <span>Engineered for viral impact.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Tweaks Panel -->
+<div id="tweaks">
+  <h4>Tweaks <span class="chip">● LIVE</span></h4>
+  <div class="group">
+    <label>Accent color</label>
+    <div class="swatches" id="sw-accent">
+      <div class="sw active" data-value="oklch(0.75 0.13 75)" style="background: oklch(0.75 0.13 75)"></div>
+      <div class="sw" data-value="oklch(0.72 0.17 25)" style="background: oklch(0.72 0.17 25)"></div>
+      <div class="sw" data-value="oklch(0.78 0.14 145)" style="background: oklch(0.78 0.14 145)"></div>
+      <div class="sw" data-value="oklch(0.72 0.14 260)" style="background: oklch(0.72 0.14 260)"></div>
+      <div class="sw" data-value="oklch(0.85 0.02 90)" style="background: oklch(0.85 0.02 90)"></div>
+    </div>
+  </div>
+  <div class="group">
+    <label>Theme</label>
+    <div class="segs" id="seg-theme">
+      <div class="seg active" data-value="dark">Midnight</div>
+      <div class="seg" data-value="deepest">Deepest</div>
+      <div class="seg" data-value="warm">Warm black</div>
+    </div>
+  </div>
+  <div class="group">
+    <label>Display font</label>
+    <div class="segs" id="seg-font">
+      <div class="seg active" data-value="instrument">Instrument</div>
+      <div class="seg" data-value="playfair">Playfair</div>
+      <div class="seg" data-value="cormorant">Cormorant</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // === Current date ===
+  const d = new Date(2026, 3, 19);
+  document.getElementById('date').textContent =
+    d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).toUpperCase();
+
+  // === FAQ accordion ===
+  document.querySelectorAll('.faq-item').forEach((item, i) => {
+    const btn = item.querySelector('.faq-q');
+    btn.addEventListener('click', () => {
+      item.classList.toggle('open');
+    });
+    if (i === 0) item.classList.add('open');
+  });
+
+  // === Reveal on scroll ===
+  // Mark above-the-fold reveals as already-in so they render immediately.
+  const vh = window.innerHeight;
+  document.querySelectorAll('.reveal').forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < vh * 0.9) el.classList.add('in');
+  });
+  document.documentElement.classList.add('js-ready');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
+  document.querySelectorAll('.reveal:not(.in)').forEach(el => io.observe(el));
+
+  // === Custom cursor ===
+  const cur = document.getElementById('cursor');
+  let mx = -100, my = -100, cx = -100, cy = -100;
+  window.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
+  function raf() {
+    cx += (mx - cx) * 0.2; cy += (my - cy) * 0.2;
+    cur.style.left = cx + 'px'; cur.style.top = cy + 'px';
+    requestAnimationFrame(raf);
+  }
+  raf();
+  document.querySelectorAll('a, button, .work, .reel-card').forEach(el => {
+    el.addEventListener('mouseenter', () => { cur.style.width = '28px'; cur.style.height = '28px'; });
+    el.addEventListener('mouseleave', () => { cur.style.width = '8px'; cur.style.height = '8px'; });
+  });
+
+  // === Tweaks (editable defaults persisted to disk) ===
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "accent": "oklch(0.75 0.13 75)",
+    "theme": "dark",
+    "font": "instrument"
+  }/*EDITMODE-END*/;
+
+  const themes = {
+    dark:    { bg: '#0a0908', bg2: '#121110', bg3: '#1a1917' },
+    deepest: { bg: '#030303', bg2: '#0a0a0a', bg3: '#141414' },
+    warm:    { bg: '#120e09', bg2: '#1a140e', bg3: '#231c14' },
+  };
+  const fonts = {
+    instrument: { fam: '"Instrument Serif", serif', import: 'Instrument+Serif:ital@0;1' },
+    playfair:   { fam: '"Playfair Display", serif', import: 'Playfair+Display:ital,wght@0,400;0,500;1,400' },
+    cormorant:  { fam: '"Cormorant Garamond", serif', import: 'Cormorant+Garamond:ital,wght@0,400;0,500;1,400' },
+  };
+
+  const state = { ...TWEAK_DEFAULTS };
+
+  function applyState() {
+    const root = document.documentElement;
+    root.style.setProperty('--accent', state.accent);
+    const t = themes[state.theme] || themes.dark;
+    root.style.setProperty('--bg', t.bg);
+    root.style.setProperty('--bg-2', t.bg2);
+    root.style.setProperty('--bg-3', t.bg3);
+    const f = fonts[state.font] || fonts.instrument;
+    root.style.setProperty('--serif', f.fam);
+    // load font if needed
+    const id = 'font-' + state.font;
+    if (!document.getElementById(id)) {
+      const link = document.createElement('link');
+      link.id = id; link.rel = 'stylesheet';
+      link.href = 'https://fonts.googleapis.com/css2?family=' + f.import + '&display=swap';
+      document.head.appendChild(link);
+    }
+    // update active chips
+    document.querySelectorAll('#sw-accent .sw').forEach(el => el.classList.toggle('active', el.dataset.value === state.accent));
+    document.querySelectorAll('#seg-theme .seg').forEach(el => el.classList.toggle('active', el.dataset.value === state.theme));
+    document.querySelectorAll('#seg-font .seg').forEach(el => el.classList.toggle('active', el.dataset.value === state.font));
+  }
+  applyState();
+
+  function setKey(k, v) {
+    state[k] = v;
+    applyState();
+    try { window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [k]: v } }, '*'); } catch {}
+  }
+
+  document.querySelectorAll('#sw-accent .sw').forEach(el => {
+    el.addEventListener('click', () => setKey('accent', el.dataset.value));
+  });
+  document.querySelectorAll('#seg-theme .seg').forEach(el => {
+    el.addEventListener('click', () => setKey('theme', el.dataset.value));
+  });
+  document.querySelectorAll('#seg-font .seg').forEach(el => {
+    el.addEventListener('click', () => setKey('font', el.dataset.value));
+  });
+
+  // === Tweaks host integration ===
+  const panel = document.getElementById('tweaks');
+  window.addEventListener('message', (e) => {
+    const d = e.data || {};
+    if (d.type === '__activate_edit_mode') panel.classList.add('visible');
+    if (d.type === '__deactivate_edit_mode') panel.classList.remove('visible');
+  });
+  try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch {}
+</script>
 </body>
-
 </html>
