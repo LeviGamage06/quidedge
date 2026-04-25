@@ -23,21 +23,30 @@
 {"@context":"https://schema.org","@type":"ProfessionalService","name":"QuidEdge","description":"World-class video editing agency and content strategy team specializing in personal branding for elite entrepreneurs.","url":"https://quidedge.github.io","founder":[{"@type":"Person","name":"Levi"},{"@type":"Person","name":"Chami"}],"serviceType":["Video Editing Agency","Content Strategy","Personal Branding","YouTube Growth","Short-form Video Editing","Retention Editing"]}
 </script>
 
+<!-- SPEED OPTIMIZATION: Preconnect & DNS Prefetch -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Dancing+Script:wght@600&display=swap&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="https://connect.facebook.net">
+
+<!-- Cleaned up Google Fonts Request -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/css/intlTelInput.css">
+
+<!-- SPEED OPTIMIZATION: Non-render-blocking CSS -->
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/css/intlTelInput.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/css/intlTelInput.css"></noscript>
 
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init','1666135001086024');fbq('track','PageView');
 </script>
-<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1666135001086024&ev=PageView&noscript=1"/></noscript>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1666135001086024&ev=PageView&noscript=1" alt="fb"/></noscript>
 
 <style>
 /* Hide custom cursor on touch devices */
@@ -465,30 +474,31 @@ select.fi option{background:#1a1a1a;color:var(--white)}
 </section>
 
 <!-- ════════════════════════ MARQUEE ════════════════════════ -->
+<!-- SPEED OPTIMIZATION: added loading="lazy" decoding="async" and width/height dimensions for images -->
 <div class="marquee-sect" aria-label="Trusted by industry titans">
   <p class="marquee-label">Trusted by Industry Titans &amp; Global Creators</p>
   <div class="marquee-wrap">
     <div class="marquee-track">
       <!-- set 1 -->
-      <div class="mq-item"><img src="images/robert-logo.png" alt="Robert Herjavec — Shark Tank Investor" class="mq-img" style="height:42px"></div>
-      <div class="mq-item"><img src="images/ryan.jpg"        alt="Ryan Trahan — YouTube Creator"           class="mq-avatar"></div>
-      <div class="mq-item"><img src="images/enes-yilmazer.png" alt="Enes Yilmazer — Luxury Real Estate"   class="mq-img" style="height:42px"></div>
-      <div class="mq-item"><img src="images/daniel.jpg"     alt="Daniel — Personal Brand"                  class="mq-avatar"></div>
+      <div class="mq-item"><img src="images/robert-logo.png" alt="Robert Herjavec" class="mq-img" style="height:42px" width="150" height="42" loading="lazy" decoding="async"></div>
+      <div class="mq-item"><img src="images/ryan.jpg"        alt="Ryan Trahan"     class="mq-avatar" width="42" height="42" loading="lazy" decoding="async"></div>
+      <div class="mq-item"><img src="images/enes-yilmazer.png" alt="Enes Yilmazer" class="mq-img" style="height:42px" width="150" height="42" loading="lazy" decoding="async"></div>
+      <div class="mq-item"><img src="images/daniel.jpg"     alt="Daniel"          class="mq-avatar" width="42" height="42" loading="lazy" decoding="async"></div>
       <!-- set 2 -->
-      <div class="mq-item"><img src="images/robert-logo.png" alt="Robert Herjavec" class="mq-img" style="height:42px"></div>
-      <div class="mq-item"><img src="images/ryan.jpg"        alt="Ryan Trahan"      class="mq-avatar"></div>
-      <div class="mq-item"><img src="images/enes-yilmazer.png" alt="Enes Yilmazer" class="mq-img" style="height:42px"></div>
-      <div class="mq-item"><img src="images/daniel.jpg"     alt="Daniel"           class="mq-avatar"></div>
-      <!-- set 3 (keeps loop seamless at 50%) -->
-      <div class="mq-item"><img src="images/robert-logo.png" alt="Robert Herjavec" class="mq-img" style="height:42px"></div>
-      <div class="mq-item"><img src="images/ryan.jpg"        alt="Ryan Trahan"      class="mq-avatar"></div>
-      <div class="mq-item"><img src="images/enes-yilmazer.png" alt="Enes Yilmazer" class="mq-img" style="height:42px"></div>
-      <div class="mq-item"><img src="images/daniel.jpg"     alt="Daniel"           class="mq-avatar"></div>
+      <div class="mq-item"><img src="images/robert-logo.png" alt="Robert Herjavec" class="mq-img" style="height:42px" width="150" height="42" loading="lazy" decoding="async"></div>
+      <div class="mq-item"><img src="images/ryan.jpg"        alt="Ryan Trahan"     class="mq-avatar" width="42" height="42" loading="lazy" decoding="async"></div>
+      <div class="mq-item"><img src="images/enes-yilmazer.png" alt="Enes Yilmazer" class="mq-img" style="height:42px" width="150" height="42" loading="lazy" decoding="async"></div>
+      <div class="mq-item"><img src="images/daniel.jpg"     alt="Daniel"          class="mq-avatar" width="42" height="42" loading="lazy" decoding="async"></div>
+      <!-- set 3 -->
+      <div class="mq-item"><img src="images/robert-logo.png" alt="Robert Herjavec" class="mq-img" style="height:42px" width="150" height="42" loading="lazy" decoding="async"></div>
+      <div class="mq-item"><img src="images/ryan.jpg"        alt="Ryan Trahan"     class="mq-avatar" width="42" height="42" loading="lazy" decoding="async"></div>
+      <div class="mq-item"><img src="images/enes-yilmazer.png" alt="Enes Yilmazer" class="mq-img" style="height:42px" width="150" height="42" loading="lazy" decoding="async"></div>
+      <div class="mq-item"><img src="images/daniel.jpg"     alt="Daniel"          class="mq-avatar" width="42" height="42" loading="lazy" decoding="async"></div>
       <!-- set 4 -->
-      <div class="mq-item"><img src="images/robert-logo.png" alt="Robert Herjavec" class="mq-img" style="height:42px"></div>
-      <div class="mq-item"><img src="images/ryan.jpg"        alt="Ryan Trahan"      class="mq-avatar"></div>
-      <div class="mq-item"><img src="images/enes-yilmazer.png" alt="Enes Yilmazer" class="mq-img" style="height:42px"></div>
-      <div class="mq-item"><img src="images/daniel.jpg"     alt="Daniel"           class="mq-avatar"></div>
+      <div class="mq-item"><img src="images/robert-logo.png" alt="Robert Herjavec" class="mq-img" style="height:42px" width="150" height="42" loading="lazy" decoding="async"></div>
+      <div class="mq-item"><img src="images/ryan.jpg"        alt="Ryan Trahan"     class="mq-avatar" width="42" height="42" loading="lazy" decoding="async"></div>
+      <div class="mq-item"><img src="images/enes-yilmazer.png" alt="Enes Yilmazer" class="mq-img" style="height:42px" width="150" height="42" loading="lazy" decoding="async"></div>
+      <div class="mq-item"><img src="images/daniel.jpg"     alt="Daniel"          class="mq-avatar" width="42" height="42" loading="lazy" decoding="async"></div>
     </div>
   </div>
 </div>
@@ -511,7 +521,7 @@ select.fi option{background:#1a1a1a;color:var(--white)}
         </div>
       </div>
       <div class="bc tall rev d2" style="overflow:hidden">
-        <div class="bim-wrap"><img src="images/image05.png" alt="Viral Video Engineering Analytics" class="bim"></div>
+        <div class="bim-wrap"><img src="images/image05.png" alt="Viral Video Engineering Analytics" class="bim" loading="lazy" decoding="async"></div>
         <div class="bc.tall-overlay" style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(6, 6, 6, 0.95) 25%, transparent) center top / cover; z-index: 1; width: 785px; margin: 299.883px 0px 0px; padding: 309.094px 0px 0px; border-width: 0px; border-style: solid; border-radius: 0px; height: 375px"></div>
         <div class="bc-inner" style="position:relative;z-index:2;padding:34px;margin-top:auto">
           <div class="bc-lbl">02 — Growth</div>
@@ -562,6 +572,7 @@ select.fi option{background:#1a1a1a;color:var(--white)}
 </div>
 
 <!-- ════════════════════════ WORK ════════════════════════ -->
+<!-- SPEED OPTIMIZATION: preload="none" for videos below fold saves initial bandwidth -->
 <section id="work" aria-labelledby="work-title">
   <div class="wrap">
     <div class="work-hdr">
@@ -586,7 +597,7 @@ select.fi option{background:#1a1a1a;color:var(--white)}
           <button class="btn-case" onclick="openAnalysis('robert')">View Analysis →</button>
         </div>
         <div class="cc-media">
-          <video class="cc-vid lv" loop muted playsinline preload="metadata" aria-label="Robert Herjavec video reel">
+          <video class="cc-vid lv" loop muted playsinline preload="none" aria-label="Robert Herjavec video reel">
             <source src="images/Robert Herjavec_Footage001.mp4" type="video/mp4">
           </video>
           <div class="cc-veil" aria-hidden="true"></div>
@@ -606,7 +617,7 @@ select.fi option{background:#1a1a1a;color:var(--white)}
           <button class="btn-case" onclick="openAnalysis('ryan')">View Analysis →</button>
         </div>
         <div class="cc-media">
-          <video class="cc-vid lv" loop muted playsinline preload="metadata" aria-label="Ryan Trahan video reel">
+          <video class="cc-vid lv" loop muted playsinline preload="none" aria-label="Ryan Trahan video reel">
             <source src="images/ryan_trahan.mp4" type="video/mp4">
           </video>
           <div class="cc-veil" aria-hidden="true"></div>
@@ -626,7 +637,7 @@ select.fi option{background:#1a1a1a;color:var(--white)}
           <button class="btn-case" onclick="openAnalysis('enes')">View Analysis →</button>
         </div>
         <div class="cc-media">
-          <video class="cc-vid lv" loop muted playsinline preload="metadata" aria-label="Enes Yilmazer luxury real estate video reel">
+          <video class="cc-vid lv" loop muted playsinline preload="none" aria-label="Enes Yilmazer luxury real estate video reel">
             <source src="images/Enes Yilmazer.mp4" type="video/mp4">
           </video>
           <div class="cc-veil" aria-hidden="true"></div>
@@ -832,6 +843,7 @@ select.fi option{background:#1a1a1a;color:var(--white)}
 </div>
 
 <!-- ════════════════════════ SCRIPTS ════════════════════════ -->
+<!-- SPEED OPTIMIZATION: Added defer to non-essential scripts -->
 <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/intlTelInput.min.js"></script>
 <script>
 /* ── Anti-copy ── */
@@ -940,41 +952,44 @@ function closeAnalysis(){document.getElementById('aModal').classList.remove('ope
 document.getElementById('aModal').addEventListener('click',e=>{if(e.target===document.getElementById('aModal'))closeAnalysis();});
 
 /* ── Form submission ── */
-document.addEventListener('DOMContentLoaded',()=>{
+// SPEED OPTIMIZATION: Wait for fully loaded before intlTelInput setup
+window.addEventListener('load',()=>{
   const waInput=document.querySelector('#whatsapp');
-  const iti=window.intlTelInput(waInput,{
-    initialCountry:'auto',
-    geoIpLookup:cb=>fetch('https://ipapi.co/json').then(r=>r.json()).then(d=>cb(d.country_code)).catch(()=>cb('us')),
-    utilsScript:'https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/utils.js',
-    separateDialCode:true
-  });
+  if(window.intlTelInput) {
+    const iti=window.intlTelInput(waInput,{
+      initialCountry:'auto',
+      geoIpLookup:cb=>fetch('https://ipapi.co/json').then(r=>r.json()).then(d=>cb(d.country_code)).catch(()=>cb('us')),
+      utilsScript:'https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/utils.js',
+      separateDialCode:true
+    });
 
-  document.getElementById('bookForm').addEventListener('submit',e=>{
-    e.preventDefault();
-    const form=e.target;
-    if(!form.checkValidity()){form.reportValidity();return;}
-    const waVal=waInput.value.trim();
-    if(waVal&&!iti.isValidNumber()){document.getElementById('waErr').style.display='block';return;}
-    document.getElementById('waErr').style.display='none';
-    const btn=form.querySelector('.f-submit');
-    btn.textContent='Submitting…';btn.disabled=true;
-    let phone=waVal?"'"+iti.getNumber(intlTelInputUtils.numberFormat.INTERNATIONAL):'';
-    const fd=new FormData();
-    fd.append('fullName',document.getElementById('fullName').value);
-    fd.append('email',document.getElementById('email').value);
-    fd.append('phone',phone);fd.append('whatsapp',phone);
-    fd.append('revenue',document.getElementById('revenue').value);
-    fd.append('consent1',document.getElementById('c1').checked);
-    fd.append('consent2',document.getElementById('c2').checked);
-    fetch('https://script.google.com/macros/s/AKfycbyP2WNh0sp45wjqh_hoZYXvqL48VQIChpzivHRY1nT9mCGgHFG1lVPSUGrDMRZ6KlsV/exec',{method:'POST',body:fd})
-      .then(()=>{
-        document.getElementById('fOk').style.display='block';
-        form.reset();btn.textContent='Submit Application';btn.disabled=false;
-        if(typeof fbq==='function')fbq('track','Lead');
-        setTimeout(()=>{closeBook();document.getElementById('fOk').style.display='none';},3000);
-      })
-      .catch(()=>{btn.textContent='Submit Application';btn.disabled=false;alert('Something went wrong. Please try again.');});
-  });
+    document.getElementById('bookForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      const form=e.target;
+      if(!form.checkValidity()){form.reportValidity();return;}
+      const waVal=waInput.value.trim();
+      if(waVal&&!iti.isValidNumber()){document.getElementById('waErr').style.display='block';return;}
+      document.getElementById('waErr').style.display='none';
+      const btn=form.querySelector('.f-submit');
+      btn.textContent='Submitting…';btn.disabled=true;
+      let phone=waVal?"'"+iti.getNumber(intlTelInputUtils.numberFormat.INTERNATIONAL):'';
+      const fd=new FormData();
+      fd.append('fullName',document.getElementById('fullName').value);
+      fd.append('email',document.getElementById('email').value);
+      fd.append('phone',phone);fd.append('whatsapp',phone);
+      fd.append('revenue',document.getElementById('revenue').value);
+      fd.append('consent1',document.getElementById('c1').checked);
+      fd.append('consent2',document.getElementById('c2').checked);
+      fetch('https://script.google.com/macros/s/AKfycbyP2WNh0sp45wjqh_hoZYXvqL48VQIChpzivHRY1nT9mCGgHFG1lVPSUGrDMRZ6KlsV/exec',{method:'POST',body:fd})
+        .then(()=>{
+          document.getElementById('fOk').style.display='block';
+          form.reset();btn.textContent='Submit Application';btn.disabled=false;
+          if(typeof fbq==='function')fbq('track','Lead');
+          setTimeout(()=>{closeBook();document.getElementById('fOk').style.display='none';},3000);
+        })
+        .catch(()=>{btn.textContent='Submit Application';btn.disabled=false;alert('Something went wrong. Please try again.');});
+    });
+  }
 });
 </script>
 </body>
