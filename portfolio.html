@@ -18,12 +18,19 @@
 <meta property="og:description" content="Witness how we engineered 10M+ views and viral retention for industry titans.">
 <meta property="og:image" content="https://quidedge.github.io/images/image05.png">
 
+<!-- SPEED OPTIMIZATION: Preconnect & DNS Prefetch -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 
 <link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/css/intlTelInput.css">
+
+<!-- SPEED OPTIMIZATION: Non-render-blocking CSS -->
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/css/intlTelInput.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/css/intlTelInput.css"></noscript>
 
 <style>
 /* ─── PERFORMANCE ─── */
@@ -424,6 +431,7 @@ select.fi option{background:#1a1a1a;color:var(--white)}
 </div>
 
 <!-- ════════════════════════ SCRIPTS ════════════════════════ -->
+<!-- SPEED OPTIMIZATION: added defer -->
 <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/intlTelInput.min.js"></script>
 <script>
 /* ── Anti-copy ── */
@@ -464,39 +472,41 @@ function closeBook(){document.getElementById('bookModal').classList.remove('open
 document.getElementById('bookModal').addEventListener('click',e=>{if(e.target===document.getElementById('bookModal'))closeBook();});
 
 /* ── Form ── */
-document.addEventListener('DOMContentLoaded',()=>{
+window.addEventListener('load',()=>{
   const waInput=document.querySelector('#whatsapp');
-  const iti=window.intlTelInput(waInput,{
-    initialCountry:'auto',
-    geoIpLookup:cb=>fetch('https://ipapi.co/json').then(r=>r.json()).then(d=>cb(d.country_code)).catch(()=>cb('us')),
-    utilsScript:'https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/utils.js',
-    separateDialCode:true
-  });
-  document.getElementById('bookForm').addEventListener('submit',e=>{
-    e.preventDefault();
-    const form=e.target;
-    if(!form.checkValidity()){form.reportValidity();return;}
-    const waVal=waInput.value.trim();
-    if(waVal&&!iti.isValidNumber()){document.getElementById('waErr').style.display='block';return;}
-    document.getElementById('waErr').style.display='none';
-    const btn=form.querySelector('.f-submit');
-    btn.textContent='Submitting…';btn.disabled=true;
-    let phone=waVal?"'"+iti.getNumber(intlTelInputUtils.numberFormat.INTERNATIONAL):'';
-    const fd=new FormData();
-    fd.append('fullName',document.getElementById('fullName').value);
-    fd.append('email',document.getElementById('email').value);
-    fd.append('phone',phone);fd.append('whatsapp',phone);
-    fd.append('revenue',document.getElementById('revenue').value);
-    fd.append('consent1',document.getElementById('c1').checked);
-    fd.append('consent2',document.getElementById('c2').checked);
-    fetch('https://script.google.com/macros/s/AKfycbyP2WNh0sp45wjqh_hoZYXvqL48VQIChpzivHRY1nT9mCGgHFG1lVPSUGrDMRZ6KlsV/exec',{method:'POST',body:fd})
-      .then(()=>{
-        document.getElementById('fOk').style.display='block';
-        form.reset();btn.textContent='Submit Application';btn.disabled=false;
-        setTimeout(()=>{closeBook();document.getElementById('fOk').style.display='none';},3000);
-      })
-      .catch(()=>{btn.textContent='Submit Application';btn.disabled=false;alert('Something went wrong. Please try again.');});
-  });
+  if(window.intlTelInput) {
+    const iti=window.intlTelInput(waInput,{
+      initialCountry:'auto',
+      geoIpLookup:cb=>fetch('https://ipapi.co/json').then(r=>r.json()).then(d=>cb(d.country_code)).catch(()=>cb('us')),
+      utilsScript:'https://cdn.jsdelivr.net/npm/intl-tel-input@19.2.16/build/js/utils.js',
+      separateDialCode:true
+    });
+    document.getElementById('bookForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      const form=e.target;
+      if(!form.checkValidity()){form.reportValidity();return;}
+      const waVal=waInput.value.trim();
+      if(waVal&&!iti.isValidNumber()){document.getElementById('waErr').style.display='block';return;}
+      document.getElementById('waErr').style.display='none';
+      const btn=form.querySelector('.f-submit');
+      btn.textContent='Submitting…';btn.disabled=true;
+      let phone=waVal?"'"+iti.getNumber(intlTelInputUtils.numberFormat.INTERNATIONAL):'';
+      const fd=new FormData();
+      fd.append('fullName',document.getElementById('fullName').value);
+      fd.append('email',document.getElementById('email').value);
+      fd.append('phone',phone);fd.append('whatsapp',phone);
+      fd.append('revenue',document.getElementById('revenue').value);
+      fd.append('consent1',document.getElementById('c1').checked);
+      fd.append('consent2',document.getElementById('c2').checked);
+      fetch('https://script.google.com/macros/s/AKfycbyP2WNh0sp45wjqh_hoZYXvqL48VQIChpzivHRY1nT9mCGgHFG1lVPSUGrDMRZ6KlsV/exec',{method:'POST',body:fd})
+        .then(()=>{
+          document.getElementById('fOk').style.display='block';
+          form.reset();btn.textContent='Submit Application';btn.disabled=false;
+          setTimeout(()=>{closeBook();document.getElementById('fOk').style.display='none';},3000);
+        })
+        .catch(()=>{btn.textContent='Submit Application';btn.disabled=false;alert('Something went wrong. Please try again.');});
+    });
+  }
 });
 </script>
 </body>
