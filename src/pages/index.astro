@@ -343,7 +343,8 @@ const serviceSchema = {
       .then(text => {
         const all = toObjects(parseCSV(text)).filter(o => (val(o, ['show', 'display']) || 'yes').toLowerCase() !== 'no');
         updateMarquee(all.map(o => val(o, ['client', 'name'])).filter(Boolean));
-        const html = all.slice(0, 2).map(cardHtml).filter(Boolean).join('');
+        // Show up to 6 case studies on the homepage; the Work page shows all.
+        const html = all.slice(0, 6).map(cardHtml).filter(Boolean).join('');
         if (html) {
           grid.innerHTML = html;
           grid.querySelectorAll('img').forEach(im => im.addEventListener('error', () => { im.style.display = 'none'; }));
