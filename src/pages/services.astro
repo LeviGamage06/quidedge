@@ -1,0 +1,152 @@
+---
+import Layout from "../layouts/Layout.astro";
+const raw = import.meta.env.BASE_URL;
+const bp = raw.endsWith('/') ? raw.slice(0,-1) : raw;
+
+const services = [
+  { id:"foundation", num:"01", title:"Personal Branding",
+    headline:"Become the brand they can't ignore.",
+    paras:["We turn founders and executives into recognised industry icons — not by making them louder, but by making them unmistakeable.","Full identity strategy, content pillars, platform positioning, and visual language that commands authority at first glance. This is the foundation every piece of content is built on."],
+    items:["Brand positioning document","Content pillar framework","Visual language guide","Platform strategy — which platforms, what frequency","Bio & headline optimisation"],
+    vid:"Personal%20Branding.mp4", ar:"9/16",
+    img:"https://www.quidedge.com/images/image06.png" },
+  { id:"growth", num:"02", title:"Viral Engineering",
+    headline:"Beat the algorithm. Every time.",
+    paras:["Hooks that stop the scroll. Structures that hold attention. Titles that earn the click. Viral Engineering is not guesswork — it's a system built on data.","We analyse what's working in your niche, reverse-engineer the patterns, and apply them to your content. Then we test, iterate, and improve every cycle."],
+    items:["Hook library — 50+ tested hooks per niche","Title & thumbnail A/B testing","Retention analytics review","Competitor breakdown & gap analysis","Monthly performance report"],
+    vid:"Viral%20Engineering.mp4", ar:"9/16",
+    img:"https://www.quidedge.com/images/image05.png" },
+  { id:"craft", num:"03", title:"Retention Editing",
+    headline:"Every second earns the next one.",
+    paras:["High-end editing optimised to hold attention — visual cuts, pacing, motion, and sound design that keeps viewers locked from first frame to last.","We edit to the data. Every cut is intentional. Every transition serves the story. The result is content that performs in the feed and converts in the funnel."],
+    items:["Long-form YouTube editing (4/mo on Digital Empire)","Short-form repurposing (30/mo on Digital Empire)","Captions & subtitles","Motion graphics & lower thirds","Thumbnail design"],
+    vid:"Retention%20Editing.mp4", ar:"16/9",
+    img:"https://www.quidedge.com/images/image08.png" },
+  { id:"scale", num:"04", title:"Multi-Platform Growth",
+    headline:"One brand. Every platform that matters.",
+    paras:["YouTube, TikTok, Reels, LinkedIn — each platform has its own language, algorithm, and audience behaviour. We speak all of them.","We don't just repurpose content. We engineer it for each platform's specific mechanics — the same message, tailored to land everywhere it shows up."],
+    items:["Platform-specific content adaptation","LinkedIn management (included free)","Cross-platform content calendar","Platform growth analytics","Ad creative production"],
+    vid:"Multi%20Platform%20Growth.mp4", ar:"16/9",
+    img:"https://www.quidedge.com/images/image07.png" },
+];
+
+const b0 = import.meta.env.BASE_URL.replace(/\/$/, '');
+const serviceListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "QuidEdge Services",
+  "itemListElement": services.map((s, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "item": {
+      "@type": "Service",
+      "name": s.title,
+      "description": s.headline,
+      "serviceType": s.title,
+      "provider": { "@type": "Organization", "name": "QuidEdge" },
+      "areaServed": ["US", "AU"],
+    },
+  })),
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": new URL(`${b0}/`, Astro.site).href },
+    { "@type": "ListItem", "position": 2, "name": "Services", "item": new URL(`${b0}/services`, Astro.site).href },
+  ],
+};
+---
+<Layout
+  fullTitle="Video Editing, Viral & Personal Branding Services | QuidEdge"
+  title="Services"
+  description="QuidEdge services: retention video editing, viral engineering, YouTube & short-form growth, and personal branding for founders and creators in the US, Australia & worldwide."
+  keywords="video editing services, YouTube editing agency, short-form content editing, viral video strategy, personal branding services, thumbnail design, retention editing"
+  schema={[serviceListSchema, breadcrumbSchema]}
+>
+
+  <section class="section-rule py-20 md:py-28 px-5 md:px-8">
+    <div class="mx-auto max-w-7xl">
+      <p class="label reveal mb-3">Our services</p>
+      <h1 class="text-[clamp(2.5rem,8vw,5.5rem)] font-light leading-[0.92] tracking-[-0.04em] reveal reveal-d1">
+        The Full <span class="weight-anchor">Ecosystem.</span>
+      </h1>
+      <p class="mt-5 max-w-xl text-sm text-stone reveal reveal-d2">
+        Everything your brand needs to dominate the digital landscape — under one world-class roof.
+      </p>
+    </div>
+  </section>
+
+  {services.map((s, i) => (
+    <section id={s.id} class="section-rule py-20 md:py-32 px-5 md:px-8">
+      <div class="mx-auto max-w-7xl">
+        <div class={`grid md:grid-cols-2 gap-10 md:gap-20 items-center ${i % 2 !== 0 ? 'md:[&>div:first-child]:order-2' : ''}`}>
+          <div class={`media relative overflow-hidden bg-ink-soft reveal ${s.ar === "9/16" ? "mx-auto w-full max-w-[320px]" : ""}`} style={`aspect-ratio:${s.ar};`}>
+            <video data-src={`${bp}/content/${s.vid}`} poster={s.img}
+              muted loop playsinline preload="none" data-autoplay="1"
+              aria-label={`${s.title} — QuidEdge service`}
+              class="w-full h-full object-cover opacity-70 hover:opacity-90 transition-opacity duration-700"></video>
+            <span class="ghost-num absolute top-4 left-4 text-[4rem]" aria-hidden="true">{s.num}</span>
+          </div>
+          <div class="reveal reveal-d1">
+            <p class="label mb-3">{s.num} — {s.title}</p>
+            <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-light leading-tight tracking-[-0.025em] mb-5">
+              {s.headline}
+            </h2>
+            {s.paras.map(p => <p class="text-sm text-stone leading-relaxed mb-3">{p}</p>)}
+            <div class="mt-6 pt-6" style="border-top:1px solid rgba(138,134,128,0.13);">
+              <p class="label mb-4">What's included</p>
+              <ul class="space-y-2.5">
+                {s.items.map(item => (
+                  <li class="flex items-start gap-3 text-sm text-stone">
+                    <svg class="mt-0.5 shrink-0 text-proof" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <a href={`${bp}/contact`} class="btn-primary mt-7 inline-flex">
+              Get started
+              <svg class="arr" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section-rule py-24 md:py-36 px-5 md:px-8 text-center">
+    <div class="mx-auto max-w-xl reveal">
+      <p class="label mb-4">Not sure where to start?</p>
+      <h2 class="text-[clamp(2rem,5vw,3.5rem)] font-light leading-tight tracking-[-0.025em]">Let's <span class="weight-anchor">talk.</span></h2>
+      <p class="mt-4 text-sm text-stone">Free strategy call — no pitch, just a real conversation about your goals.</p>
+      <a href={`${bp}/contact`} class="btn-primary mt-7 inline-flex">
+        Book a free call
+        <svg class="arr" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <script>
+    /* Service videos are deferred: no network request until the slot scrolls
+       near the viewport, then it loads + plays; it pauses when scrolled away.
+       This keeps the initial page load instant even with several videos. */
+    const svids = Array.from(document.querySelectorAll('video[data-autoplay]'));
+    if (svids.length && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          const v = e.target;
+          if (e.isIntersecting) {
+            if (!v.getAttribute('src') && v.dataset.src) v.setAttribute('src', v.dataset.src);
+            const p = v.play(); if (p) p.catch(() => {});
+          } else {
+            v.pause();
+          }
+        });
+      }, { threshold: 0.25, rootMargin: '200px 0px' });
+      svids.forEach((v) => io.observe(v));
+    } else {
+      svids.forEach((v) => { if (v.dataset.src) v.setAttribute('src', v.dataset.src); const p = v.play(); if (p) p.catch(() => {}); });
+    }
+  </script>
+</Layout>

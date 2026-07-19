@@ -1,0 +1,204 @@
+---
+import Layout from "../layouts/Layout.astro";
+const raw = import.meta.env.BASE_URL;
+const bp = raw.endsWith('/') ? raw.slice(0,-1) : raw;
+
+// ── LEAD FORM ENDPOINT ───────────────────────────────────────────────────────
+// Paste the Google Apps Script Web App URL here (it ends in /exec).
+// Full setup steps are in FORM-SETUP.md at the project root.
+const FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbztf1DpfBnDGcIjIrgrrv5U_5nzL6vOhVmNZ7vNnKw1NgZAp-hZdUcRy554XGOFeM_6GQ/exec";
+// ─────────────────────────────────────────────────────────────────────────────
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": new URL(`${bp}/`, Astro.site).href },
+    { "@type": "ListItem", "position": 2, "name": "Contact", "item": new URL(`${bp}/contact`, Astro.site).href },
+  ],
+};
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact QuidEdge",
+  "description": "Book a free strategy call with QuidEdge.",
+};
+---
+<Layout
+  fullTitle="Book a Free Strategy Call | QuidEdge"
+  title="Book a Call"
+  description="Book a free strategy call with QuidEdge. Video editing & personal branding for founders and creators in the US, Australia & worldwide. Reply within 24 hours."
+  keywords="book video editor, hire content agency, YouTube editing consultation, personal branding call, contact QuidEdge"
+  schema={[contactSchema, breadcrumbSchema]}
+>
+  <section class="section-rule py-16 md:py-24 px-5 md:px-8">
+    <div class="mx-auto max-w-7xl">
+      <div class="grid gap-12 md:grid-cols-[1fr_1.15fr] md:gap-20 items-start">
+
+        <div class="reveal">
+          <p class="label mb-4">Limited availability</p>
+          <h1 class="text-[clamp(2.5rem,6.5vw,4.5rem)] font-light leading-[0.95] tracking-[-0.04em] mb-6">
+            Start <span class="weight-anchor">Scaling.</span>
+          </h1>
+          <p class="text-sm text-stone leading-relaxed max-w-sm mb-10">
+            Tell us about your goals. We'll reply within 24 hours to schedule your free strategy session.
+          </p>
+          <div class="space-y-6 pb-10" style="border-bottom:1px solid rgba(138,134,128,0.13);">
+            {[
+              { h:"Free strategy call",        bd:"30 min with the founders — no pitch, just real conversation about your goals." },
+              { h:"No lock-in contracts",       bd:"Month-to-month. We earn your business every 30 days." },
+              { h:"Global team, fast delivery", bd:"24/7 production across timezones — no delays, ever." },
+            ].map(f => (
+              <div class="flex gap-4">
+                <span class="text-proof mt-0.5 text-xs shrink-0" aria-hidden="true">✦</span>
+                <div>
+                  <p class="text-sm font-semibold text-paper mb-1">{f.h}</p>
+                  <p class="text-sm text-stone leading-relaxed">{f.bd}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div class="pt-8">
+            <p class="label mb-4">Trusted by</p>
+            <div class="flex flex-wrap gap-2">
+              {["Ryan Trahan","Enes Yilmazer"].map(c => (
+                <span class="border px-3 py-1.5 text-xs text-stone"
+                      style="border-color:rgba(138,134,128,0.2);">{c}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal reveal-d1">
+          <!-- Success state — shown after a submission is stored -->
+          <div id="form-success" hidden class="card p-8 md:p-10 text-center">
+            <div class="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full"
+                 style="background:rgba(61,90,254,0.14);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-proof" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h2 class="text-2xl font-light mb-2">Request received.</h2>
+            <p class="text-sm text-stone leading-relaxed max-w-xs mx-auto">Thanks — your details are in and we'll reply within 24 hours to schedule your free strategy call.</p>
+          </div>
+
+          <form id="lead-form" action={FORM_ENDPOINT} method="POST" class="space-y-5">
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label for="name" class="label block mb-2">Full name *</label>
+                <input id="name" name="name" type="text" required autocomplete="name" class="form-input"/>
+              </div>
+              <div>
+                <label for="email" class="label block mb-2">Email address *</label>
+                <input id="email" name="email" type="email" required autocomplete="email" class="form-input"/>
+              </div>
+            </div>
+            <div>
+              <label for="wa" class="label block mb-2">WhatsApp (optional)</label>
+              <input id="wa" name="whatsapp" type="tel" autocomplete="tel"
+                placeholder="+1 555 000 0000" class="form-input"/>
+            </div>
+            <div>
+              <label for="revenue" class="label block mb-2">Annual revenue *</label>
+              <div class="relative">
+                <select id="revenue" name="revenue" required class="form-input bg-ink-soft pr-9" style="background-image:none;">
+                  <option value="" disabled selected>Select range</option>
+                  <option>$10K – $20K</option>
+                  <option>$20K – $50K</option>
+                  <option>More than $50K+</option>
+                </select>
+                <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-stone" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div>
+              <label for="platform" class="label block mb-2">Primary platform *</label>
+              <div class="relative">
+                <select id="platform" name="platform" required class="form-input bg-ink-soft pr-9" style="background-image:none;">
+                  <option value="" disabled selected>Select platform</option>
+                  <option>YouTube</option>
+                  <option>TikTok</option>
+                  <option>Instagram / Reels</option>
+                  <option>LinkedIn</option>
+                  <option>Multiple platforms</option>
+                </select>
+                <svg class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-stone" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div>
+              <label for="goal" class="label block mb-2">What are you working towards? *</label>
+              <textarea id="goal" name="goal" rows="4" required
+                placeholder="Tell us what you're trying to achieve..."
+                class="form-input resize-none"></textarea>
+            </div>
+            <fieldset class="space-y-3">
+              <legend class="sr-only">Consent checkboxes</legend>
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" name="consent_marketing" required class="mt-0.5 shrink-0 accent-proof"/>
+                <span class="text-xs text-stone leading-relaxed">I consent to receive marketing messages from QuidEdge. Message &amp; data rates may apply.</span>
+              </label>
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" name="consent_updates" required class="mt-0.5 shrink-0 accent-proof"/>
+                <span class="text-xs text-stone leading-relaxed">I consent to receive non-marketing order updates and reminders.</span>
+              </label>
+            </fieldset>
+            <input type="hidden" name="_subject" value="New QuidEdge strategy call application"/>
+            <p id="form-error" hidden role="alert" class="text-xs" style="color:#f87171;"></p>
+            <button id="lead-submit" type="submit" class="btn-primary w-full justify-center">
+              <span class="btn-label">Submit Application</span>
+              <svg class="arr" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg>
+            </button>
+            <p class="label text-center">Response within 24 hours · Cancel anytime</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script define:vars={{ FORM_ENDPOINT }}>
+    const form    = document.getElementById('lead-form');
+    const success = document.getElementById('form-success');
+    const errorEl = document.getElementById('form-error');
+    const btn     = document.getElementById('lead-submit');
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorEl.hidden = true;
+
+        // Native required-field validation first.
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+
+        if (!FORM_ENDPOINT || FORM_ENDPOINT.includes('PASTE_YOUR')) {
+          errorEl.textContent = 'Form is not connected yet — add your Apps Script URL in contact.astro.';
+          errorEl.hidden = false;
+          return;
+        }
+
+        const label = btn.querySelector('.btn-label');
+        const original = label ? label.textContent : '';
+        if (label) label.textContent = 'Sending…';
+        btn.disabled = true;
+        btn.style.opacity = '0.7';
+        btn.style.cursor = 'wait';
+
+        try {
+          // no-cors: the request reaches Apps Script even though we can't read
+          // the opaque response. It resolves on delivery, which is all we need.
+          await fetch(FORM_ENDPOINT, {
+            method: 'POST',
+            body: new FormData(form),
+            mode: 'no-cors',
+          });
+          form.hidden = true;
+          success.hidden = false;
+          success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } catch (err) {
+          errorEl.textContent = 'Something went wrong. Please try again, or email us directly at inquiries.quidedge.au@gmail.com.';
+          errorEl.hidden = false;
+          if (label) label.textContent = original;
+          btn.disabled = false;
+          btn.style.opacity = '1';
+          btn.style.cursor = '';
+        }
+      });
+    }
+  </script>
+</Layout>

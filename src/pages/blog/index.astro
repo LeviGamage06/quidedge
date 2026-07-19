@@ -1,0 +1,100 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+const raw = import.meta.env.BASE_URL;
+const bp = raw.endsWith('/') ? raw.slice(0,-1) : raw;
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const fmt = (d) => d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+
+const b0 = import.meta.env.BASE_URL.replace(/\/$/, '');
+const blogSchema = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "The Edge Blog — QuidEdge",
+  "description": "Insights on personal branding, viral engineering, and content strategy.",
+  "publisher": { "@type": "Organization", "name": "QuidEdge" },
+  "blogPost": posts.map((p) => ({
+    "@type": "BlogPosting",
+    "headline": p.data.title,
+    "description": p.data.description,
+    "datePublished": p.data.pubDate.toISOString(),
+    "articleSection": p.data.category,
+    "url": new URL(`${b0}/blog/${p.id}`, Astro.site).href,
+  })),
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": new URL(`${b0}/`, Astro.site).href },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": new URL(`${b0}/blog`, Astro.site).href },
+  ],
+};
+---
+<Layout
+  fullTitle="Video Editing & Personal Branding Insights | QuidEdge Blog"
+  title="Blog"
+  description="Practical insights on personal branding, viral engineering, and retention editing from the QuidEdge team behind 550M+ views."
+  keywords="viral hook framework, personal branding for founders, retention editing tips, YouTube growth strategy, short-form content tips"
+  schema={[blogSchema, breadcrumbSchema]}
+>
+
+  <section class="section-rule py-20 md:py-28 px-5 md:px-8">
+    <div class="mx-auto max-w-7xl">
+      <p class="label reveal mb-3">Insights</p>
+      <h1 class="text-[clamp(2.5rem,8vw,5.5rem)] font-light leading-[0.92] tracking-[-0.04em] reveal reveal-d1">
+        The <span class="weight-anchor">Edge</span> Blog.
+      </h1>
+      <p class="mt-5 max-w-xl text-sm text-stone reveal reveal-d2">
+        Practical insights on personal branding, viral engineering, and retention editing — from the team behind 550M+ views.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-rule py-12 md:py-20 px-5 md:px-8">
+    <div class="mx-auto max-w-7xl">
+      {posts.length === 0 ? (
+        <p class="text-sm text-stone">New posts are on the way — check back soon.</p>
+      ) : (
+        <div class="grid sm:grid-cols-2 gap-px bg-stone/10">
+          {posts.map((p, i) => (
+            <a href={`${bp}/blog/${p.id}`} class={`card group p-7 md:p-9 reveal reveal-d${(i % 2) + 1}`}>
+              <div class="flex items-center justify-between mb-4">
+                <p class="label">{p.data.category}</p>
+                <span class="label">{fmt(p.data.pubDate)}</span>
+              </div>
+              <h2 class="text-base md:text-lg font-light leading-snug text-paper mb-3 group-hover:text-paper/75 transition-colors">
+                {p.data.title}
+              </h2>
+              <p class="text-xs text-stone leading-relaxed line-clamp-2 mb-5">{p.data.description}</p>
+              <p class="label text-proof group-hover:text-paper transition-colors">Read&nbsp;→</p>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="section-rule py-20 md:py-32 px-5 md:px-8 text-center">
+    <div class="mx-auto max-w-md reveal">
+      <p class="label mb-4">Never miss a post</p>
+      <h2 class="text-[clamp(2rem,4vw,3rem)] font-light leading-tight tracking-[-0.025em]">
+        One insight a week. <span class="weight-anchor">No fluff.</span>
+      </h2>
+      <p class="mt-4 text-sm text-stone">Straight from the team behind 550M+ views.</p>
+      <form action="https://script.google.com/macros/s/AKfycbztf1DpfBnDGcIjIrgrrv5U_5nzL6vOhVmNZ7vNnKw1NgZAp-hZdUcRy554XGOFeM_6GQ/exec" method="POST"
+            class="newsletter-form mt-7 flex flex-col sm:flex-row gap-2 max-w-sm mx-auto">
+        <label for="blog-email" class="sr-only">Email address</label>
+        <input id="blog-email" name="email" type="email" required placeholder="you@example.com"
+          class="form-input flex-1"/>
+        <input type="hidden" name="name" value="Newsletter subscriber"/>
+        <input type="hidden" name="goal" value="Newsletter signup (blog)"/>
+        <input type="hidden" name="_subject" value="QuidEdge blog newsletter"/>
+        <button type="submit" class="btn-primary shrink-0 justify-center">Subscribe</button>
+      </form>
+    </div>
+  </section>
+</Layout>

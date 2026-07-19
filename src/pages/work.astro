@@ -1,0 +1,549 @@
+---
+import Layout from "../layouts/Layout.astro";
+const raw = import.meta.env.BASE_URL;
+const bp = raw.endsWith('/') ? raw.slice(0,-1) : raw;
+
+// ── TESTIMONIALS SOURCE ──────────────────────────────────────────────────────
+// Paste the "Publish to web → CSV" link of your QuidEdge Testimonials sheet here.
+// Full steps are in TESTIMONIALS-SETUP.md. Add a row to the sheet → a new card
+// appears here automatically. No code changes, no rebuild.
+const TESTIMONIALS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTXvjE8M9lDwSxgVlBjnbndsN38G320jI0_L3qILSYlYdpn6-5ZNVd8Iph0K9PuVIZfsrKO_mWiQh9d/pub?gid=0&single=true&output=csv";
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── CASE STUDIES SOURCE ──────────────────────────────────────────────────────
+// Paste the "Publish to web → CSV" link of your Case Studies sheet here to edit
+// every case study (video, stats, growth chart, platform split, strategy) from a
+// sheet — no code. See CASE-STUDIES-SETUP.md. While this stays as the placeholder,
+// the built-in Ryan/Enes cards below are shown instead.
+const CASES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR3zoUDVE7TJhwtPuRyLcmKXakwXlo4_f19Ef5fbS4RmZGkYTD6MWHsEcuCpe90jG9ZfeGWB_SU0FU0/pub?gid=0&single=true&output=csv";
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CASE STUDIES
+// The `analytics` block powers the expandable "View analytics" report on each
+// card. The headline KPIs (100M+, 4M+, etc.) are your real figures. The growth
+// series and platform split are ILLUSTRATIVE placeholders — swap in real numbers
+// whenever you have them (just edit the arrays below; the chart redraws itself).
+// ─────────────────────────────────────────────────────────────────────────────
+const cases = [
+  { client:"Ryan Trahan", slug:"trahan", cat:"Elite YouTube Creator · Shorts Strategy",
+    desc:"Short-form viral engineering for one of YouTube's most-watched creators. Retention-first editing built for maximum hook power.",
+    strategy:"Ryan's audience expects novelty and pace. We developed a Shorts strategy that distilled his long-form energy into precise 15–60 second cuts engineered to hook in the first frame and drive re-watches. The result: 100M+ views across the short-form channel.",
+    metrics:[{val:"100M+",label:"Short-form Views"},{val:"10×",label:"Performance Lift"}],
+    img:"https://www.quidedge.com/images/Ryan.jpg",
+    video:"https://www.quidedge.com/images/ryan_trahan.mp4",
+    accent:"from-[#0b1520]",
+    analytics:{
+      summary:"Short-form performance across a 6-month build.",
+      kpis:[
+        {val:"100M+",label:"Short-form views"},
+        {val:"10×",label:"Performance lift"},
+        {val:"71%",label:"Avg. retention"},
+        {val:"+240%",label:"Reach growth"},
+      ],
+      growth:{ unit:"Monthly short-form views (M)", points:[4,9,17,31,52,74] },
+      platforms:[{name:"YouTube",pct:62},{name:"TikTok",pct:28},{name:"Instagram",pct:10}],
+    } },
+  { client:"Enes Yilmazer", slug:"enes", cat:"Luxury Real Estate · YouTube Growth",
+    desc:"Premium cinematic production for the world's #1 luxury real estate YouTube channel. Storytelling at global scale.",
+    strategy:"Enes built his brand on access — properties no one else could film. Our role was to match that access with production quality that felt cinematic. We refined his editing rhythm, upgraded his motion package, and helped scale his channel past 4M subscribers.",
+    metrics:[{val:"50M+",label:"Channel Views"},{val:"4M+",label:"Subscribers Reached"}],
+    img:"https://www.quidedge.com/images/enes yilmazer.png",
+    video:"https://www.quidedge.com/images/Enes Yilmazer.mp4",
+    accent:"from-[#0e1810]",
+    analytics:{
+      summary:"Channel growth after the cinematic production upgrade.",
+      kpis:[
+        {val:"50M+",label:"Channel views"},
+        {val:"4M+",label:"Subscribers"},
+        {val:"68%",label:"Avg. retention"},
+        {val:"+180%",label:"Watch-time growth"},
+      ],
+      growth:{ unit:"Subscribers (millions)", points:[1.2,1.8,2.4,3.0,3.5,4.1] },
+      platforms:[{name:"YouTube",pct:84},{name:"Instagram",pct:11},{name:"TikTok",pct:5}],
+    } },
+];
+
+// Build SVG polyline points for the growth sparkline (server-rendered, no JS).
+const CW = 300, CH = 96, CP = 8;
+function sparkline(points: number[]) {
+  const max = Math.max(...points), min = Math.min(...points), range = (max - min) || 1;
+  const xy = points.map((p, i) => {
+    const x = CP + (i / (points.length - 1)) * (CW - 2 * CP);
+    const y = CH - CP - ((p - min) / range) * (CH - 2 * CP);
+    return [x, y] as [number, number];
+  });
+  const line = xy.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
+  const area = `${CP},${CH - CP} ` + line + ` ${CW - CP},${CH - CP}`;
+  return { line, area, last: xy[xy.length - 1] };
+}
+
+const b0 = import.meta.env.BASE_URL.replace(/\/$/, '');
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": new URL(`${b0}/`, Astro.site).href },
+    { "@type": "ListItem", "position": 2, "name": "Work", "item": new URL(`${b0}/work`, Astro.site).href },
+  ],
+};
+const caseStudySchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "QuidEdge Case Studies",
+  "itemListElement": cases.map((c, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "item": {
+      "@type": "CreativeWork",
+      "name": `${c.client} — ${c.cat}`,
+      "description": c.desc,
+      "creator": { "@type": "Organization", "name": "QuidEdge" },
+    },
+  })),
+};
+---
+<Layout
+  fullTitle="Case Studies & Portfolio | QuidEdge Video Editing"
+  title="Our Work"
+  description="550M+ views engineered for Ryan Trahan, Enes Yilmazer and more. See QuidEdge video editing and content strategy case studies."
+  keywords="video editing case studies, YouTube growth portfolio, creator marketing results, short-form video results, personal branding case study"
+  schema={[caseStudySchema, breadcrumbSchema]}
+>
+
+  <section class="section-rule py-20 md:py-28 px-5 md:px-8">
+    <div class="mx-auto max-w-7xl">
+      <p class="label reveal mb-3">Case studies</p>
+      <h1 class="text-[clamp(2.5rem,8vw,5.5rem)] font-light leading-[0.92] tracking-[-0.04em] reveal reveal-d1">
+        Selected <span class="weight-anchor">Works.</span>
+      </h1>
+      <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 reveal reveal-d2"
+           style="border-top:1px solid rgba(138,134,128,0.13);">
+        {[{n:"1,658+",l:"Completed projects"},{n:"173+",l:"Global clients"},{n:"89",l:"Ongoing projects"},{n:"550M+",l:"Total views"}].map(s => (
+          <div><p class="text-2xl font-extrabold tracking-tight">{s.n}</p><p class="label mt-1">{s.l}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div id="cases-default">
+  {cases.map((c, i) => { const g = sparkline(c.analytics.growth.points); return (
+    <section id={c.slug} class="section-rule py-16 md:py-24 px-5 md:px-8">
+      <div class="mx-auto max-w-7xl">
+
+        {/* Hero card */}
+        <div class={`media relative overflow-hidden bg-gradient-to-b ${c.accent} to-ink reveal`}
+             style="min-height:340px;">
+          {c.video ? (
+            <video poster={c.img} muted playsinline loop preload="none"
+              class="absolute inset-0 w-full h-full object-cover opacity-30"
+              style="min-height:340px;"
+             >
+              <source src={c.video} type="video/mp4"/>
+            </video>
+          ) : (
+            <img src={c.img} alt={`${c.client} — QuidEdge case study`} loading="lazy" decoding="async"
+              class="absolute inset-0 w-full h-full object-cover opacity-20"/>
+          )}
+          <div class="relative z-10 p-7 md:p-12 flex flex-col justify-between"
+               style="min-height:340px;">
+            <div>
+              <p class="label">{c.cat}</p>
+              <h2 class="mt-3 text-[clamp(2rem,5vw,3.5rem)] font-light tracking-tight">{c.client}</h2>
+              <p class="mt-4 max-w-lg text-sm text-stone leading-relaxed">{c.desc}</p>
+            </div>
+            <div class="grid grid-cols-2 gap-6 mt-8 pt-6"
+                 style="border-top:1px solid rgba(138,134,128,0.15);">
+              {c.metrics.map(m => (
+                <div>
+                  <p class="text-2xl md:text-3xl font-extrabold tracking-tight">{m.val}</p>
+                  <p class="label mt-1">{m.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Strategy */}
+        <div class="mt-7 grid md:grid-cols-[160px_1fr] gap-4 md:gap-12 reveal reveal-d1">
+          <p class="label pt-1">The strategy</p>
+          <p class="text-sm text-stone leading-relaxed">{c.strategy}</p>
+        </div>
+
+        {/* Analytics toggle */}
+        <div class="mt-7 grid md:grid-cols-[160px_1fr] gap-4 md:gap-12">
+          <span class="hidden md:block"></span>
+          <div>
+            <button type="button" class="analytics-toggle btn-secondary" aria-expanded="false" aria-controls={`an-${c.slug}`}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+              <span class="at-label">View analytics</span>
+              <svg class="at-ic" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+
+            {/* Expandable report */}
+            <div id={`an-${c.slug}`} class="analytics-wrap"><div>
+              <div class="analytics-inner mt-6 grid gap-6 lg:grid-cols-2 lg:gap-10">
+
+                {/* Video */}
+                <div>
+                  <p class="label mb-3">The video</p>
+                  <div class="media relative overflow-hidden bg-ink" style="aspect-ratio:16/9;">
+                    <video controls preload="none" playsinline poster={c.img}
+                      controlslist="nodownload noplaybackrate" disablepictureinpicture
+                      class="h-full w-full object-cover">
+                      <source src={c.video} type="video/mp4"/>
+                    </video>
+                  </div>
+                </div>
+
+                {/* Report */}
+                <div>
+                  <p class="label mb-3">Performance report</p>
+                  <p class="text-xs text-stone leading-relaxed mb-5">{c.analytics.summary}</p>
+
+                  <div class="grid grid-cols-2 gap-px bg-stone/10 mb-7">
+                    {c.analytics.kpis.map(k => (
+                      <div class="bg-ink-soft p-4">
+                        <p class="text-xl md:text-2xl font-extrabold tracking-tight">{k.val}</p>
+                        <p class="label mt-1">{k.label}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <p class="label mb-2">{c.analytics.growth.unit}</p>
+                  <svg viewBox={`0 0 ${CW} ${CH}`} class="w-full mb-7" style="height:88px;"
+                       role="img" aria-label={`${c.client} growth trend`}>
+                    <polyline points={g.area} fill="rgba(61,90,254,0.10)" stroke="none"/>
+                    <polyline points={g.line} fill="none" stroke="var(--color-proof)"
+                      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx={g.last[0]} cy={g.last[1]} r="3.5" fill="var(--color-proof)"/>
+                  </svg>
+
+                  <p class="label mb-3">Platform split</p>
+                  <div class="space-y-2.5">
+                    {c.analytics.platforms.map(p => (
+                      <div class="flex items-center gap-3">
+                        <span class="text-xs text-stone w-20 shrink-0">{p.name}</span>
+                        <span class="flex-1 h-1.5 overflow-hidden rounded-full bg-stone/15">
+                          <span class="block h-full rounded-full" style={`width:${p.pct}%;background:var(--color-proof);`}></span>
+                        </span>
+                        <span class="label w-9 text-right">{p.pct}%</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  ); })}
+  </div>
+  <div id="cases-dynamic"></div>
+
+  <script define:vars={{ CASES_CSV_URL }}>
+    (function () {
+      /* Delegated toggle — works for built-in AND sheet-rendered cases. */
+      document.addEventListener('click', (e) => {
+        const btn = e.target.closest && e.target.closest('.analytics-toggle');
+        if (!btn) return;
+        const panel = document.getElementById(btn.getAttribute('aria-controls'));
+        const open = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!open));
+        if (panel) panel.classList.toggle('open', !open);
+        const lbl = btn.querySelector('.at-label');
+        if (lbl) lbl.textContent = open ? 'View analytics' : 'Hide analytics';
+        if (open && panel) {
+          const v = panel.querySelector('video'); if (v) v.pause();
+          panel.querySelectorAll('iframe').forEach(f => { f.src = f.src; }); // stop embeds
+        }
+      });
+
+      if (!CASES_CSV_URL || CASES_CSV_URL.indexOf('PASTE_YOUR') !== -1) return; // keep built-in cases
+
+      const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      const slug = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+
+      function parseCSV(text) {
+        const rows = []; let row = [], cur = '', q = false;
+        for (let i = 0; i < text.length; i++) { const c = text[i];
+          if (q) { if (c === '"') { if (text[i+1] === '"') { cur += '"'; i++; } else q = false; } else cur += c; }
+          else if (c === '"') q = true;
+          else if (c === ',') { row.push(cur); cur = ''; }
+          else if (c === '\n') { row.push(cur); rows.push(row); row = []; cur = ''; }
+          else if (c !== '\r') cur += c; }
+        if (cur !== '' || row.length) { row.push(cur); rows.push(row); }
+        return rows;
+      }
+      function toObjects(rows) {
+        if (!rows.length) return [];
+        const h = rows[0].map(x => x.trim().toLowerCase());
+        return rows.slice(1).map(r => { const o = {}; h.forEach((k, i) => o[k] = (r[i] || '').trim()); return o; });
+      }
+      const val = (o, keys) => { for (const k of keys) if (o[k]) return o[k]; return ''; };
+      const pairs = s => String(s || '').split(',').map(x => x.trim()).filter(Boolean).map(x => { const i = x.indexOf(':'); return i < 0 ? { v: x, l: '' } : { v: x.slice(0, i).trim(), l: x.slice(i+1).trim() }; });
+      const plats = s => String(s || '').split(',').map(x => x.trim()).filter(Boolean).map(x => { const i = x.indexOf(':'); return { name: i < 0 ? x : x.slice(0, i).trim(), pct: i < 0 ? 0 : (parseFloat(x.slice(i+1)) || 0) }; });
+      const nums = s => String(s || '').split(',').map(x => parseFloat(x.trim())).filter(n => !isNaN(n));
+
+      function spark(points) {
+        const CW = 300, CH = 96, CP = 8;
+        if (points.length < 2) points = points.length ? [points[0], points[0]] : [0, 1];
+        const max = Math.max(...points), min = Math.min(...points), range = (max - min) || 1;
+        const xy = points.map((p, i) => [CP + (i/(points.length-1))*(CW-2*CP), CH-CP-((p-min)/range)*(CH-2*CP)]);
+        const line = xy.map(a => a[0].toFixed(1)+','+a[1].toFixed(1)).join(' ');
+        const area = CP+','+(CH-CP)+' '+line+' '+(CW-CP)+','+(CH-CP);
+        return { line, area, last: xy[xy.length-1], CW, CH };
+      }
+
+      /* Google Drive share links (…/file/d/ID/view) aren't valid <img> sources.
+         Convert them to Drive's hotlinkable thumbnail endpoint so pasted Drive
+         links "just work" for images/posters. Non-Drive URLs pass through. */
+      function toDirectImage(url) {
+        const u = String(url || '').trim();
+        let m = u.match(/drive\.google\.com\/file\/d\/([A-Za-z0-9_-]+)/);
+        if (m) return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w1600';
+        m = u.match(/[?&]id=([A-Za-z0-9_-]+)/);
+        if (/drive\.google\.com/.test(u) && m) return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w1600';
+        return u;
+      }
+
+      /* Robust media: accepts a direct video file URL, a YouTube / Vimeo / Google
+         Drive link (rendered as an embed), or nothing. Anything that isn't a real,
+         reachable URL (e.g. a bare filename like "FF02.mp4") never produces a
+         broken black player — it falls back to the poster image, then to a hint. */
+      function frameBox(src, title) {
+        return '<div class="media relative overflow-hidden bg-ink" style="aspect-ratio:16/9;"><iframe src="'+src+'" title="'+esc(title)+' video" loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen class="absolute inset-0 h-full w-full" style="border:0;"></iframe></div>';
+      }
+      function mediaEmbed(video, image, client) {
+        const url = String(video || '').trim();
+        const poster = String(image || '').trim();
+        let m;
+        if ((m = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/)))
+          return frameBox('https://www.youtube-nocookie.com/embed/' + m[1], client);
+        if ((m = url.match(/vimeo\.com\/(?:video\/)?(\d+)/)))
+          return frameBox('https://player.vimeo.com/video/' + m[1], client);
+        if ((m = url.match(/drive\.google\.com\/file\/d\/([A-Za-z0-9_-]+)/)))
+          return frameBox('https://drive.google.com/file/d/' + m[1] + '/preview', client);
+        const isUrl = /^(https?:)?\/\//.test(url) || url.charAt(0) === '/';
+        if (isUrl && /\.(mp4|webm|ogv|mov|m4v)(\?|#|$)/i.test(url))
+          return '<div class="media relative overflow-hidden bg-ink" style="aspect-ratio:16/9;"><video controls preload="none" playsinline poster="'+esc(poster)+'" controlslist="nodownload noplaybackrate" disablepictureinpicture class="h-full w-full object-cover"><source src="'+esc(url)+'" type="video/mp4"/></video></div>';
+        if (poster)
+          return '<div class="media relative overflow-hidden bg-ink" style="aspect-ratio:16/9;"><img src="'+esc(poster)+'" alt="'+esc(client)+'" loading="lazy" class="h-full w-full object-cover"/></div>';
+        return '<div class="media relative overflow-hidden bg-ink-soft flex items-center justify-center text-center px-6" style="aspect-ratio:16/9;"><span class="label">Add a video link in your sheet</span></div>';
+      }
+
+      function caseHtml(o) {
+        const client = val(o, ['client','name']); if (!client) return '';
+        const cat = val(o, ['category','cat']);
+        const desc = val(o, ['description','desc']);
+        const strategy = val(o, ['strategy']);
+        const image = toDirectImage(val(o, ['image','photo','img']));
+        const video = val(o, ['video']);
+        const summary = val(o, ['analytics summary','summary']);
+        const hero = pairs(val(o, ['hero stats','headline stats','metrics','stats']));
+        const kpis = pairs(val(o, ['kpis','report stats']));
+        const gUnit = val(o, ['growth unit','growth label']);
+        const gPts = nums(val(o, ['growth points','growth']));
+        const platforms = plats(val(o, ['platforms','platform split']));
+        const id = 'an-' + slug(client);
+        const g = spark(gPts.length ? gPts : [1, 2]);
+
+        const heroHtml = hero.map(m => '<div><p class="text-2xl md:text-3xl font-extrabold tracking-tight">'+esc(m.v)+'</p><p class="label mt-1">'+esc(m.l)+'</p></div>').join('');
+        const kpiHtml = kpis.map(k => '<div class="bg-ink-soft p-4"><p class="text-xl md:text-2xl font-extrabold tracking-tight">'+esc(k.v)+'</p><p class="label mt-1">'+esc(k.l)+'</p></div>').join('');
+        const platHtml = platforms.map(p => '<div class="flex items-center gap-3"><span class="text-xs text-stone w-20 shrink-0">'+esc(p.name)+'</span><span class="flex-1 h-1.5 overflow-hidden rounded-full bg-stone/15"><span class="block h-full rounded-full" style="width:'+p.pct+'%;background:var(--color-proof);"></span></span><span class="label w-9 text-right">'+p.pct+'%</span></div>').join('');
+        const media = mediaEmbed(video, image, client);
+
+        return '<section id="'+slug(client)+'" class="section-rule py-16 md:py-24 px-5 md:px-8"><div class="mx-auto max-w-7xl">'+
+          '<div class="media relative overflow-hidden" style="min-height:340px;background:linear-gradient(to bottom,#0e1319,#0a0a0a);">'+
+            (image ? '<img src="'+esc(image)+'" alt="'+esc(client)+'" loading="lazy" class="absolute inset-0 w-full h-full object-cover opacity-20"/>' : '')+
+            '<div class="relative z-10 p-7 md:p-12 flex flex-col justify-between" style="min-height:340px;">'+
+              '<div><p class="label">'+esc(cat)+'</p><h2 class="mt-3 text-[clamp(2rem,5vw,3.5rem)] font-light tracking-tight">'+esc(client)+'</h2><p class="mt-4 max-w-lg text-sm text-stone leading-relaxed">'+esc(desc)+'</p></div>'+
+              (heroHtml ? '<div class="grid grid-cols-2 gap-6 mt-8 pt-6" style="border-top:1px solid var(--line);">'+heroHtml+'</div>' : '')+
+            '</div>'+
+          '</div>'+
+          (strategy ? '<div class="mt-7 grid md:grid-cols-[160px_1fr] gap-4 md:gap-12"><p class="label pt-1">The strategy</p><p class="text-sm text-stone leading-relaxed">'+esc(strategy)+'</p></div>' : '')+
+          '<div class="mt-7 grid md:grid-cols-[160px_1fr] gap-4 md:gap-12"><span class="hidden md:block"></span><div>'+
+            '<button type="button" class="analytics-toggle btn-secondary" aria-expanded="false" aria-controls="'+id+'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg><span class="at-label">View analytics</span><svg class="at-ic" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>'+
+            '<div id="'+id+'" class="analytics-wrap"><div><div class="analytics-inner mt-6 grid gap-6 lg:grid-cols-2 lg:gap-10">'+
+              '<div><p class="label mb-3">The video</p>'+media+'</div>'+
+              '<div><p class="label mb-3">Performance report</p>'+
+                (summary ? '<p class="text-xs text-stone leading-relaxed mb-5">'+esc(summary)+'</p>' : '')+
+                (kpiHtml ? '<div class="grid grid-cols-2 gap-px bg-stone/10 mb-7">'+kpiHtml+'</div>' : '')+
+                (gPts.length ? '<p class="label mb-2">'+esc(gUnit)+'</p><svg viewBox="0 0 '+g.CW+' '+g.CH+'" class="w-full mb-7" style="height:88px;" role="img" aria-label="'+esc(client)+' growth trend"><polyline points="'+g.area+'" fill="rgba(61,90,254,0.10)" stroke="none"/><polyline points="'+g.line+'" fill="none" stroke="var(--color-proof)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="'+g.last[0].toFixed(1)+'" cy="'+g.last[1].toFixed(1)+'" r="3.5" fill="var(--color-proof)"/></svg>' : '')+
+                (platHtml ? '<p class="label mb-3">Platform split</p><div class="space-y-2.5">'+platHtml+'</div>' : '')+
+              '</div>'+
+            '</div></div></div>'+
+          '</div></div>'+
+        '</div></section>';
+      }
+
+      fetch(CASES_CSV_URL, { cache: 'no-store' })
+        .then(r => { if (!r.ok) throw 0; return r.text(); })
+        .then(text => {
+          const items = toObjects(parseCSV(text)).filter(o => (val(o, ['show','display']) || 'yes').toLowerCase() !== 'no');
+          const html = items.map(caseHtml).filter(Boolean).join('');
+          if (!html) return; // keep built-in cases if sheet is empty
+          const dyn = document.getElementById('cases-dynamic');
+          const def = document.getElementById('cases-default');
+          if (dyn) {
+            dyn.innerHTML = html;
+            // If an image link can't load, hide it cleanly (no broken-image icon).
+            dyn.querySelectorAll('img').forEach(im => im.addEventListener('error', () => { im.style.display = 'none'; }));
+          }
+          if (def) def.style.display = 'none';
+        })
+        .catch(() => {}); // any failure → built-in cases stay
+    })();
+  </script>
+
+  <!-- ═══ TESTIMONIALS — powered by your Google Sheet ═══════════════ -->
+  <section id="testimonials" class="section-rule py-20 md:py-32 px-5 md:px-8">
+    <div class="mx-auto max-w-7xl">
+      <div class="mb-10 reveal">
+        <p class="label mb-3">In their words</p>
+        <h2 class="text-[clamp(1.875rem,5vw,3.25rem)] font-light leading-[1.05] tracking-[-0.03em]">
+          What Clients <span class="weight-anchor">Say.</span>
+        </h2>
+      </div>
+      <p id="tm-status" class="text-sm text-stone">Loading testimonials…</p>
+      <div id="tm-grid" class="grid gap-px bg-stone/10 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </div>
+  </section>
+
+  <script define:vars={{ TESTIMONIALS_CSV_URL }}>
+    (function () {
+      const grid   = document.getElementById('tm-grid');
+      const status = document.getElementById('tm-status');
+      if (!grid) return;
+
+      const notConfigured = !TESTIMONIALS_CSV_URL || TESTIMONIALS_CSV_URL.indexOf('PASTE_YOUR') !== -1;
+      if (notConfigured) {
+        status.textContent = 'Client testimonials will appear here once the sheet is connected.';
+        return;
+      }
+
+      const esc = (s) => String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+      // Minimal RFC-4180 CSV parser (handles quoted commas, newlines, "" escapes).
+      function parseCSV(text) {
+        const rows = []; let row = [], cur = '', inQ = false;
+        for (let i = 0; i < text.length; i++) {
+          const c = text[i];
+          if (inQ) {
+            if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else inQ = false; }
+            else cur += c;
+          } else if (c === '"') inQ = true;
+          else if (c === ',') { row.push(cur); cur = ''; }
+          else if (c === '\n') { row.push(cur); rows.push(row); row = []; cur = ''; }
+          else if (c !== '\r') cur += c;
+        }
+        if (cur !== '' || row.length) { row.push(cur); rows.push(row); }
+        return rows;
+      }
+
+      function toObjects(rows) {
+        if (!rows.length) return [];
+        const headers = rows[0].map(h => h.trim().toLowerCase());
+        return rows.slice(1).map(r => {
+          const o = {};
+          headers.forEach((h, i) => { o[h] = (r[i] || '').trim(); });
+          return o;
+        });
+      }
+
+      const val = (o, keys) => { for (const k of keys) if (o[k]) return o[k]; return ''; };
+
+      // Google Drive share links → hotlinkable thumbnail (so pasted Drive links work).
+      function toDirectImage(url) {
+        const u = String(url || '').trim();
+        let m = u.match(/drive\.google\.com\/file\/d\/([A-Za-z0-9_-]+)/);
+        if (m) return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w1600';
+        m = u.match(/[?&]id=([A-Za-z0-9_-]+)/);
+        if (/drive\.google\.com/.test(u) && m) return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w1600';
+        return u;
+      }
+
+      function card(o) {
+        const name  = val(o, ['name', 'client', 'full name']);
+        const role  = val(o, ['role', 'role/company', 'company', 'title']);
+        const photo = toDirectImage(val(o, ['photo', 'photo / logo', 'image', 'logo', 'headshot']));
+        const quote = val(o, ['quote', 'testimonial', 'testimonial quote']);
+        const work  = val(o, ['work sample', 'work', 'sample', 'work sample image/video']);
+        const sval  = val(o, ['stat value', 'stat', 'result', 'metric']);
+        const slab  = val(o, ['stat label', 'metric label', 'result label']);
+        if (!name && !quote) return '';
+
+        const avatar = photo
+          ? '<img src="' + esc(photo) + '" alt="' + esc(name) + '" loading="lazy" class="h-12 w-12 rounded-full object-cover shrink-0"/>'
+          : '<div class="h-12 w-12 rounded-full shrink-0 flex items-center justify-center text-sm font-semibold text-paper" style="background:rgba(61,90,254,0.16);">' + esc((name || '?').charAt(0).toUpperCase()) + '</div>';
+
+        let media = '';
+        if (work) {
+          media = /\.(mp4|webm|mov)(\?|$)/i.test(work)
+            ? '<div class="media relative overflow-hidden mt-5" style="aspect-ratio:16/10;"><video src="' + esc(work) + '" muted loop autoplay playsinline class="h-full w-full object-cover"></video></div>'
+            : '<div class="media relative overflow-hidden mt-5" style="aspect-ratio:16/10;"><img src="' + esc(toDirectImage(work)) + '" alt="Work sample for ' + esc(name) + '" loading="lazy" class="h-full w-full object-cover"/></div>';
+        }
+
+        const stat = sval
+          ? '<div class="mt-5 pt-4" style="border-top:1px solid var(--line);"><p class="text-2xl font-extrabold tracking-tight">' + esc(sval) + '</p><p class="label mt-0.5">' + esc(slab) + '</p></div>'
+          : '';
+
+        return '<article class="card p-7 md:p-9">' +
+            '<div class="flex items-center gap-4 mb-5">' + avatar +
+              '<div><p class="font-medium text-paper leading-tight">' + esc(name) + '</p>' +
+              (role ? '<p class="label mt-1">' + esc(role) + '</p>' : '') + '</div>' +
+            '</div>' +
+            (quote ? '<p class="text-sm text-stone leading-relaxed">“' + esc(quote) + '”</p>' : '') +
+            media + stat +
+          '</article>';
+      }
+
+      fetch(TESTIMONIALS_CSV_URL, { cache: 'no-store' })
+        .then(r => { if (!r.ok) throw new Error('fetch'); return r.text(); })
+        .then(text => {
+          const items = toObjects(parseCSV(text))
+            .filter(o => (val(o, ['show', 'display', 'published']) || 'yes').toLowerCase() !== 'no');
+          const html = items.map(card).filter(Boolean).join('');
+          if (!html) { status.textContent = 'No testimonials yet — add your first client in the sheet.'; return; }
+          grid.innerHTML = html;
+          grid.querySelectorAll('img').forEach(im => im.addEventListener('error', () => { im.style.display = 'none'; }));
+          status.hidden = true;
+
+          // Bonus: Review structured data for Google rich results.
+          try {
+            const reviews = items.filter(o => val(o, ['quote', 'testimonial'])).map(o => ({
+              '@type': 'Review',
+              'author': { '@type': 'Person', 'name': val(o, ['name', 'client']) || 'Client' },
+              'reviewBody': val(o, ['quote', 'testimonial']),
+              'itemReviewed': { '@type': 'Organization', 'name': 'QuidEdge' }
+            }));
+            if (reviews.length) {
+              const s = document.createElement('script');
+              s.type = 'application/ld+json';
+              s.textContent = JSON.stringify(reviews);
+              document.head.appendChild(s);
+            }
+          } catch (e) {}
+        })
+        .catch(() => {
+          status.textContent = 'Couldn’t load testimonials right now. Please refresh in a moment.';
+        });
+    })();
+  </script>
+
+  <section class="section-rule py-24 md:py-36 px-5 md:px-8 text-center">
+    <div class="mx-auto max-w-xl reveal">
+      <h2 class="text-[clamp(2rem,5vw,3.5rem)] font-light leading-tight tracking-[-0.025em]">
+        Your results could be <span class="weight-anchor">next.</span>
+      </h2>
+      <p class="mt-4 text-sm text-stone">Let's build something that performs.</p>
+      <a href={`${bp}/contact`} class="btn-primary mt-7 inline-flex">
+        Start a conversation
+        <svg class="arr" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg>
+      </a>
+    </div>
+  </section>
+</Layout>

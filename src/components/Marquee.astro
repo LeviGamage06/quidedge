@@ -1,0 +1,23 @@
+---
+interface Props { items: string[]; label?: string; }
+const { items, label } = Astro.props;
+const doubled = [...items, ...items]; // duplicate for seamless loop
+// Items containing a number read as proof metrics → accented; names stay neutral.
+const isMetric = (s: string) => /\d/.test(s);
+---
+
+<div class="overflow-hidden section-rule py-8 md:py-12">
+  {label && (
+    <p class="label block text-center px-5 mb-5 md:mb-7">{label}</p>
+  )}
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-inner select-none" data-marquee-inner>
+      {doubled.map(item => (
+        <span class="marquee-item">
+          <span class={isMetric(item) ? 'mq-metric' : 'mq-name'}>{item}</span>
+          <span class="mq-sep" aria-hidden="true"></span>
+        </span>
+      ))}
+    </div>
+  </div>
+</div>

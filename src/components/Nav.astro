@@ -1,0 +1,91 @@
+---
+// b = base path, always without trailing slash e.g. "/quidedge"
+const b = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const links = [
+  { href:'services', label:'Services' },
+  { href:'work',     label:'Work'     },
+  { href:'about',    label:'About'    },
+  { href:'blog',     label:'Blog'     },
+];
+
+// Highlight the current page in the nav.
+const path = Astro.url.pathname.replace(/\/$/, '');
+const isActive = (href: string) => path === `${b}/${href}` || path.endsWith(`/${href}`);
+---
+
+<div id="scroll-progress" aria-hidden="true"></div>
+
+<header id="site-header" class="fixed top-0 left-0 right-0 z-40"
+  style="transition:background .3s,border-color .3s;">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8 md:py-5">
+
+    <a href={`${b}/`} aria-label="QuidEdge home"
+       class="group flex items-center text-[1.05rem] font-light tracking-[-0.01em] text-paper leading-none">
+      <span class="transition-colors group-hover:text-stone">Quid</span>
+      <span class="font-extrabold transition-colors group-hover:text-proof">E</span>
+      <span class="transition-colors group-hover:text-stone">dge</span>
+      <span class="text-proof ml-0.5">.</span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-9" aria-label="Primary navigation">
+      {links.map(l => (
+        <a href={`${b}/${l.href}`}
+           aria-current={isActive(l.href) ? 'page' : undefined}
+           class="nav-item label text-stone/70 hover:text-paper transition-colors">{l.label}</a>
+      ))}
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a href={`${b}/contact`} class="btn-primary hidden md:inline-flex">
+        Book a call
+        <svg class="arr" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg>
+      </a>
+      <button id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-mobile"
+        aria-label="Toggle navigation menu"
+        class="relative flex h-9 w-9 flex-col items-center justify-center gap-[6px] md:hidden">
+        <span id="bar1" class="block h-px w-[22px] bg-paper origin-center transition-transform duration-300"></span>
+        <span id="bar2" class="block h-px w-[22px] bg-paper origin-center transition-transform duration-300"></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="nav-mobile" hidden
+    class="border-t bg-ink px-5 py-7 flex flex-col gap-6 md:hidden"
+    style="border-color:rgba(138,134,128,0.12);">
+    <nav class="flex flex-col gap-5" aria-label="Mobile navigation">
+      {links.map(l => (
+        <a href={`${b}/${l.href}`}
+           aria-current={isActive(l.href) ? 'page' : undefined}
+           class={`nav-link label transition-colors py-1 ${isActive(l.href) ? 'text-paper' : 'text-stone hover:text-paper'}`}>{l.label}</a>
+      ))}
+    </nav>
+    <a href={`${b}/contact`} class="btn-primary nav-link w-fit">
+      Book a call
+      <svg class="arr" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg>
+    </a>
+  </div>
+</header>
+
+<div style="height:var(--nav-h);" aria-hidden="true"></div>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const drawer = document.getElementById('nav-mobile');
+  const bar1   = document.getElementById('bar1');
+  const bar2   = document.getElementById('bar2');
+
+  function setOpen(open: boolean) {
+    if (!toggle || !drawer) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    open ? drawer.removeAttribute('hidden') : drawer.setAttribute('hidden', '');
+    if (bar1 && bar2) {
+      bar1.style.transform = open ? 'translateY(6px) rotate(45deg)'  : '';
+      bar2.style.transform = open ? 'translateY(-6px) rotate(-45deg)' : '';
+    }
+  }
+
+  toggle?.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  document.querySelectorAll('.nav-link').forEach(el => el.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') setOpen(false); });
+</script>

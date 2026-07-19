@@ -1,0 +1,316 @@
+---
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import { activeSocials } from "../data/brand";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Absolute URL for the social-share image. Falls back to the brand image. */
+  image?: string;
+  /** Comma-separated keywords for this page. */
+  keywords?: string;
+  /** og:type — "website" (default) or "article" for blog posts. */
+  ogType?: string;
+  /** Override the "{title} — QuidEdge" pattern with a fully custom <title>. */
+  fullTitle?: string;
+  /** Extra JSON-LD object(s) to inject for this page (FAQ, Service, etc.). */
+  schema?: object | object[];
+}
+const {
+  title,
+  description,
+  image,
+  keywords,
+  ogType = "website",
+  fullTitle,
+  schema,
+} = Astro.props;
+
+const b = import.meta.env.BASE_URL.replace(/\/$/, '');
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const siteHome = new URL(`${b}/`, Astro.site).href;
+const logoURL = new URL(`${b}/logo.png`, Astro.site).href;
+const pageTitle = fullTitle ?? `${title} — QuidEdge`;
+const ogImage = image ?? "https://www.quidedge.com/content/founders.jpg";
+
+// Site-wide entity graph. Pages can pass extra `schema` (FAQ, Service, etc.).
+const orgSchema = {
+  "@context": "https://schema.org",
+  "@type": ["Organization", "ProfessionalService"],
+  "@id": `${siteHome}#organization`,
+  "name": "QuidEdge",
+  "alternateName": "QuidEdge Media",
+  "url": siteHome,
+  "logo": logoURL,
+  "image": ogImage,
+  "slogan": "Engineered for Viral Impact",
+  "description":
+    "QuidEdge is a video editing and content strategy agency helping founders, executives, and creators grow on YouTube, TikTok, Instagram Reels, and LinkedIn through retention editing, viral engineering, and personal branding.",
+  "email": "inquiries.quidedge.au@gmail.com",
+  "founders": [
+    { "@type": "Person", "name": "Levi" },
+    { "@type": "Person", "name": "Chami", "jobTitle": "Creative Director" },
+  ],
+  "knowsAbout": [
+    "Video editing",
+    "YouTube growth",
+    "Short-form video",
+    "Personal branding",
+    "Content strategy",
+    "Retention editing",
+  ],
+  "areaServed": [
+    { "@type": "Country", "name": "United States" },
+    { "@type": "Country", "name": "Australia" },
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "inquiries.quidedge.au@gmail.com",
+    "contactType": "sales",
+    "areaServed": ["US", "AU"],
+    "availableLanguage": "English",
+  },
+  ...(activeSocials.length ? { "sameAs": activeSocials.map((s) => s.href) } : {}),
+};
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${siteHome}#website`,
+  "url": siteHome,
+  "name": "QuidEdge",
+  "description":
+    "Video editing & personal branding agency for founders and creators.",
+  "publisher": { "@id": `${siteHome}#organization` },
+  "inLanguage": "en",
+};
+const pageSchemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+
+// ── Content-Security-Policy ──────────────────────────────────────────────────
+// Scoped to exactly what the site uses today so nothing breaks:
+//   • Google Fonts (styles + font files)
+//   • images/video from anywhere over HTTPS (founder pastes URLs in the sheets)
+//   • data fetches to your Google Sheets (CSV) and Apps Script (lead form)
+// Emitted only in the production build — in `npm run dev` it's omitted so
+// Astro's live-reload (HMR) keeps working. If you ever add a new external
+// service, add its domain to the matching line below.
+const csp = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  "img-src 'self' data: blob: https:",
+  "media-src 'self' blob: https:",
+  "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://drive.google.com",
+  "connect-src 'self' https://docs.google.com https://script.google.com https://script.googleusercontent.com",
+  "frame-ancestors 'none'",
+  "form-action 'self' https://script.google.com https://formspree.io",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "upgrade-insecure-requests",
+].join('; ');
+---
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="UTF-8"/>
+  {import.meta.env.PROD && <meta http-equiv="Content-Security-Policy" content={csp}/>}
+  <meta name="referrer" content="strict-origin-when-cross-origin"/>
+  <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+  <script is:inline>document.documentElement.classList.remove('no-js');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/svg+xml" href={`${b}/favicon.svg`}/>
+  <link rel="icon" type="image/png" href={`${b}/favicon.png`}/>
+  <link rel="apple-touch-icon" href={`${b}/logo.png`}/>
+  <link rel="canonical" href={canonical}/>
+  <link rel="alternate" type="application/rss+xml" title="QuidEdge Blog" href={new URL(`${b}/rss.xml`, Astro.site)}/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="preconnect" href="https://www.quidedge.com"/>
+  <link rel="dns-prefetch" href="https://www.quidedge.com"/>
+  <meta name="generator" content={Astro.generator}/>
+  <title>{pageTitle}</title>
+  <meta name="description" content={description}/>
+  {keywords && <meta name="keywords" content={keywords}/>}
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
+  <meta name="author" content="QuidEdge"/>
+  <meta name="theme-color" content="#0a0a0a"/>
+  <meta property="og:type" content={ogType}/>
+  <meta property="og:site_name" content="QuidEdge"/>
+  <meta property="og:locale" content="en_US"/>
+  <meta property="og:locale:alternate" content="en_AU"/>
+  <meta property="og:url" content={canonical}/>
+  <meta property="og:title" content={pageTitle}/>
+  <meta property="og:description" content={description}/>
+  <meta property="og:image" content={ogImage}/>
+  <meta property="og:image:alt" content="QuidEdge — engineered for viral impact"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content={pageTitle}/>
+  <meta name="twitter:description" content={description}/>
+  <meta name="twitter:image" content={ogImage}/>
+  <script type="application/ld+json" set:html={JSON.stringify(orgSchema)}/>
+  <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}/>
+  {pageSchemas.map(s => (
+    <script type="application/ld+json" set:html={JSON.stringify(s)}/>
+  ))}
+  <noscript><style>
+    #page-loader { display: none !important; }
+    .lm-i   { transform: none !important; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+  </style></noscript>
+</head>
+<body>
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-proof focus:px-4 focus:py-2 focus:text-paper focus:text-xs">Skip to content</a>
+
+  <div id="page-loader" role="status" aria-label="Loading">
+    <p id="loader-wordmark" aria-hidden="true">Quid<span class="bold">E</span>dge<span class="dot">.</span></p>
+  </div>
+
+  <Nav/>
+  <main id="main"><slot/></main>
+  <Footer/>
+
+  <div id="qe-cursor" aria-hidden="true" style="position:fixed;width:5px;height:5px;border-radius:50%;background:var(--color-proof);pointer-events:none;z-index:99999;transform:translate(-50%,-50%);opacity:0;transition:width .16s,height .16s,opacity .35s;"></div>
+
+  <script>
+    /* Loader */
+    const loader = document.getElementById('page-loader');
+    const wm     = document.getElementById('loader-wordmark');
+    requestAnimationFrame(() => wm?.classList.add('show'));
+    let dismissed = false;
+    const reveal = () => {
+      if (dismissed) return;
+      dismissed = true;
+      loader?.classList.add('out');
+      document.body.classList.add('loaded');
+      setTimeout(() => document.querySelectorAll('.reveal').forEach(el => {
+        if (el.getBoundingClientRect().top < window.innerHeight * 0.95) el.classList.add('visible');
+      }), 80);
+    };
+    const go = () => setTimeout(reveal, 500);
+
+    // Fire on DOM ready — do NOT wait for window.load, because the large
+    // remote reel video would stall it for seconds on a slow connection.
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', go);
+    } else {
+      go();
+    }
+    // Hard failsafe: never let the loader hang longer than 2.5s.
+    setTimeout(reveal, 2500);
+
+    /* Scroll reveal */
+    const rv = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); rv.unobserve(e.target); }
+    }), { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => rv.observe(el));
+
+    /* Count-up */
+    const cv = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target as HTMLElement;
+      const target = parseFloat(el.dataset.target ?? '0');
+      const suffix = el.dataset.suffix ?? '';
+      const dur = 2000, t0 = performance.now();
+      const isInt = Number.isInteger(target);
+      const tick = (now: number) => {
+        const p = Math.min((now - t0) / dur, 1);
+        const v = target * (1 - Math.pow(1 - p, 3));
+        el.textContent = (isInt ? Math.round(v).toLocaleString() : v.toFixed(1)) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      cv.unobserve(el);
+    }), { threshold: 0.3 });
+    document.querySelectorAll('[data-target]').forEach(el => cv.observe(el));
+
+    /* FAQ */
+    document.querySelectorAll('.faq-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const wasOpen = btn.getAttribute('aria-expanded') === 'true';
+        document.querySelectorAll('.faq-btn').forEach(b2 => {
+          b2.setAttribute('aria-expanded', 'false');
+          const p = b2.nextElementSibling as HTMLElement | null;
+          if (p) { p.style.maxHeight = '0'; p.style.opacity = '0'; }
+        });
+        if (!wasOpen) {
+          btn.setAttribute('aria-expanded', 'true');
+          const p = btn.nextElementSibling as HTMLElement | null;
+          if (p) { p.style.maxHeight = p.scrollHeight + 'px'; p.style.opacity = '1'; }
+        }
+      });
+    });
+
+    /* Cursor */
+    const cur = document.getElementById('qe-cursor') as HTMLElement | null;
+    if (cur && window.matchMedia('(pointer:fine)').matches) {
+      document.addEventListener('mousemove', e => {
+        cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px'; cur.style.opacity = '1';
+      }, { passive: true });
+      document.addEventListener('mousedown', () => { cur.style.width = cur.style.height = '8px'; });
+      document.addEventListener('mouseup',   () => { cur.style.width = cur.style.height = '5px'; });
+      document.querySelectorAll('a,button,[role="button"]').forEach(el => {
+        el.addEventListener('mouseenter', () => { cur.style.width = cur.style.height = '20px'; cur.style.opacity = '0.3'; });
+        el.addEventListener('mouseleave', () => { cur.style.width = cur.style.height = '5px';  cur.style.opacity = '1';   });
+      });
+    }
+
+    /* Video play() can reject under autoplay policies — swallow it
+       so it never surfaces as an unhandled rejection in the console. */
+    /* Hover play/pause is only for the hover-preview videos — never the ones that
+       autoplay (e.g. the Services slots), or they'd pause when the mouse leaves. */
+    document.querySelectorAll('video:not([autoplay]):not([data-autoplay])').forEach(v => {
+      const el = v as HTMLVideoElement;
+      el.addEventListener('mouseenter', () => { el.play()?.catch(() => {}); });
+      el.addEventListener('mouseleave', () => { el.pause(); });
+    });
+
+    /* Content-protection deterrents — MEDIA ONLY (images/video), delegated so it
+       also covers sheet-loaded testimonials & case studies. Blocks right-click
+       "save" and drag-to-save on media, while leaving the rest of the page fully
+       usable (text selection, links, accessibility all unaffected). Note: this
+       deters casual saving only — it is not, and cannot be, true DRM. */
+    document.addEventListener('contextmenu', (e) => {
+      const t = e.target as HTMLElement | null;
+      if (t && t.closest && t.closest('img, video')) e.preventDefault();
+    });
+    document.addEventListener('dragstart', (e) => {
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === 'IMG' || t.tagName === 'VIDEO')) e.preventDefault();
+    });
+
+    /* Publish the real header height so the spacer and hero
+       min-height always match it exactly, at any viewport width. */
+    const syncNavHeight = () => {
+      const h = document.getElementById('site-header')?.offsetHeight;
+      if (h) document.documentElement.style.setProperty('--nav-h', h + 'px');
+    };
+    syncNavHeight();
+    window.addEventListener('resize', syncNavHeight, { passive: true });
+    window.addEventListener('load', syncNavHeight);
+
+    /* Nav scroll + scroll-progress bar */
+    const hdr = document.getElementById('site-header');
+    const bar = document.getElementById('scroll-progress');
+    const upd = () => {
+      if (hdr) {
+        if (window.scrollY > 48) {
+          hdr.style.cssText += ';background:rgba(10,10,10,0.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(138,134,128,0.1);';
+        } else {
+          hdr.style.background = 'transparent'; hdr.style.backdropFilter = 'none';
+          hdr.style.webkitBackdropFilter = 'none'; hdr.style.borderBottom = 'none';
+        }
+      }
+      if (bar) {
+        const h = document.documentElement;
+        const max = h.scrollHeight - h.clientHeight;
+        bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+      }
+    };
+    window.addEventListener('scroll', upd, { passive: true });
+    window.addEventListener('resize', upd, { passive: true });
+    upd();
+  </script>
+</body>
+</html>

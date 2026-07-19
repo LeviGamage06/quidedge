@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Block nothing — the whole marketing site should be crawlable.
+
+Sitemap: https://www.quidedge.com/sitemap-index.xml

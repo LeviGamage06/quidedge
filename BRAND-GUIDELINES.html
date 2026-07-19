@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>QuidEdge — Brand Guidelines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;800&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --ink:#0a0a0a;--ink-soft:#131313;--ink-mid:#1c1c1c;
+    --paper:#edede7;--proof:#3d5afe;--proof-dk:#2d46e0;--stone:#8a8680;
+    --line:rgba(138,134,128,.16);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ink);color:var(--paper);font-family:"Manrope",system-ui,sans-serif;font-weight:300;line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding:0 30px}
+  .eyebrow{font-size:.6rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--stone)}
+  h1{font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;letter-spacing:-.04em;line-height:.95}
+  h2{font-size:clamp(1.7rem,4vw,2.5rem);font-weight:300;letter-spacing:-.03em;line-height:1.1}
+  h3{font-size:1.02rem;font-weight:600;letter-spacing:-.01em}
+  .b{font-weight:800}.accent{color:var(--proof)}
+  section{border-top:1px solid var(--line);padding:70px 0}
+  section:first-of-type{border-top:none;padding-top:80px}
+  p{color:rgba(237,237,231,.8);font-size:.95rem;max-width:64ch}
+  .lead{font-size:1.12rem;color:rgba(237,237,231,.92);max-width:60ch}
+  .mt8{margin-top:8px}.mt16{margin-top:16px}.mt24{margin-top:24px}.mb24{margin-bottom:24px}
+  .grid{display:grid;gap:20px}
+  .c2{grid-template-columns:repeat(2,1fr)}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:760px){.c2,.c3,.c4{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.c2,.c3,.c4{grid-template-columns:1fr}}
+  .card{background:var(--ink-soft);border:1px solid var(--line);padding:22px}
+  .num{font-size:.7rem;color:var(--proof);font-weight:700;letter-spacing:.1em}
+  .swatch{height:104px;display:flex;align-items:flex-end;padding:12px;font-size:.7rem;letter-spacing:.05em}
+  .mark{width:60px;height:60px;color:var(--paper)}
+  .wordmark{display:inline-flex;align-items:center;font-weight:300;font-size:1.9rem;letter-spacing:-.01em}
+  .do{color:#7dd69a}.dont{color:#e88}
+  ul{list-style:none}
+  li{padding:9px 0;border-bottom:1px solid var(--line);font-size:.9rem;color:rgba(237,237,231,.82)}
+  li:last-child{border-bottom:none}
+  .tag{display:inline-block;border:1px solid var(--line);padding:5px 12px;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--stone);margin:6px 6px 0 0}
+  .quote{font-size:clamp(1.3rem,3vw,2rem);font-weight:300;letter-spacing:-.02em;line-height:1.3;border-left:2px solid var(--proof);padding-left:22px;color:var(--paper);max-width:22ch}
+  .kv{font-size:.9rem;color:rgba(237,237,231,.82)}
+  .kv b{color:var(--paper)}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:.82em;background:var(--ink-mid);padding:.12em .4em}
+  .foot{padding:52px 0;color:var(--stone);font-size:.75rem;text-align:center;border-top:1px solid var(--line)}
+  .toc a{color:var(--stone);text-decoration:none;font-size:.85rem}
+  .toc li:hover a{color:var(--paper)}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section>
+  <div class="wrap">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:44px">
+      <svg class="mark" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="11" stroke-linecap="square"><path d="M74 16 H24 V84 H74"/><path d="M24 50 H62"/></svg>
+      <span class="wordmark">Quid<span class="b">E</span>dge<span class="accent">.</span></span>
+    </div>
+    <p class="eyebrow">Brand guidelines · v1.0 · Levi &amp; Chami</p>
+    <h1 class="mt16">The system<br>behind the <span class="b accent">edge.</span></h1>
+    <p class="lead mt24">This is the single source of truth for how QuidEdge looks, sounds, and shows up — on the website, in social content, thumbnails, decks, proposals, and every client touchpoint. A brand isn't a logo; it's the sum of every impression. Consistency here is what turns a great agency into a recognised name.</p>
+    <div class="card mt24 toc" style="max-width:520px">
+      <p class="eyebrow mb24">Contents</p>
+      <ul style="columns:2">
+        <li><a href="#f">01 · Foundation</a></li>
+        <li><a href="#p">02 · Positioning</a></li>
+        <li><a href="#pe">03 · Personality</a></li>
+        <li><a href="#m">04 · Messaging</a></li>
+        <li><a href="#v">05 · Voice &amp; tone</a></li>
+        <li><a href="#l">06 · Logo</a></li>
+        <li><a href="#c">07 · Colour</a></li>
+        <li><a href="#t">08 · Typography</a></li>
+        <li><a href="#i">09 · Imagery &amp; motion</a></li>
+        <li><a href="#a">10 · Applications</a></li>
+        <li><a href="#g">11 · Governance</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 01 FOUNDATION -->
+<section id="f">
+  <div class="wrap">
+    <p class="num">01</p>
+    <h2 class="mt8 mb24">Foundation.</h2>
+    <div class="grid c2">
+      <div class="card">
+        <h3 class="accent">Purpose</h3>
+        <p class="mt8">Attention is the most valuable currency online — and most brilliant founders lose it. We exist to turn their expertise into influence: to make the people worth listening to impossible to scroll past.</p>
+      </div>
+      <div class="card">
+        <h3 class="accent">Vision</h3>
+        <p class="mt8">To be the growth partner behind the next generation of category-defining personal brands — the quiet edge behind the loud results.</p>
+      </div>
+      <div class="card">
+        <h3 class="accent">Mission</h3>
+        <p class="mt8">Engineer content that compounds: personal branding, viral engineering, and retention-first editing that consistently outperforms the algorithm and builds durable authority.</p>
+      </div>
+      <div class="card">
+        <h3 class="accent">Values</h3>
+        <p class="mt8"><b style="color:var(--paper)">Client-first.</b> Their brand is our legacy.<br><b style="color:var(--paper)">Engineered, not guessed.</b> Decisions run on data.<br><b style="color:var(--paper)">Premium without ego.</b> Show, don't shout.<br><b style="color:var(--paper)">Speed with craft.</b> Fast, never sloppy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 POSITIONING -->
+<section id="p">
+  <div class="wrap">
+    <p class="num">02</p>
+    <h2 class="mt8 mb24">Positioning.</h2>
+    <p class="quote mb24">For founders and creators who refuse to be forgettable — QuidEdge engineers viral impact.</p>
+    <div class="grid c2">
+      <div>
+        <h3>Positioning statement</h3>
+        <p class="mt8">For 7–8 figure founders, executives, and creators who want authority — not just views — QuidEdge is the content partner that engineers personal brands to compound. Unlike editors-for-hire or slow legacy agencies, we combine strategy, viral engineering, and retention-first editing into one system, delivered by a dedicated global team.</p>
+      </div>
+      <div>
+        <h3>Who we serve</h3>
+        <p class="mt8"><b class="kv">Primary:</b> founders &amp; execs building a personal brand.<br><b class="kv">Secondary:</b> established creators scaling short-form.<br><b class="kv">Mindset:</b> ambitious, time-poor, quality-obsessed, allergic to hype that can't be backed.</p>
+      </div>
+    </div>
+    <div class="grid c3 mt24">
+      <div class="card"><h3>Strategy</h3><p class="mt8" style="font-size:.85rem">Positioning, content pillars, platform fit. The plan before the pixels.</p></div>
+      <div class="card"><h3>Viral engineering</h3><p class="mt8" style="font-size:.85rem">Hooks, titles, retention structures — tested, not guessed.</p></div>
+      <div class="card"><h3>Retention editing</h3><p class="mt8" style="font-size:.85rem">Every cut earns the next second. Premium craft that converts.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 PERSONALITY -->
+<section id="pe">
+  <div class="wrap">
+    <p class="num">03</p>
+    <h2 class="mt8 mb24">Personality.</h2>
+    <div class="grid c2">
+      <div>
+        <h3>Archetype</h3>
+        <p class="mt8">The <b style="color:var(--paper)">Creator</b> with an <b style="color:var(--paper)">Sage</b> edge — imaginative and high-craft, but grounded in evidence and strategy. We make bold work and can explain exactly why it works.</p>
+        <div class="mt16">
+          <span class="tag">Premium</span><span class="tag">Editorial</span><span class="tag">Confident</span><span class="tag">Data-driven</span><span class="tag">Human</span><span class="tag">Precise</span>
+        </div>
+      </div>
+      <div>
+        <h3>If QuidEdge were a person…</h3>
+        <p class="mt8">The calm operator in the room who's done it a hundred times. Speaks less, means more. Obsessed with the details no one notices but everyone feels. Warm with clients, ruthless with mediocrity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 MESSAGING -->
+<section id="m">
+  <div class="wrap">
+    <p class="num">04</p>
+    <h2 class="mt8 mb24">Messaging.</h2>
+    <div class="grid c2">
+      <div>
+        <h3>Tagline hierarchy</h3>
+        <p class="mt8"><b class="accent">Primary:</b> “Engineered for Viral Impact.”<br><b style="color:var(--paper)">Supporting:</b> “Personal Branding, engineered.”</p>
+        <p class="mt16" style="font-size:.82rem;color:var(--stone)">One primary line per surface. Never show both taglines together.</p>
+        <h3 class="mt24">One-liner</h3>
+        <p class="mt8">“We turn founders into recognised industry icons — with content engineered to perform.”</p>
+      </div>
+      <div>
+        <h3>Boilerplate (short)</h3>
+        <p class="mt8">QuidEdge is a personal branding &amp; content agency that engineers viral impact for founders and creators — combining strategy, viral engineering, and retention-first editing.</p>
+        <h3 class="mt24">Proof points</h3>
+        <ul>
+          <li>Strategy + editing under one roof — not editors-for-hire.</li>
+          <li>Data-driven hooks &amp; retention, tested every cycle.</li>
+          <li>Dedicated global team, all timezones.</li>
+          <li>Month-to-month — we earn the business every 30 days.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="mt24" style="font-size:.82rem;color:var(--stone)">Note: any public metric (views, clients, projects) must be defensible on request. Bold numbers build trust only when you can back them.</p>
+  </div>
+</section>
+
+<!-- 05 VOICE -->
+<section id="v">
+  <div class="wrap">
+    <p class="num">05</p>
+    <h2 class="mt8 mb24">Voice &amp; tone.</h2>
+    <div class="grid c2">
+      <div>
+        <h3>How we sound</h3>
+        <ul>
+          <li>Lead with the result, not the process.</li>
+          <li>Short, declarative sentences. Cut filler.</li>
+          <li>Back claims with numbers we can defend.</li>
+          <li>Premium, never boastful. Show, don't shout.</li>
+          <li>Warm and direct with clients; confident in public.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Words</h3>
+        <p class="mt8"><b class="do">Use:</b> engineered, retention, authority, compounding, precision, reach, system.</p>
+        <p class="mt16"><b class="dont">Avoid:</b> guru, ninja, hacks, “go viral guaranteed”, hype without proof, corporate filler (“leverage”, “synergy”).</p>
+        <h3 class="mt24">Before → after</h3>
+        <p class="mt8" style="font-size:.85rem"><span class="dont">“We leverage cutting-edge synergies to help you go viral!”</span><br><span class="do">“We engineer content that holds attention — and compounds.”</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 LOGO -->
+<section id="l">
+  <div class="wrap">
+    <p class="num">06</p>
+    <h2 class="mt8 mb24">Logo &amp; the E-mark.</h2>
+    <div class="grid c3">
+      <div class="card" style="text-align:center">
+        <svg class="mark" style="margin:12px auto" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="11" stroke-linecap="square"><path d="M74 16 H24 V84 H74"/><path d="M24 50 H62"/></svg>
+        <p style="font-size:.75rem;color:var(--stone);margin-top:10px">E-mark — icon contexts only: favicon, avatars, app icon, watermark.</p>
+      </div>
+      <div class="card" style="display:flex;align-items:center;justify-content:center"><span class="wordmark" style="font-size:1.55rem">Quid<span class="b">E</span>dge<span class="accent">.</span></span></div>
+      <div class="card" style="background:var(--paper);display:flex;align-items:center;justify-content:center"><span class="wordmark" style="font-size:1.55rem;color:var(--ink)">Quid<span class="b">E</span>dge<span style="color:var(--proof)">.</span></span></div>
+    </div>
+    <p class="mt24" style="font-size:.85rem"><b style="color:var(--paper)">The wordmark is the logo.</b> The E-mark is a supporting icon — never place it directly before the wordmark (it doubles the “E” and muddies the name).</p>
+    <div class="grid c2 mt24">
+      <div><h3 class="do">Do</h3><ul>
+        <li>Give the wordmark clear space equal to the cap-height of “E”.</li>
+        <li>Use the E-mark solo for favicons, avatars, and watermarks.</li>
+        <li>White on dark, or ink on paper — always full contrast.</li>
+      </ul></div>
+      <div><h3 class="dont">Don't</h3><ul>
+        <li>Don't prefix the wordmark with the E-mark.</li>
+        <li>Don't recolour outside ink, paper, or proof blue.</li>
+        <li>Don't stretch, rotate, outline, or add shadows.</li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 COLOUR -->
+<section id="c">
+  <div class="wrap">
+    <p class="num">07</p>
+    <h2 class="mt8 mb24">Colour.</h2>
+    <p class="mb24">Disciplined by design: a near-black base, warm off-white, and a single electric accent — <b class="accent">proof blue</b> — used sparingly for emphasis, links, and CTAs. Restraint is the brand.</p>
+    <div class="grid c4">
+      <div><div class="swatch" style="background:#0a0a0a;color:#edede7;border:1px solid var(--line)">Ink</div><p style="font-size:.75rem;margin-top:8px"><code>#0A0A0A</code><br>Base</p></div>
+      <div><div class="swatch" style="background:#131313;color:#edede7;border:1px solid var(--line)">Ink Soft</div><p style="font-size:.75rem;margin-top:8px"><code>#131313</code><br>Cards</p></div>
+      <div><div class="swatch" style="background:#edede7;color:#0a0a0a">Paper</div><p style="font-size:.75rem;margin-top:8px"><code>#EDEDE7</code><br>Primary text</p></div>
+      <div><div class="swatch" style="background:#8a8680;color:#0a0a0a">Stone</div><p style="font-size:.75rem;margin-top:8px"><code>#8A8680</code><br>Secondary text</p></div>
+      <div><div class="swatch" style="background:#3d5afe;color:#fff">Proof Blue</div><p style="font-size:.75rem;margin-top:8px"><code>#3D5AFE</code><br>Accent / CTAs</p></div>
+      <div><div class="swatch" style="background:#2d46e0;color:#fff">Proof Dark</div><p style="font-size:.75rem;margin-top:8px"><code>#2D46E0</code><br>Hover</p></div>
+    </div>
+    <p class="mt24" style="font-size:.82rem;color:var(--stone)">Usage ratio ≈ 70% ink · 25% paper/stone · 5% proof blue. If the blue feels loud, there's too much of it. Keep paper text on ink at full opacity for accessibility.</p>
+  </div>
+</section>
+
+<!-- 08 TYPOGRAPHY -->
+<section id="t">
+  <div class="wrap">
+    <p class="num">08</p>
+    <h2 class="mt8 mb24">Typography.</h2>
+    <p class="mb24"><b style="color:var(--paper)">Manrope</b> everywhere. The signature move is the <b>weight anchor</b>: a light headline with one word in heavy 800 to land the point — echoing the bold “E” in the logo.</p>
+    <div class="card"><p style="font-size:clamp(2rem,5vw,3.2rem);font-weight:300;letter-spacing:-.04em;line-height:1.05">We engineer <span class="b">viral</span> impact.</p></div>
+    <div class="grid c3 mt24">
+      <div><p style="font-weight:300;font-size:1.5rem">Aa</p><p style="font-size:.75rem;color:var(--stone)">Light 300 · body &amp; big headings</p></div>
+      <div><p style="font-weight:600;font-size:1.5rem">Aa</p><p style="font-size:.75rem;color:var(--stone)">Semibold 600 · labels &amp; UI</p></div>
+      <div><p style="font-weight:800;font-size:1.5rem">Aa</p><p style="font-size:.75rem;color:var(--stone)">Extra-bold 800 · anchor word &amp; stats</p></div>
+    </div>
+    <p class="mt16" style="font-size:.82rem;color:var(--stone)">Eyebrows/labels: 0.6rem, uppercase, letter-spacing ~0.22em, stone. Headlines: negative tracking (−0.03 to −0.05em). One anchor word per headline — no more.</p>
+  </div>
+</section>
+
+<!-- 09 IMAGERY -->
+<section id="i">
+  <div class="wrap">
+    <p class="num">09</p>
+    <h2 class="mt8 mb24">Imagery &amp; motion.</h2>
+    <div class="grid c2">
+      <div>
+        <h3>Photography</h3>
+        <p class="mt8">Cinematic and moody. Desaturate bright/busy backgrounds so subjects sit inside the dark palette (never a raw, clashing studio colour). Real people over stock. Deep shadows, controlled highlights.</p>
+        <h3 class="mt24">Video &amp; thumbnails</h3>
+        <p class="mt8">Retention-first pacing, kinetic captions, restrained motion graphics. Thumbnails: one clear subject, high contrast, one idea. Never cheap transitions that cheapen a premium brand.</p>
+      </div>
+      <div>
+        <h3>Graphic devices</h3>
+        <p class="mt8">Hairline section rules, oversized “ghost” numbers, the scrolling proof marquee, and subtle film grain — used consistently to signal the same editorial system across pages.</p>
+        <h3 class="mt24">Motion</h3>
+        <p class="mt8">Calm and intentional. Slow reveals, soft easing (<code>cubic-bezier(.16,1,.3,1)</code>), nothing bouncy. Motion should feel expensive, not busy. Respect reduced-motion preferences.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 APPLICATIONS -->
+<section id="a">
+  <div class="wrap">
+    <p class="num">10</p>
+    <h2 class="mt8 mb24">Applying the brand.</h2>
+    <div class="grid c3">
+      <div class="card"><h3>Social</h3><p class="mt8" style="font-size:.85rem">E-mark avatar, ink background, proof-blue accents. Weight-anchor headlines on covers &amp; thumbnails.</p></div>
+      <div class="card"><h3>Decks &amp; proposals</h3><p class="mt8" style="font-size:.85rem">Manrope, ink slides, one blue accent per slide, defensible stats, wordmark on cover &amp; footer.</p></div>
+      <div class="card"><h3>Email &amp; docs</h3><p class="mt8" style="font-size:.85rem">Signature = wordmark + primary tagline. Minimal formatting. Warm, precise copy.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 GOVERNANCE -->
+<section id="g">
+  <div class="wrap">
+    <p class="num">11</p>
+    <h2 class="mt8 mb24">Governance.</h2>
+    <p class="quote mb24">Before it ships: does this look and sound like the same brand as our homepage?</p>
+    <ul style="max-width:640px">
+      <li>Wordmark used correctly, full contrast, clear space respected.</li>
+      <li>≤ 5% proof blue; the rest ink, paper, stone.</li>
+      <li>Manrope, one anchor word per headline.</li>
+      <li>Every claim/number defensible.</li>
+      <li>Voice: result-first, no hype, no filler words.</li>
+      <li>Imagery on-palette; motion calm.</li>
+    </ul>
+    <p class="mt24" style="font-size:.85rem">Own this document. Update it as the brand evolves — but change it deliberately, together, never by accident. A brand is a promise kept consistently.</p>
+  </div>
+</section>
+
+<div class="foot">QuidEdge · Brand Guidelines v1.0 · Levi &amp; Chami — Engineered for Viral Impact.</div>
+
+</body>
+</html>

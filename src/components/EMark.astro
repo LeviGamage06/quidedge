@@ -1,0 +1,11 @@
+---
+// The QuidEdge "E-mark" — a squared bracket that reads as both "E" and an
+// edge/frame. Inherits color via currentColor. Pass a Tailwind class for size.
+interface Props { class?: string; }
+const { class: className = "h-4 w-4" } = Astro.props;
+---
+<svg class={className} viewBox="0 0 100 100" fill="none" stroke="currentColor"
+     stroke-width="11" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+  <path d="M74 16 H24 V84 H74"/>
+  <path d="M24 50 H62"/>
+</svg>

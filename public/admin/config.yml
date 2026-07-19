@@ -1,0 +1,47 @@
+# QuidEdge blog editor configuration.
+# ─────────────────────────────────────────────────────────────────────────────
+# Before this works you must set TWO things (see BLOG-SETUP.md):
+#   1. "repo" below → your exact GitHub "owner/repository" (verify the spelling).
+#   2. "base_url"   → the URL of the free OAuth helper you deploy (one-time).
+# ─────────────────────────────────────────────────────────────────────────────
+
+backend:
+  name: github
+  repo: LeviGamage06/quidedge        # ← verify this is your exact GitHub owner/repo
+  branch: main
+  base_url: https://REPLACE-WITH-YOUR-OAUTH-URL   # ← from BLOG-SETUP.md step 2
+
+# Where uploaded images are stored and how the site references them.
+media_folder: "public/blog-images"
+public_folder: "/blog-images"
+
+publish_mode: simple
+
+collections:
+  - name: "blog"
+    label: "Blog posts"
+    label_singular: "Blog post"
+    description: "Write a post, then click Publish. It goes live on your site in ~1–2 minutes."
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    preview_path: "blog/{{slug}}"
+    sortable_fields: ["pubDate", "title"]
+    fields:
+      - { label: "Title", name: "title", widget: "string", hint: "The headline. Keep it clear and specific." }
+      - { label: "Short description", name: "description", widget: "text", hint: "1–2 sentences. This shows in Google results and link previews." }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        default: "Insights"
+        options:
+          - "Personal Branding"
+          - "Viral Engineering"
+          - "Retention Editing"
+          - "Content Strategy"
+          - "Case Study"
+          - "Insights"
+      - { label: "Publish date", name: "pubDate", widget: "datetime" }
+      - { label: "Hero image (optional)", name: "heroImage", widget: "image", required: false, hint: "A wide image shown at the top of the post." }
+      - { label: "Draft — leave OFF to publish", name: "draft", widget: "boolean", default: false }
+      - { label: "Body", name: "body", widget: "markdown", hint: "Write your post here — headings, bold, lists, images, links." }

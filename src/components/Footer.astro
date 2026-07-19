@@ -1,0 +1,106 @@
+---
+import { activeSocials } from "../data/brand";
+const b = import.meta.env.BASE_URL.replace(/\/$/, '');
+const year = new Date().getFullYear();
+
+const ICONS: Record<string, string> = {
+  Instagram: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
+  YouTube:   '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3V9z" fill="currentColor" stroke="none"/></svg>',
+  TikTok:    '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.3 2 1.7 3.5 3.7 3.8v2.4c-1.4 0-2.7-.4-3.7-1.1v5.6a5.3 5.3 0 1 1-5.3-5.3c.3 0 .5 0 .8.1v2.5a2.8 2.8 0 1 0 2 2.7V3H16z"/></svg>',
+  LinkedIn:  '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4M11 17v-7" stroke-linecap="round"/></svg>',
+};
+// Newsletter signups post to the same Google Apps Script as the lead form,
+// so they land in your Leads sheet and email you. (Same URL as contact.astro.)
+const NEWSLETTER_ENDPOINT = "https://script.google.com/macros/s/AKfycbztf1DpfBnDGcIjIrgrrv5U_5nzL6vOhVmNZ7vNnKw1NgZAp-hZdUcRy554XGOFeM_6GQ/exec";
+---
+<footer class="section-rule bg-ink-soft">
+  <div class="mx-auto max-w-7xl px-5 md:px-8 pt-14 pb-9">
+    <div class="grid gap-10 sm:grid-cols-2 md:grid-cols-[2fr_1fr_1fr_1.7fr]">
+
+      <div class="sm:col-span-2 md:col-span-1">
+        <a href={`${b}/`} aria-label="QuidEdge home"
+           class="group inline-flex text-[1.05rem] font-light tracking-[-0.01em] text-paper leading-none mb-4">
+          <span class="group-hover:text-stone transition-colors">Quid</span>
+          <span class="font-extrabold group-hover:text-proof transition-colors">E</span>
+          <span class="group-hover:text-stone transition-colors">dge</span>
+          <span class="text-proof ml-0.5">.</span>
+        </a>
+        <p class="text-sm text-stone leading-relaxed max-w-xs">
+          World-class video editing and content strategy for 7–8 figure entrepreneurs. Engineered for viral impact.
+        </p>
+        <p class="mt-5 flex items-center gap-2 text-xs text-stone/60">
+          <span class="live-dot" aria-hidden="true"></span>Accepting new clients
+        </p>
+        {activeSocials.length > 0 && (
+          <div class="mt-6 flex items-center gap-4">
+            {activeSocials.map((s) => (
+              <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.platform}
+                 class="text-stone/70 hover:text-paper transition-colors">
+                <Fragment set:html={ICONS[s.platform] ?? ""} />
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div>
+        <p class="label mb-5">Company</p>
+        <ul class="space-y-3">
+          {[['about','About'],['services','Services'],['work','Work'],['blog','Blog']].map(([h,l]) => (
+            <li><a href={`${b}/${h}`} class="link-underline inline-block text-sm text-stone hover:text-paper transition-colors">{l}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <p class="label mb-5">Work with us</p>
+        <ul class="space-y-3">
+          {[['contact','Book a call'],['contact','Viral Sprint'],['contact','Digital Empire']].map(([h,l]) => (
+            <li><a href={`${b}/${h}`} class="link-underline inline-block text-sm text-stone hover:text-paper transition-colors">{l}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <p class="label mb-5">Stay in the loop</p>
+        <p class="text-sm text-stone mb-4 leading-relaxed">One email a month — branding insights, no spam.</p>
+        <form action={NEWSLETTER_ENDPOINT} method="POST"
+              class="newsletter-form flex flex-col sm:flex-row gap-2">
+          <label for="ft-email" class="sr-only">Your email address</label>
+          <input id="ft-email" name="email" type="email" required placeholder="you@example.com"
+            class="form-input flex-1 min-w-0"/>
+          <input type="hidden" name="name" value="Newsletter subscriber"/>
+          <input type="hidden" name="goal" value="Newsletter signup (footer)"/>
+          <input type="hidden" name="_subject" value="QuidEdge newsletter signup"/>
+          <button type="submit" class="btn-primary shrink-0 justify-center">Join</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="mt-12 flex flex-col gap-2 pt-6 sm:flex-row sm:items-center sm:justify-between"
+         style="border-top:1px solid rgba(138,134,128,0.1);">
+      <p class="text-xs text-stone/50">&copy; {year} QuidEdge (Levi &amp; Chami). All rights reserved.</p>
+      <p class="text-xs text-stone/50">Engineered for Viral Impact.</p>
+    </div>
+  </div>
+</footer>
+
+<script define:vars={{ NEWSLETTER_ENDPOINT }}>
+  /* Handles ALL newsletter forms on the page (footer + blog) via delegation. */
+  document.addEventListener('submit', async (e) => {
+    const form = e.target && e.target.closest && e.target.closest('.newsletter-form');
+    if (!form) return;
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    if (!NEWSLETTER_ENDPOINT || NEWSLETTER_ENDPOINT.indexOf('PASTE') !== -1) return;
+    const btn = form.querySelector('button[type="submit"]');
+    const orig = btn ? btn.textContent : '';
+    if (btn) { btn.textContent = '…'; btn.disabled = true; }
+    try {
+      await fetch(NEWSLETTER_ENDPOINT, { method: 'POST', body: new FormData(form), mode: 'no-cors' });
+      form.innerHTML = '<p class="text-sm text-stone">Thanks — you’re subscribed. ✓</p>';
+    } catch (err) {
+      if (btn) { btn.textContent = orig; btn.disabled = false; }
+    }
+  });
+</script>

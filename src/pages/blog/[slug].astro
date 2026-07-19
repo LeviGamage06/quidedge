@@ -1,0 +1,92 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const b = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const fmtDate = post.data.pubDate.toLocaleDateString("en-US", {
+  year: "numeric", month: "long", day: "numeric",
+});
+const heroAbs = post.data.heroImage ? new URL(post.data.heroImage, Astro.site).href : undefined;
+const canonical = new URL(`${b}/blog/${post.id}`, Astro.site).href;
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.data.title,
+  "description": post.data.description,
+  "datePublished": post.data.pubDate.toISOString(),
+  ...(post.data.updatedDate ? { "dateModified": post.data.updatedDate.toISOString() } : {}),
+  "author": { "@type": "Organization", "name": "QuidEdge" },
+  "publisher": { "@type": "Organization", "name": "QuidEdge" },
+  ...(heroAbs ? { "image": heroAbs } : {}),
+  "mainEntityOfPage": canonical,
+  "articleSection": post.data.category,
+};
+
+// Up to 2 other posts to keep readers on-site (good for SEO + engagement).
+const more = (await getCollection("blog", ({ data }) => !data.draft))
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 2);
+---
+<Layout
+  fullTitle={`${post.data.title} | QuidEdge Blog`}
+  title={post.data.title}
+  description={post.data.description}
+  ogType="article"
+  image={heroAbs}
+  schema={articleSchema}
+>
+  <article class="section-rule py-14 md:py-20 px-5 md:px-8">
+    <div class="mx-auto max-w-3xl">
+      <a href={`${b}/blog`} class="label link-underline inline-block mb-8">← Back to blog</a>
+      <p class="label mb-4">{post.data.category} · {fmtDate}</p>
+      <h1 class="text-[clamp(2rem,5.5vw,3.5rem)] font-light leading-[1.06] tracking-[-0.03em] mb-6">
+        {post.data.title}
+      </h1>
+      <p class="text-base text-stone leading-relaxed mb-9">{post.data.description}</p>
+
+      {heroAbs && (
+        <div class="media relative overflow-hidden mb-10" style="aspect-ratio:16/9;">
+          <img src={post.data.heroImage} alt={post.data.title} class="h-full w-full object-cover" loading="lazy"/>
+        </div>
+      )}
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <div class="mt-14 pt-8" style="border-top:1px solid var(--line);">
+        <a href={`${b}/contact`} class="btn-primary">
+          Work with QuidEdge
+          <svg class="arr" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg>
+        </a>
+      </div>
+    </div>
+  </article>
+
+  {more.length > 0 && (
+    <section class="section-rule bg-ink-soft py-16 md:py-24 px-5 md:px-8">
+      <div class="mx-auto max-w-5xl">
+        <p class="label mb-8">Keep reading</p>
+        <div class="grid gap-px bg-stone/10 sm:grid-cols-2">
+          {more.map((p) => (
+            <a href={`${b}/blog/${p.id}`} class="card group p-7 md:p-9">
+              <p class="label mb-3">{p.data.category}</p>
+              <h3 class="text-base md:text-lg font-light leading-snug text-paper mb-3 group-hover:text-paper/75 transition-colors">{p.data.title}</h3>
+              <p class="text-xs text-stone leading-relaxed line-clamp-2">{p.data.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</Layout>
