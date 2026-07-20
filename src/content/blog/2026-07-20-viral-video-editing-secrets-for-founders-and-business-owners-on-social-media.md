@@ -105,4 +105,4 @@ Editing efficiently is also a growth strategy. A single 20-minute recording a po
 
 ---
 
-*Want help turning this into a content system for your brand?  visit :- www.quidedge.com*
+*Want help turning this into a content system for your brand?  visit :- [www.quidedge.com](http://www.quidedge.com)*
