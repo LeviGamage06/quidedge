@@ -1,0 +1,47 @@
+media:
+  input: public/blog-images
+  output: /blog-images
+
+content:
+  - name: blog
+    label: Blog posts
+    type: collection
+    path: src/content/blog
+    view:
+      fields:
+        - title
+        - category
+        - pubDate
+        - draft
+    fields:
+      - name: title
+        label: Title
+        type: string
+      - name: description
+        label: Short description (shows in Google & previews)
+        type: text
+      - name: category
+        label: Category
+        type: select
+        default: Insights
+        options:
+          values:
+            - Personal Branding
+            - Viral Engineering
+            - Retention Editing
+            - Content Strategy
+            - Case Study
+            - Insights
+      - name: pubDate
+        label: Publish date
+        type: date
+      - name: heroImage
+        label: Hero image (optional)
+        type: image
+      - name: draft
+        label: Draft — turn OFF to publish
+        type: boolean
+        default: false
+      - name: body
+        label: Body
+        type: rich-text
