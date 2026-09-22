@@ -329,7 +329,7 @@ const serviceSchema = {
     function updateMarquee(names) {
       const inner = document.querySelector('[data-marquee-inner]');
       if (!inner || !names.length) return;
-      const metrics = ['650M+ Views', '678+ Clients', '5+ Years'];
+      const metrics = ['650M+ Views', '688+ Clients', '5+ Years'];
       const seq = [];
       names.forEach((n, i) => { seq.push(['name', n]); seq.push(['metric', metrics[i % metrics.length]]); });
       const doubled = seq.concat(seq); // duplicate for the seamless loop
