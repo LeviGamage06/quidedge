@@ -52,7 +52,7 @@ const faqs = [
     a:"We can't guarantee virality — great content still needs to resonate with your audience. What we do guarantee: videos that consistently outperform industry benchmarks. Clients typically see 10x better engagement than their previous content." },
 ];
 
-const clients = ["Ryan Trahan","550M+ Views","Enes Yilmazer","173+ Clients","Heidi Neal","5+ Years"];
+const clients = ["Ryan Trahan","650M+ Views","Enes Yilmazer","173+ Clients","Heidi Neal","5+ Years"];
 
 // FAQ rich-result schema (eligible for Google FAQ rich snippets).
 const faqSchema = {
@@ -208,7 +208,7 @@ const serviceSchema = {
     <p class="label">The work</p>
     <div>
       <h2 class="text-[clamp(3rem,9vw,8rem)] font-light leading-[0.9] tracking-[-0.05em]">
-        550M+<br/><span class="weight-anchor">Views.</span>
+        650M+<br/><span class="weight-anchor">Views.</span>
       </h2>
       <div class="mt-6">
         <a href={`${bp}/work`} class="btn-secondary">
@@ -329,7 +329,7 @@ const serviceSchema = {
     function updateMarquee(names) {
       const inner = document.querySelector('[data-marquee-inner]');
       if (!inner || !names.length) return;
-      const metrics = ['550M+ Views', '173+ Clients', '5+ Years'];
+      const metrics = ['650M+ Views', '678+ Clients', '5+ Years'];
       const seq = [];
       names.forEach((n, i) => { seq.push(['name', n]); seq.push(['metric', metrics[i % metrics.length]]); });
       const doubled = seq.concat(seq); // duplicate for the seamless loop
