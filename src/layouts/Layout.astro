@@ -97,7 +97,7 @@ const websiteSchema = {
 };
 const webPageSchema = {
   "@context": "https://schema.org",
-  "@type": ogType === "article" ? "Article" : "WebPage",
+  "@type": "WebPage",
   "@id": `${canonical.href}#webpage`,
   "url": canonical.href,
   "name": pageTitle,
