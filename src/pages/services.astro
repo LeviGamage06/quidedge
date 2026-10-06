@@ -43,7 +43,12 @@ const serviceListSchema = {
       "name": s.title,
       "description": s.headline,
       "serviceType": s.title,
-      "provider": { "@type": "Organization", "name": "QuidEdge" },
+      "url": new URL(`${b0}/services#${s.id}`, Astro.site).href,
+      "provider": { "@id": `${new URL(`${b0}/`, Astro.site).href}#organization` },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Founders, executives and creators"
+      },
       "areaServed": ["US", "AU"],
     },
   })),
