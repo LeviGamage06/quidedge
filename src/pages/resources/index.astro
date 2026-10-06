@@ -1,0 +1,67 @@
+---
+import Layout from "../../layouts/Layout.astro";
+const raw = import.meta.env.BASE_URL;
+const bp = raw.endsWith("/") ? raw.slice(0,-1) : raw;
+const canonical = new URL(`${bp}/resources/`, Astro.site).href;
+const home = new URL(`${bp}/`, Astro.site).href;
+
+const resources = [
+  {
+    href: `${bp}/resources/founder-brand-scorecard/`,
+    title: "Founder Brand Scorecard",
+    description: "A free 10-point self-assessment for founders who want to measure positioning clarity, authority, discoverability and content-system maturity.",
+    label: "Interactive tool"
+  },
+  {
+    href: `${bp}/resources/video-retention-checklist/`,
+    title: "Video Retention Checklist",
+    description: "A practical pre-publish checklist for hooks, pacing, clarity, visual variation, sound, captions and platform fit.",
+    label: "Free checklist"
+  }
+];
+
+const collectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": `${canonical}#collection`,
+  "url": canonical,
+  "name": "QuidEdge Free Resources",
+  "description": "Free practical resources for founder personal branding, content strategy and retention-focused video.",
+  "isPartOf": { "@id": `${home}#website` },
+  "hasPart": resources.map((r) => ({
+    "@type": "CreativeWork",
+    "name": r.title,
+    "url": new URL(r.href, Astro.site).href,
+    "description": r.description
+  }))
+};
+---
+<Layout
+  fullTitle="Free Founder Branding & Video Resources | QuidEdge"
+  title="Free Resources"
+  description="Free QuidEdge tools and checklists for founder personal branding, content strategy and retention-focused video."
+  schema={collectionSchema}
+>
+  <section class="section-rule py-20 md:py-28 px-5 md:px-8">
+    <div class="mx-auto max-w-6xl">
+      <p class="label reveal mb-3">Free tools & frameworks</p>
+      <h1 class="text-[clamp(2.6rem,7vw,5.5rem)] font-light leading-[0.94] tracking-[-0.04em] reveal reveal-d1">
+        Build a stronger <span class="weight-anchor">content system.</span>
+      </h1>
+      <p class="mt-6 max-w-2xl text-sm md:text-base text-stone leading-relaxed reveal reveal-d2">
+        Practical resources from QuidEdge for founders and creators. No signup wall, no data capture — use them, share them and adapt the frameworks to your team.
+      </p>
+
+      <div class="mt-12 grid gap-px bg-stone/10 md:grid-cols-2">
+        {resources.map((r, i) => (
+          <a href={r.href} class={`card p-7 md:p-9 reveal reveal-d${Math.min(i+1,4)} block`}>
+            <p class="label text-proof mb-4">{r.label}</p>
+            <h2 class="text-2xl font-medium tracking-[-0.02em]">{r.title}</h2>
+            <p class="mt-3 text-sm text-stone leading-relaxed">{r.description}</p>
+            <p class="mt-6 text-sm text-paper">Open resource →</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

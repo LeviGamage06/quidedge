@@ -1,0 +1,120 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+const raw = import.meta.env.BASE_URL;
+const bp = raw.endsWith("/") ? raw.slice(0,-1) : raw;
+const canonical = new URL(`${bp}/resources/video-retention-checklist/`, Astro.site).href;
+const home = new URL(`${bp}/`, Astro.site).href;
+
+const sections = [
+  {
+    title: "Hook",
+    items: [
+      "The first line or frame makes the value of continuing clear.",
+      "The opening avoids greetings, housekeeping and unnecessary setup.",
+      "The visual opening supports the promise instead of competing with it.",
+      "The hook is specific enough to create curiosity without misleading the viewer."
+    ]
+  },
+  {
+    title: "Structure",
+    items: [
+      "The video has a clear progression: promise, context, value, proof or payoff.",
+      "Each section creates a reason to continue to the next.",
+      "Repeated points and tangents have been removed.",
+      "The strongest useful moment is not buried late in the edit."
+    ]
+  },
+  {
+    title: "Pacing & visual variation",
+    items: [
+      "Cuts happen because clarity or energy needs them, not just to show editing skill.",
+      "Long static stretches are broken only when a visual change adds value.",
+      "B-roll, graphics and zooms support the idea being communicated.",
+      "The pacing changes deliberately instead of staying fast for the entire video."
+    ]
+  },
+  {
+    title: "Sound & captions",
+    items: [
+      "Dialogue is clear and consistently audible.",
+      "Music and sound effects support the message without competing with speech.",
+      "Captions are accurate, readable and placed inside safe areas.",
+      "Important words can be understood even when the viewer is watching silently."
+    ]
+  },
+  {
+    title: "Platform fit",
+    items: [
+      "Aspect ratio and framing match the publishing platform.",
+      "The title, thumbnail or caption accurately matches the content promise.",
+      "The edit respects how viewers consume content on that platform.",
+      "The call to action fits the viewer's likely intent at the end of the video."
+    ]
+  }
+];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "@id": `${canonical}#checklist`,
+  "name": "QuidEdge Video Retention Checklist",
+  "url": canonical,
+  "description": "A free pre-publish video retention checklist covering hooks, structure, pacing, visual variation, sound, captions and platform fit.",
+  "creator": { "@id": `${home}#organization` },
+  "isAccessibleForFree": true
+};
+---
+<Layout
+  fullTitle="Free Video Retention Checklist for Creators | QuidEdge"
+  title="Video Retention Checklist"
+  description="A free 20-point pre-publish checklist for video hooks, structure, pacing, visual variation, sound, captions and platform fit."
+  keywords="video retention checklist, YouTube editing checklist, short form video editing checklist, video hook checklist"
+  schema={schema}
+>
+  <section class="section-rule py-20 md:py-28 px-5 md:px-8">
+    <div class="mx-auto max-w-5xl">
+      <p class="label reveal mb-3">Free video editing resource</p>
+      <h1 class="text-[clamp(2.5rem,7vw,5.25rem)] font-light leading-[0.94] tracking-[-0.04em] reveal reveal-d1">
+        Video Retention <span class="weight-anchor">Checklist.</span>
+      </h1>
+      <p class="mt-6 max-w-3xl text-sm md:text-base text-stone leading-relaxed reveal reveal-d2">
+        A practical 20-point review to run before publishing. It is designed to catch avoidable retention problems without encouraging unnecessary effects or artificial pacing.
+      </p>
+      <button id="print-checklist" type="button" class="btn-secondary mt-8 reveal reveal-d3">Print / save checklist</button>
+    </div>
+  </section>
+
+  <section class="section-rule py-14 md:py-20 px-5 md:px-8">
+    <div class="mx-auto max-w-5xl space-y-6">
+      {sections.map((section, sectionIndex) => (
+        <section class="card p-7 md:p-9">
+          <p class="label text-proof mb-2">{String(sectionIndex + 1).padStart(2,"0")}</p>
+          <h2 class="text-2xl font-medium tracking-[-0.02em]">{section.title}</h2>
+          <ul class="mt-5 space-y-4">
+            {section.items.map((item) => (
+              <li class="flex items-start gap-3 text-sm text-stone leading-relaxed">
+                <span class="mt-1 inline-block h-4 w-4 shrink-0 border border-stone/40" aria-hidden="true"></span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+
+      <div class="card p-7 md:p-9">
+        <h2 class="text-xl font-medium">A useful rule</h2>
+        <p class="mt-3 max-w-3xl text-sm text-stone leading-relaxed">
+          Retention is not created by making every second louder. Strong editing removes friction, improves clarity and helps the story keep its promise. If an effect does not improve understanding, expectation or emotion, it may not need to be there.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href={`${bp}/video-editing-for-creators/`} class="btn-primary">Explore retention editing</a>
+          <a href={`${bp}/blog/video-editing-agency-vs-freelancer-for-founders-creators/`} class="btn-secondary">Agency vs freelancer guide</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.getElementById('print-checklist')?.addEventListener('click', () => window.print());
+  </script>
+</Layout>
