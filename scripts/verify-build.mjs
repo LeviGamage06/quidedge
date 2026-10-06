@@ -29,7 +29,7 @@ const casesCsv = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR3zoUDVE7TJhw
 const testimonialsCsv = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTXvjE8M9lDwSxgVlBjnbndsN38G320jI0_L3qILSYlYdpn6-5ZNVd8Iph0K9PuVIZfsrKO_mWiQh9d/pub?gid=0&single=true&output=csv";
 
 expectAll("dist/index.html", ["home-cases", casesCsv, "data-reel-autoplay"]);
-expectAll("dist/work/index.html", ["cases-dynamic", "testimonials-grid", casesCsv, testimonialsCsv]);
+expectAll("dist/work/index.html", ["cases-dynamic", "tm-grid", casesCsv, testimonialsCsv]);
 expectAll("dist/contact/index.html", ["lead-form", appsScript, 'name="website"']);
 expectAll("dist/services/index.html", ['id="foundation"', 'id="growth"', 'id="craft"', 'id="scale"']);
 expectAll("dist/blog/index.html", ["newsletter-form", appsScript]);
