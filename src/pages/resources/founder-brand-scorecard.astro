@@ -1,0 +1,168 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+const raw = import.meta.env.BASE_URL;
+const bp = raw.endsWith("/") ? raw.slice(0,-1) : raw;
+const canonical = new URL(`${bp}/resources/founder-brand-scorecard/`, Astro.site).href;
+const home = new URL(`${bp}/`, Astro.site).href;
+
+const dimensions = [
+  ["Positioning clarity", "Can a new visitor understand what you are known for, who you help and why your perspective is different?"],
+  ["Audience specificity", "Is your content designed for a clearly defined audience rather than 'everyone'?"],
+  ["Point of view", "Do you publish distinct opinions, principles or frameworks that people can associate with you?"],
+  ["Proof", "Do your profiles and content show credible evidence such as case studies, outcomes, experience or useful examples?"],
+  ["Content pillars", "Do you have a small set of repeatable themes that connect your expertise to audience demand?"],
+  ["Consistency", "Can your audience expect a useful, sustainable publishing rhythm?"],
+  ["Platform fit", "Is each piece adapted to the platform instead of copied everywhere unchanged?"],
+  ["Discoverability", "Can search engines and people easily connect your name, company, expertise and key topics?"],
+  ["Conversion path", "Is there a clear next step for someone who wants to learn more, enquire or work with you?"],
+  ["Learning loop", "Do you review performance and use the data to improve topics, hooks, formats and distribution?"]
+];
+
+const toolSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "@id": `${canonical}#tool`,
+  "name": "QuidEdge Founder Brand Scorecard",
+  "url": canonical,
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "description": "A free self-assessment for founders to evaluate positioning clarity, authority, discoverability and content-system maturity.",
+  "provider": { "@id": `${home}#organization` },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+};
+---
+<Layout
+  fullTitle="Free Founder Brand Scorecard | QuidEdge"
+  title="Founder Brand Scorecard"
+  description="Score your founder brand across positioning, authority, proof, discoverability, content consistency and conversion. Free, no signup required."
+  keywords="founder brand scorecard, personal branding assessment, founder personal brand checklist, personal branding audit"
+  schema={toolSchema}
+>
+  <section class="section-rule py-20 md:py-28 px-5 md:px-8">
+    <div class="mx-auto max-w-5xl">
+      <p class="label reveal mb-3">Free founder branding tool</p>
+      <h1 class="text-[clamp(2.5rem,7vw,5.25rem)] font-light leading-[0.94] tracking-[-0.04em] reveal reveal-d1">
+        Founder Brand <span class="weight-anchor">Scorecard.</span>
+      </h1>
+      <p class="mt-6 max-w-3xl text-sm md:text-base text-stone leading-relaxed reveal reveal-d2">
+        Rate your current founder brand across 10 fundamentals. The tool runs entirely in your browser and does not submit or store your answers.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-rule py-14 md:py-20 px-5 md:px-8">
+    <div class="mx-auto max-w-5xl">
+      <div id="scorecard" class="space-y-4">
+        {dimensions.map(([title, desc], i) => (
+          <fieldset class="card p-6 md:p-7" data-score-row>
+            <legend class="sr-only">{title}</legend>
+            <div class="md:flex md:items-start md:justify-between md:gap-8">
+              <div class="max-w-2xl">
+                <p class="label text-proof mb-2">{String(i + 1).padStart(2,"0")}</p>
+                <h2 class="text-lg font-medium">{title}</h2>
+                <p class="mt-2 text-sm text-stone leading-relaxed">{desc}</p>
+              </div>
+              <div class="mt-5 flex flex-wrap gap-2 md:mt-0 md:justify-end" role="radiogroup" aria-label={title}>
+                {[1,2,3,4,5].map((n) => (
+                  <label class="cursor-pointer">
+                    <input class="sr-only peer" type="radio" name={`q${i}`} value={n} />
+                    <span class="inline-flex h-10 w-10 items-center justify-center border border-stone/30 text-sm text-stone transition peer-checked:border-proof peer-checked:bg-proof peer-checked:text-paper hover:border-paper/50">
+                      {n}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </fieldset>
+        ))}
+      </div>
+
+      <div class="mt-8 card p-7 md:p-9" id="score-result" aria-live="polite">
+        <p class="label mb-2">Your score</p>
+        <div class="flex flex-wrap items-end gap-3">
+          <p class="text-[clamp(2.5rem,7vw,5rem)] font-extrabold tracking-[-0.05em] leading-none"><span id="score-number">0</span><span class="text-stone/50">/50</span></p>
+          <p id="score-band" class="pb-1 text-sm text-stone">Rate all 10 areas to generate your result.</p>
+        </div>
+        <p id="score-guidance" class="mt-5 max-w-3xl text-sm text-stone leading-relaxed">
+          Use 1 for “not established” and 5 for “strong and repeatable”. This is a strategic self-assessment, not an industry benchmark.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <button id="print-score" type="button" class="btn-secondary">Print / save result</button>
+          <a href={`${bp}/personal-branding-for-founders/`} class="btn-primary">Explore founder branding</a>
+        </div>
+      </div>
+
+      <div class="mt-12 grid gap-px bg-stone/10 md:grid-cols-4">
+        {[
+          ["10–20", "Foundation", "Clarify your positioning, audience and proof before increasing content volume."],
+          ["21–30", "Emerging", "You have useful signals, but the system is still inconsistent or difficult to recognise."],
+          ["31–40", "Established", "The core brand is working. Improve discoverability, proof and the feedback loop."],
+          ["41–50", "Compounding", "Your system is mature enough to focus on scale, distribution and deeper authority."]
+        ].map(([range, label, copy]) => (
+          <div class="card p-6">
+            <p class="label text-proof">{range}</p>
+            <h3 class="mt-2 text-base font-medium">{label}</h3>
+            <p class="mt-2 text-xs text-stone leading-relaxed">{copy}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-12 max-w-3xl">
+        <h2 class="text-2xl font-medium tracking-[-0.02em]">How to use the score</h2>
+        <p class="mt-4 text-sm text-stone leading-relaxed">
+          Do not optimise for the number itself. Use the lowest-scoring dimensions to identify the next bottleneck. A founder with strong content but weak positioning usually needs a clearer message before more production. A founder with clear positioning but weak consistency usually needs a better operating system.
+        </p>
+        <p class="mt-4 text-sm text-stone leading-relaxed">
+          For a deeper framework, read our guide on <a class="link-underline text-paper" href={`${bp}/blog/how-to-choose-personal-branding-agency-for-founders-2026/`}>choosing a personal branding agency for founders</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const rows = Array.from(document.querySelectorAll('[data-score-row]'));
+    const scoreEl = document.getElementById('score-number');
+    const bandEl = document.getElementById('score-band');
+    const guidanceEl = document.getElementById('score-guidance');
+
+    function updateScore() {
+      const values = rows.map((row) => {
+        const checked = row.querySelector('input[type="radio"]:checked');
+        return checked ? Number(checked.value) : 0;
+      });
+      const answered = values.filter(Boolean).length;
+      const total = values.reduce((sum, value) => sum + value, 0);
+      if (scoreEl) scoreEl.textContent = String(total);
+
+      if (answered < 10) {
+        if (bandEl) bandEl.textContent = `${answered}/10 areas rated`;
+        if (guidanceEl) guidanceEl.textContent = "Rate every area for a complete result. Your answers stay in this browser and are not submitted.";
+        return;
+      }
+
+      let band = "Foundation";
+      let guidance = "Start by clarifying positioning, audience and proof before adding more content volume.";
+      if (total >= 41) {
+        band = "Compounding";
+        guidance = "Your system is mature. Focus on distribution, external authority, stronger proof and deeper category ownership.";
+      } else if (total >= 31) {
+        band = "Established";
+        guidance = "The core system is working. Strengthen discoverability, evidence and the performance feedback loop.";
+      } else if (total >= 21) {
+        band = "Emerging";
+        guidance = "You have useful signals, but consistency and recognisability still need a repeatable operating system.";
+      }
+      if (bandEl) bandEl.textContent = band;
+      if (guidanceEl) guidanceEl.textContent = guidance;
+    }
+
+    document.querySelectorAll('#scorecard input[type="radio"]').forEach((input) => {
+      input.addEventListener('change', updateScore);
+    });
+    document.getElementById('print-score')?.addEventListener('click', () => window.print());
+  </script>
+</Layout>
