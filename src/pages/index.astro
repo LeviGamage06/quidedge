@@ -76,7 +76,12 @@ const serviceSchema = {
       "@type": "Service",
       "name": s.title,
       "description": s.body,
-      "provider": { "@type": "Organization", "name": "QuidEdge" },
+      "url": new URL(`${bp}/services#${s.slug}`, Astro.site).href,
+      "provider": { "@id": `${new URL(`${bp}/`, Astro.site).href}#organization` },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Founders, executives and creators"
+      },
       "areaServed": ["US", "AU"],
     },
   })),
