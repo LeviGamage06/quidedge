@@ -84,16 +84,16 @@ const contactSchema = {
             <div class="grid gap-5 sm:grid-cols-2">
               <div>
                 <label for="name" class="label block mb-2">Full name *</label>
-                <input id="name" name="name" type="text" required autocomplete="name" class="form-input"/>
+                <input id="name" name="name" type="text" required maxlength="120" autocomplete="name" class="form-input"/>
               </div>
               <div>
                 <label for="email" class="label block mb-2">Email address *</label>
-                <input id="email" name="email" type="email" required autocomplete="email" class="form-input"/>
+                <input id="email" name="email" type="email" required maxlength="254" autocomplete="email" class="form-input"/>
               </div>
             </div>
             <div>
               <label for="wa" class="label block mb-2">WhatsApp (optional)</label>
-              <input id="wa" name="whatsapp" type="tel" autocomplete="tel"
+              <input id="wa" name="whatsapp" type="tel" maxlength="80" autocomplete="tel"
                 placeholder="+1 555 000 0000" class="form-input"/>
             </div>
             <div>
@@ -124,7 +124,7 @@ const contactSchema = {
             </div>
             <div>
               <label for="goal" class="label block mb-2">What are you working towards? *</label>
-              <textarea id="goal" name="goal" rows="4" required
+              <textarea id="goal" name="goal" rows="4" required maxlength="4000"
                 placeholder="Tell us what you're trying to achieve..."
                 class="form-input resize-none"></textarea>
             </div>
@@ -139,6 +139,10 @@ const contactSchema = {
                 <span class="text-xs text-stone leading-relaxed">I consent to receive non-marketing order updates and reminders.</span>
               </label>
             </fieldset>
+            <div aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;">
+              <label for="website">Website</label>
+              <input id="website" name="website" type="text" tabindex="-1" autocomplete="off"/>
+            </div>
             <input type="hidden" name="_subject" value="New QuidEdge strategy call application"/>
             <p id="form-error" hidden role="alert" class="text-xs" style="color:#f87171;"></p>
             <button id="lead-submit" type="submit" class="btn-primary w-full justify-center">
