@@ -1,0 +1,48 @@
+name: Refresh secure dependencies
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    if: github.head_ref == 'hardening/security-performance-2026-10-07'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout hardening branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Upgrade direct build dependencies
+        run: npm install astro@^7.3.6 @astrojs/sitemap@latest @tailwindcss/vite@latest tailwindcss@latest
+
+      - name: Apply compatible audit fixes
+        run: npm audit fix || true
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify critical site features
+        run: node scripts/verify-build.mjs
+
+      - name: Commit dependency lockfile only after validation
+        run: |
+          if git diff --quiet -- package.json package-lock.json; then
+            echo "Dependency files already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "Security: update validated dependency versions"
+          git push origin HEAD:${{ github.head_ref }}
