@@ -31,6 +31,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Verify critical site features
+        run: node scripts/verify-build.mjs
+
       - name: Dependency audit report
         run: npm audit --json > npm-audit.json || true
 
