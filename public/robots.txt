@@ -1,6 +1,19 @@
+# QuidEdge crawler policy
+# Keep the public marketing site crawlable for traditional search and AI-assisted search.
+
 User-agent: *
 Allow: /
 
-# Block nothing — the whole marketing site should be crawlable.
+# OpenAI search crawler (used for ChatGPT search discovery).
+User-agent: OAI-SearchBot
+Allow: /
+
+# Perplexity search crawler.
+User-agent: PerplexityBot
+Allow: /
+
+# Anthropic user-directed retrieval.
+User-agent: Claude-User
+Allow: /
 
 Sitemap: https://www.quidedge.com/sitemap-index.xml
