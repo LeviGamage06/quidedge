@@ -110,6 +110,7 @@ const breadcrumbSchema = {
                 ))}
               </ul>
             </div>
+            {s.detailHref && <a href={s.detailHref} class="link-underline mt-6 block w-fit text-sm text-proof">Explore this service in detail →</a>}
             <a href={`${bp}/contact`} class="btn-primary mt-7 inline-flex">
               Get started
               <svg class="arr" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg>
