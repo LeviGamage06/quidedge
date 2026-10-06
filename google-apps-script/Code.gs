@@ -34,6 +34,43 @@ function doPost(e) {
 
     var p = (e && e.parameter) ? e.parameter : {};
 
+    // Invisible bot trap. Real website users never fill this field.
+    if (String(p.website || '').trim()) {
+      return json_({ ok: true });
+    }
+
+    // Reject obviously malformed or abusive payloads before they reach Sheets.
+    var name = cleanText_(p.name, 120);
+    var email = cleanEmail_(p.email);
+    var whatsapp = cleanText_(p.whatsapp, 80);
+    var revenue = cleanText_(p.revenue, 80);
+    var platform = cleanText_(p.platform, 80);
+    var goal = cleanText_(p.goal, 4000);
+
+    if (!email) {
+      return json_({ ok: false, error: 'Invalid email address.' });
+    }
+
+    // The public endpoint is intentionally shared by the strategy-call form and
+    // newsletter forms. Keep both workflows working without changing the sheet.
+    var isNewsletter = /^Newsletter signup/i.test(goal);
+    if (!isNewsletter && (!name || !goal)) {
+      return json_({ ok: false, error: 'Missing required fields.' });
+    }
+
+    // Exact duplicate suppression: prevents accidental double-clicks and basic
+    // bot retries without blocking legitimate people or changing the UI.
+    var fingerprint = [name, email, whatsapp, revenue, platform, goal].join('|').toLowerCase();
+    var digest = Utilities.base64EncodeWebSafe(
+      Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, fingerprint)
+    ).replace(/=+$/, '');
+    var cache = CacheService.getScriptCache();
+    var cacheKey = 'qe-submit-' + digest.substring(0, 40);
+    if (cache.get(cacheKey)) {
+      return json_({ ok: true, duplicate: true });
+    }
+    cache.put(cacheKey, '1', 90);
+
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = ss.getSheetByName(SHEET_NAME);
     if (!sheet) {
@@ -53,14 +90,16 @@ function doPost(e) {
       ss.deleteSheet(blank);
     }
 
+    // Prefix formula-leading user text with an apostrophe so Google Sheets stores
+    // it as literal text. The apostrophe is not displayed in the cell.
     var row = [
       new Date(),
-      p.name     || '',
-      p.email    || '',
-      p.whatsapp || '',
-      p.revenue  || '',
-      p.platform || '',
-      p.goal     || '',
+      safeSheetText_(name),
+      safeSheetText_(email),
+      safeSheetText_(whatsapp),
+      safeSheetText_(revenue),
+      safeSheetText_(platform),
+      safeSheetText_(goal),
       p.consent_marketing ? 'Yes' : 'No',
       p.consent_updates   ? 'Yes' : 'No'
     ];
@@ -70,7 +109,15 @@ function doPost(e) {
     // Deep-link straight to the Leads tab so the email button opens the data,
     // not the spreadsheet's default first tab.
     var sheetUrl = ss.getUrl() + '#gid=' + sheet.getSheetId();
-    sendAlert_(p, sheetUrl);
+    var cleanPayload = {
+      name: name,
+      email: email,
+      whatsapp: whatsapp,
+      revenue: revenue,
+      platform: platform,
+      goal: goal
+    };
+    sendAlert_(cleanPayload, sheetUrl);
 
     return json_({ ok: true });
   } catch (err) {
@@ -78,6 +125,32 @@ function doPost(e) {
   } finally {
     try { lock.releaseLock(); } catch (ignore) {}
   }
+}
+
+function cleanText_(value, maxLen) {
+  var s = String(value == null ? '' : value)
+    .replace(/\u0000/g, '')
+    .trim();
+  if (s.length > maxLen) s = s.substring(0, maxLen);
+  return s;
+}
+
+function cleanEmail_(value) {
+  var s = cleanText_(value, 254);
+  // Conservative validation; keeps normal international/local-part characters
+  // used by real addresses while rejecting newlines/header injection.
+  if (/[
+]/.test(s)) return '';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)) return '';
+  return s;
+}
+
+function safeSheetText_(value) {
+  var s = String(value == null ? '' : value);
+  // Spreadsheet formula injection is triggered by formula-leading characters.
+  // Prefixing with an apostrophe stores the exact visible value as text.
+  if (/^[\s]*[=+\-@]/.test(s)) return "'" + s;
+  return s;
 }
 
 /** Sends the "You got a client request" email to you. */

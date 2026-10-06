@@ -9,25 +9,25 @@ const services = [
     paras:["We turn founders and executives into recognised industry icons — not by making them louder, but by making them unmistakeable.","Full identity strategy, content pillars, platform positioning, and visual language that commands authority at first glance. This is the foundation every piece of content is built on."],
     items:["Brand positioning document","Content pillar framework","Visual language guide","Platform strategy — which platforms, what frequency","Bio & headline optimisation"],
     vid:"Personal%20Branding.mp4", ar:"9/16",
-    img:"https://www.quidedge.com/images/image06.png" },
+    img:"" },
   { id:"growth", num:"02", title:"Viral Engineering",
     headline:"Beat the algorithm. Every time.",
     paras:["Hooks that stop the scroll. Structures that hold attention. Titles that earn the click. Viral Engineering is not guesswork — it's a system built on data.","We analyse what's working in your niche, reverse-engineer the patterns, and apply them to your content. Then we test, iterate, and improve every cycle."],
     items:["Hook library — 50+ tested hooks per niche","Title & thumbnail A/B testing","Retention analytics review","Competitor breakdown & gap analysis","Monthly performance report"],
     vid:"Viral%20Engineering.mp4", ar:"9/16",
-    img:"https://www.quidedge.com/images/image05.png" },
+    img:"" },
   { id:"craft", num:"03", title:"Retention Editing", detailHref:"/video-editing-for-creators/",
     headline:"Every second earns the next one.",
     paras:["High-end editing optimised to hold attention — visual cuts, pacing, motion, and sound design that keeps viewers locked from first frame to last.","We edit to the data. Every cut is intentional. Every transition serves the story. The result is content that performs in the feed and converts in the funnel."],
     items:["Long-form YouTube editing (4/mo on Digital Empire)","Short-form repurposing (30/mo on Digital Empire)","Captions & subtitles","Motion graphics & lower thirds","Thumbnail design"],
     vid:"Retention%20Editing.mp4", ar:"16/9",
-    img:"https://www.quidedge.com/images/image08.png" },
+    img:"" },
   { id:"scale", num:"04", title:"Multi-Platform Growth",
     headline:"One brand. Every platform that matters.",
     paras:["YouTube, TikTok, Reels, LinkedIn — each platform has its own language, algorithm, and audience behaviour. We speak all of them.","We don't just repurpose content. We engineer it for each platform's specific mechanics — the same message, tailored to land everywhere it shows up."],
     items:["Platform-specific content adaptation","LinkedIn management (included free)","Cross-platform content calendar","Platform growth analytics","Ad creative production"],
     vid:"Multi%20Platform%20Growth.mp4", ar:"16/9",
-    img:"https://www.quidedge.com/images/image07.png" },
+    img:"" },
 ];
 
 const b0 = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -87,7 +87,7 @@ const breadcrumbSchema = {
       <div class="mx-auto max-w-7xl">
         <div class={`grid md:grid-cols-2 gap-10 md:gap-20 items-center ${i % 2 !== 0 ? 'md:[&>div:first-child]:order-2' : ''}`}>
           <div class={`media relative overflow-hidden bg-ink-soft reveal ${s.ar === "9/16" ? "mx-auto w-full max-w-[320px]" : ""}`} style={`aspect-ratio:${s.ar};`}>
-            <video data-src={`${bp}/content/${s.vid}`} poster={s.img}
+            <video data-src={`${bp}/content/${s.vid}`} poster={s.img || undefined}
               muted loop playsinline preload="none" data-autoplay="1"
               aria-label={`${s.title} — QuidEdge service`}
               class="w-full h-full object-cover opacity-70 hover:opacity-90 transition-opacity duration-700"></video>

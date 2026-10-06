@@ -200,11 +200,11 @@ const serviceSchema = {
 
 <!-- ═══ CINEMATIC REEL ═══════════════════════════════════════════ -->
 <section class="reel-section section-rule">
-  <video autoplay muted loop playsinline preload="none"
+  <video autoplay muted loop playsinline preload="none" data-reel-autoplay="1"
     poster="https://www.quidedge.com/images/Ryan.jpg"
     class="absolute inset-0 h-full w-full object-cover" style="opacity:0.42;">
-    <source src="https://www.quidedge.com/images/ryan_trahan.mp4" type="video/mp4"/>
-    <source src="https://www.quidedge.com/images/Enes Yilmazer.mp4" type="video/mp4"/>
+    <source data-src="https://www.quidedge.com/images/ryan_trahan.mp4" type="video/mp4"/>
+    <source data-src="https://www.quidedge.com/images/Enes Yilmazer.mp4" type="video/mp4"/>
   </video>
   <div class="pointer-events-none absolute inset-0"
     style="background:linear-gradient(to bottom,rgba(10,10,10,0.6) 0%,rgba(10,10,10,0.1) 40%,rgba(10,10,10,0.9) 100%);">
@@ -224,6 +224,38 @@ const serviceSchema = {
     </div>
   </div>
 </section>
+
+<script>
+  // Preserve the cinematic autoplay reel, but do not start its ~20MB transfer
+  // while it is far below the fold. Sources are attached shortly before the
+  // section reaches the viewport; once visible it behaves exactly as before.
+  const reel = document.querySelector('video[data-reel-autoplay]');
+  if (reel) {
+    const activateReel = () => {
+      if (reel.dataset.loaded === '1') return;
+      reel.querySelectorAll('source[data-src]').forEach((source) => {
+        const src = source.dataset.src;
+        if (src) source.setAttribute('src', src);
+      });
+      reel.dataset.loaded = '1';
+      reel.load();
+      const p = reel.play();
+      if (p) p.catch(() => {});
+    };
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          activateReel();
+          io.disconnect();
+        }
+      }, { rootMargin: '500px 0px', threshold: 0.01 });
+      io.observe(reel);
+    } else {
+      activateReel();
+    }
+  }
+</script>
 
 <!-- ═══ CASE STUDIES ════════════════════════════════════════════ -->
 <section class="section-rule bg-ink-soft py-20 md:py-32">

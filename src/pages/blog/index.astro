@@ -88,8 +88,12 @@ const breadcrumbSchema = {
       <form action="https://script.google.com/macros/s/AKfycbztf1DpfBnDGcIjIrgrrv5U_5nzL6vOhVmNZ7vNnKw1NgZAp-hZdUcRy554XGOFeM_6GQ/exec" method="POST"
             class="newsletter-form mt-7 flex flex-col sm:flex-row gap-2 max-w-sm mx-auto">
         <label for="blog-email" class="sr-only">Email address</label>
-        <input id="blog-email" name="email" type="email" required placeholder="you@example.com"
+        <input id="blog-email" name="email" type="email" required maxlength="254" placeholder="you@example.com"
           class="form-input flex-1"/>
+        <div aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;">
+          <label for="blog-website">Website</label>
+          <input id="blog-website" name="website" type="text" tabindex="-1" autocomplete="off"/>
+        </div>
         <input type="hidden" name="name" value="Newsletter subscriber"/>
         <input type="hidden" name="goal" value="Newsletter signup (blog)"/>
         <input type="hidden" name="_subject" value="QuidEdge blog newsletter"/>
