@@ -10,13 +10,13 @@ const bp  = raw.endsWith('/') ? raw.slice(0,-1) : raw;
 const CASES_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR3zoUDVE7TJhwtPuRyLcmKXakwXlo4_f19Ef5fbS4RmZGkYTD6MWHsEcuCpe90jG9ZfeGWB_SU0FU0/pub?gid=0&single=true&output=csv";
 
 const services = [
-  { num:"01", slug:"foundation", title:"Personal Branding",
+  { num:"01", slug:"foundation", href:"/personal-branding-for-founders/", title:"Personal Branding",
     body:"We turn founders and executives into recognised industry icons. Full identity strategy, content pillars, and visual language that commands authority.",
     tags:["Brand Strategy","Content Pillars","Visual Identity","Platform Positioning"] },
   { num:"02", slug:"growth", title:"Viral Engineering",
     body:"Data-backed hooks, retention structures, and title systems engineered to outperform the algorithm every single time.",
     tags:["Hook Writing","A/B Testing","Retention Analytics","Competitor Research"] },
-  { num:"03", slug:"craft", title:"Retention Editing",
+  { num:"03", slug:"craft", href:"/video-editing-for-creators/", title:"Retention Editing",
     body:"High-end editing optimised to hold attention — cuts, pacing, motion, and sound that keeps viewers locked from first frame to last.",
     tags:["Long-form Editing","Short-form Cuts","Motion Graphics","Thumbnail Design"] },
   { num:"04", slug:"scale", title:"Multi-Platform Growth",
@@ -76,7 +76,7 @@ const serviceSchema = {
       "@type": "Service",
       "name": s.title,
       "description": s.body,
-      "url": new URL(`${bp}/services#${s.slug}`, Astro.site).href,
+      "url": new URL(s.href ?? `${bp}/services#${s.slug}`, Astro.site).href,
       "provider": { "@id": `${new URL(`${bp}/`, Astro.site).href}#organization` },
       "audience": {
         "@type": "Audience",
@@ -171,7 +171,7 @@ const serviceSchema = {
     </div>
     <div style="border-bottom:1px solid rgba(138,134,128,0.13);">
       {services.map((s, i) => (
-        <a href={`${bp}/services#${s.slug}`} class={`service-row group reveal reveal-d${Math.min(i+1,4)}`}>
+        <a href={s.href ?? `${bp}/services#${s.slug}`} class={`service-row group reveal reveal-d${Math.min(i+1,4)}`}>
           <span class="label pt-0.5 transition-colors group-hover:text-proof">{s.num}</span>
           <div>
             <h3 class="text-base md:text-xl font-light mb-2 transition-colors group-hover:text-paper/75">{s.title}</h3>

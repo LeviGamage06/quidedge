@@ -4,7 +4,7 @@ const raw = import.meta.env.BASE_URL;
 const bp = raw.endsWith('/') ? raw.slice(0,-1) : raw;
 
 const services = [
-  { id:"foundation", num:"01", title:"Personal Branding",
+  { id:"foundation", num:"01", title:"Personal Branding", detailHref:"/personal-branding-for-founders/",
     headline:"Become the brand they can't ignore.",
     paras:["We turn founders and executives into recognised industry icons — not by making them louder, but by making them unmistakeable.","Full identity strategy, content pillars, platform positioning, and visual language that commands authority at first glance. This is the foundation every piece of content is built on."],
     items:["Brand positioning document","Content pillar framework","Visual language guide","Platform strategy — which platforms, what frequency","Bio & headline optimisation"],
@@ -16,7 +16,7 @@ const services = [
     items:["Hook library — 50+ tested hooks per niche","Title & thumbnail A/B testing","Retention analytics review","Competitor breakdown & gap analysis","Monthly performance report"],
     vid:"Viral%20Engineering.mp4", ar:"9/16",
     img:"https://www.quidedge.com/images/image05.png" },
-  { id:"craft", num:"03", title:"Retention Editing",
+  { id:"craft", num:"03", title:"Retention Editing", detailHref:"/video-editing-for-creators/",
     headline:"Every second earns the next one.",
     paras:["High-end editing optimised to hold attention — visual cuts, pacing, motion, and sound design that keeps viewers locked from first frame to last.","We edit to the data. Every cut is intentional. Every transition serves the story. The result is content that performs in the feed and converts in the funnel."],
     items:["Long-form YouTube editing (4/mo on Digital Empire)","Short-form repurposing (30/mo on Digital Empire)","Captions & subtitles","Motion graphics & lower thirds","Thumbnail design"],
@@ -43,7 +43,7 @@ const serviceListSchema = {
       "name": s.title,
       "description": s.headline,
       "serviceType": s.title,
-      "url": new URL(`${b0}/services#${s.id}`, Astro.site).href,
+      "url": new URL(s.detailHref ?? `${b0}/services#${s.id}`, Astro.site).href,
       "provider": { "@id": `${new URL(`${b0}/`, Astro.site).href}#organization` },
       "audience": {
         "@type": "Audience",
@@ -110,6 +110,7 @@ const breadcrumbSchema = {
                 ))}
               </ul>
             </div>
+            {s.detailHref && <a href={s.detailHref} class="link-underline mt-6 block w-fit text-sm text-proof">Explore this service in detail →</a>}
             <a href={`${bp}/contact`} class="btn-primary mt-7 inline-flex">
               Get started
               <svg class="arr" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg>
