@@ -484,7 +484,7 @@ const caseStudySchema = {
         let media = '';
         if (work) {
           media = /\.(mp4|webm|mov)(\?|$)/i.test(work)
-            ? '<div class="media relative overflow-hidden mt-5" style="aspect-ratio:16/10;"><video src="' + esc(work) + '" muted loop autoplay playsinline class="h-full w-full object-cover"></video></div>'
+            ? '<div class="media relative overflow-hidden mt-5" style="aspect-ratio:16/10;"><video data-testimonial-autoplay="1" data-src="' + esc(work) + '" muted loop autoplay playsinline preload="none" class="h-full w-full object-cover"></video></div>'
             : '<div class="media relative overflow-hidden mt-5" style="aspect-ratio:16/10;"><img src="' + esc(toDirectImage(work)) + '" alt="Work sample for ' + esc(name) + '" loading="lazy" class="h-full w-full object-cover"/></div>';
         }
 
@@ -511,6 +511,31 @@ const caseStudySchema = {
           if (!html) { status.textContent = 'No testimonials yet — add your first client in the sheet.'; return; }
           grid.innerHTML = html;
           grid.querySelectorAll('img').forEach(im => im.addEventListener('error', () => { im.style.display = 'none'; }));
+
+          // Keep testimonial videos autoplaying exactly as before when viewed,
+          // but defer their network transfer until they approach the viewport.
+          const testimonialVideos = Array.from(grid.querySelectorAll('video[data-testimonial-autoplay]'));
+          const activateVideo = (video) => {
+            if (!video.getAttribute('src') && video.dataset.src) {
+              video.setAttribute('src', video.dataset.src);
+              video.load();
+            }
+            const p = video.play();
+            if (p) p.catch(() => {});
+          };
+          if (testimonialVideos.length && 'IntersectionObserver' in window) {
+            const mediaObserver = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => {
+                const video = entry.target;
+                if (entry.isIntersecting) activateVideo(video);
+                else video.pause();
+              });
+            }, { rootMargin: '300px 0px', threshold: 0.01 });
+            testimonialVideos.forEach((video) => mediaObserver.observe(video));
+          } else {
+            testimonialVideos.forEach(activateVideo);
+          }
+
           status.hidden = true;
 
           // Bonus: Review structured data for Google rich results.
