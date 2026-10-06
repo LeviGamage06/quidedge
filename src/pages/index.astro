@@ -76,7 +76,12 @@ const serviceSchema = {
       "@type": "Service",
       "name": s.title,
       "description": s.body,
-      "provider": { "@type": "Organization", "name": "QuidEdge" },
+      "url": new URL(`${bp}/services#${s.slug}`, Astro.site).href,
+      "provider": { "@id": `${new URL(`${bp}/`, Astro.site).href}#organization` },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Founders, executives and creators"
+      },
       "areaServed": ["US", "AU"],
     },
   })),
@@ -84,10 +89,10 @@ const serviceSchema = {
 ---
 
 <Layout
-  fullTitle="QuidEdge | Video Editing & Personal Branding Agency for Creators"
+  fullTitle="Personal Branding & Video Editing Agency for Founders | QuidEdge"
   title="Engineered for Viral Impact"
-  description="Video editing & content strategy agency for founders and creators across the US, Australia & worldwide. Retention editing, viral short-form & personal branding — trusted by Ryan Trahan & Enes Yilmazer."
-  keywords="video editing agency, YouTube video editing, short-form video editing, personal branding agency, content strategy agency, viral video editing, faceless YouTube editing"
+  description="Personal branding, video editing and content strategy for founders, executives and creators in Australia, the US and worldwide — built by the QuidEdge team behind 650M+ views."
+  keywords="personal branding agency for founders, video editing agency, founder personal branding, executive personal branding, YouTube video editing, short-form video editing, content strategy agency"
   schema={[faqSchema, serviceSchema]}
 >
 
