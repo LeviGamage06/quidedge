@@ -17,6 +17,8 @@ interface Props {
   fullTitle?: string;
   /** Extra JSON-LD object(s) to inject for this page (FAQ, Service, etc.). */
   schema?: object | object[];
+  /** Per-page crawler directive. Defaults to indexable. */
+  robots?: string;
 }
 const {
   title,
@@ -26,6 +28,7 @@ const {
   ogType = "website",
   fullTitle,
   schema,
+  robots = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
 } = Astro.props;
 
 const b = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -34,6 +37,13 @@ const siteHome = new URL(`${b}/`, Astro.site).href;
 const logoURL = new URL(`${b}/logo.png`, Astro.site).href;
 const pageTitle = fullTitle ?? `${title} — QuidEdge`;
 const ogImage = image ?? "https://www.quidedge.com/content/founders.jpg";
+const verifiedEntityProfiles = [
+  "https://www.linkedin.com/company/quidedgeteam",
+];
+const entityProfiles = [...new Set([
+  ...verifiedEntityProfiles,
+  ...activeSocials.map((s) => s.href),
+])];
 
 // Site-wide entity graph. Pages can pass extra `schema` (FAQ, Service, etc.).
 const orgSchema = {
@@ -72,7 +82,7 @@ const orgSchema = {
     "areaServed": ["US", "AU"],
     "availableLanguage": "English",
   },
-  ...(activeSocials.length ? { "sameAs": activeSocials.map((s) => s.href) } : {}),
+  ...(entityProfiles.length ? { "sameAs": entityProfiles } : {}),
 };
 const websiteSchema = {
   "@context": "https://schema.org",
@@ -84,6 +94,18 @@ const websiteSchema = {
     "Video editing & personal branding agency for founders and creators.",
   "publisher": { "@id": `${siteHome}#organization` },
   "inLanguage": "en",
+};
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": ogType === "article" ? "Article" : "WebPage",
+  "@id": `${canonical.href}#webpage`,
+  "url": canonical.href,
+  "name": pageTitle,
+  "description": description,
+  "isPartOf": { "@id": `${siteHome}#website` },
+  "about": { "@id": `${siteHome}#organization` },
+  "inLanguage": "en",
+  ...(ogImage ? { "primaryImageOfPage": { "@type": "ImageObject", "url": ogImage } } : {}),
 };
 const pageSchemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 
@@ -133,7 +155,7 @@ const csp = [
   <title>{pageTitle}</title>
   <meta name="description" content={description}/>
   {keywords && <meta name="keywords" content={keywords}/>}
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
+  <meta name="robots" content={robots}/>
   <meta name="author" content="QuidEdge"/>
   <meta name="theme-color" content="#0a0a0a"/>
   <meta property="og:type" content={ogType}/>
@@ -151,6 +173,7 @@ const csp = [
   <meta name="twitter:image" content={ogImage}/>
   <script type="application/ld+json" set:html={JSON.stringify(orgSchema)}/>
   <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}/>
+  <script type="application/ld+json" set:html={JSON.stringify(webPageSchema)}/>
   {pageSchemas.map(s => (
     <script type="application/ld+json" set:html={JSON.stringify(s)}/>
   ))}
