@@ -58,7 +58,7 @@ const more = (await getCollection("blog", ({ data }) => !data.draft))
 
       {heroAbs && (
         <div class="media relative overflow-hidden mb-10" style="aspect-ratio:16/9;">
-          <img src={post.data.heroImage} alt={post.data.title} class="h-full w-full object-cover" loading="lazy"/>
+          <img src={post.data.heroImage} alt={post.data.title} class="h-full w-full object-cover" loading="eager" fetchpriority="high" decoding="async"/>
         </div>
       )}
 
