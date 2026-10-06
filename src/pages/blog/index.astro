@@ -15,7 +15,7 @@ const blogSchema = {
   "@type": "Blog",
   "name": "The Edge Blog — QuidEdge",
   "description": "Insights on personal branding, viral engineering, and content strategy.",
-  "publisher": { "@type": "Organization", "name": "QuidEdge" },
+  "publisher": { "@id": `${new URL(`${b0}/`, Astro.site).href}#organization` },
   "blogPost": posts.map((p) => ({
     "@type": "BlogPosting",
     "headline": p.data.title,

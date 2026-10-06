@@ -20,14 +20,16 @@ const canonical = new URL(`${b}/blog/${post.id}`, Astro.site).href;
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
+  "@id": `${canonical}#article`,
+  "url": canonical,
   "headline": post.data.title,
   "description": post.data.description,
   "datePublished": post.data.pubDate.toISOString(),
   ...(post.data.updatedDate ? { "dateModified": post.data.updatedDate.toISOString() } : {}),
-  "author": { "@type": "Organization", "name": "QuidEdge" },
-  "publisher": { "@type": "Organization", "name": "QuidEdge" },
+  "author": { "@id": `${new URL(`${b}/`, Astro.site).href}#organization` },
+  "publisher": { "@id": `${new URL(`${b}/`, Astro.site).href}#organization` },
   ...(heroAbs ? { "image": heroAbs } : {}),
-  "mainEntityOfPage": canonical,
+  "mainEntityOfPage": { "@id": `${canonical}#webpage` },
   "articleSection": post.data.category,
 };
 
