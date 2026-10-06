@@ -11,7 +11,7 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://www.quidedge.com',
   base: '/',
-  trailingSlash: 'ignore',
+  trailingSlash: 'always',
   integrations: [
     sitemap({
       // Keep error documents out of the XML sitemap. Search engines should only
