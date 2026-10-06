@@ -14,9 +14,14 @@ export default defineConfig({
   trailingSlash: 'ignore',
   integrations: [
     sitemap({
+      // Keep error documents out of the XML sitemap. Search engines should only
+      // receive canonical, indexable marketing/content URLs here.
+      filter: (page) => !page.endsWith('/404'),
       changefreq: 'weekly',
       priority: 0.7,
-      lastmod: new Date(),
+      // Do not stamp every URL with the build time. A false `lastmod` signal is
+      // less useful than omitting it; content-specific dates can be added later
+      // when they reflect a real, significant page update.
     }),
   ],
   vite: { plugins: [tailwindcss()] },
