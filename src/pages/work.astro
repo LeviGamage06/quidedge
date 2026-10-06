@@ -98,7 +98,8 @@ const caseStudySchema = {
       "@type": "CreativeWork",
       "name": `${c.client} — ${c.cat}`,
       "description": c.desc,
-      "creator": { "@type": "Organization", "name": "QuidEdge" },
+      "url": new URL(`${b0}/work#${c.slug}`, Astro.site).href,
+      "creator": { "@id": `${new URL(`${b0}/`, Astro.site).href}#organization` },
     },
   })),
 };
