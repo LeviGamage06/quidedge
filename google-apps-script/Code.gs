@@ -139,8 +139,7 @@ function cleanEmail_(value) {
   var s = cleanText_(value, 254);
   // Conservative validation; keeps normal international/local-part characters
   // used by real addresses while rejecting newlines/header injection.
-  if (/[
-]/.test(s)) return '';
+  if (/[\r\n]/.test(s)) return '';
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)) return '';
   return s;
 }
