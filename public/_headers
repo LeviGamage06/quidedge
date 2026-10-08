@@ -2,8 +2,9 @@
 #
 # NOTE: GitHub Pages ignores this file — it does not support custom headers.
 # It takes effect automatically if you host on Netlify or Cloudflare Pages, or
-# if you put Cloudflare (free plan) in front of your GitHub Pages site.
-# See SECURITY.md for how to switch on real headers.
+# configure equivalent rules in a reverse proxy. Merely putting Cloudflare
+# in front of GitHub Pages does NOT cause this file to be read.
+# See SECURITY-HARDENING.md for remaining hosting-level protections.
 
 /*
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' https://docs.google.com https://script.google.com https://script.googleusercontent.com; frame-ancestors 'none'; form-action 'self' https://script.google.com https://formspree.io; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
