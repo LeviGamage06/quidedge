@@ -1,4 +1,5 @@
 ---
+import { safeJson } from "../lib/safe-json";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import { activeSocials } from "../data/brand";
@@ -119,6 +120,8 @@ const pageSchemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 //   • Google Fonts (styles + font files)
 //   • images/video from anywhere over HTTPS (founder pastes URLs in the sheets)
 //   • data fetches to your Google Sheets (CSV) and Apps Script (lead form)
+// scripts/harden-build.mjs replaces script unsafe-inline with exact per-page
+// SHA-256 hashes after the production build. Do not deploy raw astro build output.
 // Emitted only in the production build — in `npm run dev` it's omitted so
 // Astro's live-reload (HMR) keeps working. If you ever add a new external
 // service, add its domain to the matching line below.
@@ -131,7 +134,6 @@ const csp = [
   "media-src 'self' blob: https:",
   "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://drive.google.com",
   "connect-src 'self' https://docs.google.com https://script.google.com https://*.googleusercontent.com",
-  "frame-ancestors 'none'",
   "form-action 'self' https://script.google.com https://formspree.io",
   "base-uri 'self'",
   "object-src 'none'",
@@ -144,7 +146,6 @@ const csp = [
   <meta charset="UTF-8"/>
   {import.meta.env.PROD && <meta http-equiv="Content-Security-Policy" content={csp}/>}
   <meta name="referrer" content="strict-origin-when-cross-origin"/>
-  <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
   <script is:inline>document.documentElement.classList.remove('no-js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="icon" type="image/svg+xml" href={`${b}/favicon.svg`}/>
@@ -177,11 +178,11 @@ const csp = [
   <meta name="twitter:title" content={pageTitle}/>
   <meta name="twitter:description" content={description}/>
   <meta name="twitter:image" content={ogImage}/>
-  <script type="application/ld+json" set:html={JSON.stringify(orgSchema)}/>
-  <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}/>
-  <script type="application/ld+json" set:html={JSON.stringify(webPageSchema)}/>
+  <script type="application/ld+json" set:html={safeJson(orgSchema)}/>
+  <script type="application/ld+json" set:html={safeJson(websiteSchema)}/>
+  <script type="application/ld+json" set:html={safeJson(webPageSchema)}/>
   {pageSchemas.map(s => (
-    <script type="application/ld+json" set:html={JSON.stringify(s)}/>
+    <script type="application/ld+json" set:html={safeJson(s)}/>
   ))}
   <noscript><style>
     #page-loader { display: none !important; }
@@ -203,6 +204,7 @@ const csp = [
   <div id="qe-cursor" aria-hidden="true" style="position:fixed;width:5px;height:5px;border-radius:50%;background:var(--color-proof);pointer-events:none;z-index:99999;transform:translate(-50%,-50%);opacity:0;transition:width .16s,height .16s,opacity .35s;"></div>
 
   <script>
+    import "../lib/media-guard";
     /* Loader */
     const loader = document.getElementById('page-loader');
     const wm     = document.getElementById('loader-wordmark');
