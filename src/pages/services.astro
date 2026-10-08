@@ -61,13 +61,80 @@ const breadcrumbSchema = {
     { "@type": "ListItem", "position": 2, "name": "Services", "item": new URL(`${b0}/services`, Astro.site).href },
   ],
 };
-
-import designHtml from "../design/services.html?raw";
-const designSchema = [];
 ---
-<Layout title="Personal & Company Branding, Content and Guidance | QuidEdge" fullTitle="Personal & Company Branding, Content and Guidance | QuidEdge" description="Explore QuidEdge\u2019s four core services, how they connect and how to scope support for your business. Online collaboration across Australia, the USA, New Zealand and Canada." schema={designSchema}>
-<Fragment set:html={designHtml}/>
-<script>
+<Layout
+  fullTitle="Personal & Company Branding, Content and Guidance | QuidEdge"
+  title="Services"
+  description="Explore personal branding, company branding, content creation and business development guidance. Online support for businesses in Australia, the USA, New Zealand and Canada."
+  keywords="personal branding services for founders, video editing services, YouTube editing agency, short-form content editing, founder branding, viral video strategy, retention editing"
+  schema={[serviceListSchema, breadcrumbSchema]}
+>
+
+  <section class="section-rule py-20 md:py-28 px-5 md:px-8">
+    <div class="mx-auto max-w-7xl">
+      <p class="label reveal mb-3">Our services</p>
+      <h1 class="text-[clamp(2.5rem,8vw,5.5rem)] font-light leading-[0.92] tracking-[-0.04em] reveal reveal-d1">
+        The Full <span class="weight-anchor">Ecosystem.</span>
+      </h1>
+      <p class="mt-5 max-w-xl text-sm text-stone reveal reveal-d2">
+        Your dedicated expert team for personal branding, company branding, content creation and business development guidance. Working online with businesses in Australia, the USA, New Zealand and Canada.
+      </p>
+    </div>
+  </section>
+
+<section class="section-rule px-5 py-16 md:px-8"><div class="mx-auto max-w-7xl"><p class="label mb-4">Four core services</p><h2 class="text-3xl mb-8">Start with your business priority.</h2><div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4"><a href="/personal-branding-for-founders/" class="card p-6 block"><h3 class="text-xl mb-4">Personal Branding</h3><p class="text-base text-stone leading-relaxed">Clarify the expertise and message of your founder or business owner.</p><span class="inline-block mt-6 text-proof">Explore scope and fit</span></a><a href="/business-branding/" class="card p-6 block"><h3 class="text-xl mb-4">Company Branding</h3><p class="text-base text-stone leading-relaxed">Company branding and positioning for businesses.</p><span class="inline-block mt-6 text-proof">Explore scope and fit</span></a><a href="/content-creation/" class="card p-6 block"><h3 class="text-xl mb-4">Content Creation</h3><p class="text-base text-stone leading-relaxed">Content creation for business brands.</p><span class="inline-block mt-6 text-proof">Explore scope and fit</span></a><a href="/business-development-guidance/" class="card p-6 block"><h3 class="text-xl mb-4">Business Development Guidance</h3><p class="text-base text-stone leading-relaxed">Practical business development guidance.</p><span class="inline-block mt-6 text-proof">Explore scope and fit</span></a></div><p class="mt-8 text-base text-stone leading-relaxed">For ongoing support, our ideal client investment is AUD 1,000+ per month. This is a fit guideline; your proposal defines the final price, deliverables and responsibilities.</p></div></section>
+  {services.map((s, i) => (
+    <section id={s.id} class="section-rule py-20 md:py-32 px-5 md:px-8">
+      <div class="mx-auto max-w-7xl">
+        <div class={`grid md:grid-cols-2 gap-10 md:gap-20 items-center ${i % 2 !== 0 ? 'md:[&>div:first-child]:order-2' : ''}`}>
+          <div class={`media relative overflow-hidden bg-ink-soft reveal ${s.ar === "9/16" ? "mx-auto w-full max-w-[320px]" : ""}`} style={`aspect-ratio:${s.ar};`}>
+            <video data-src={`${bp}/content/${s.vid}`} poster={s.img || undefined}
+              muted loop playsinline preload="none" data-autoplay="1"
+              aria-label={`${s.title} — QuidEdge service`}
+              class="w-full h-full object-cover opacity-70 hover:opacity-90 transition-opacity duration-700"></video>
+            <span class="ghost-num absolute top-4 left-4 text-[4rem]" aria-hidden="true">{s.num}</span>
+          </div>
+          <div class="reveal reveal-d1">
+            <p class="label mb-3">{s.num} — {s.title}</p>
+            <h2 class="text-[clamp(1.75rem,3.5vw,2.75rem)] font-light leading-tight tracking-[-0.025em] mb-5">
+              {s.headline}
+            </h2>
+            {s.paras.map(p => <p class="text-sm text-stone leading-relaxed mb-3">{p}</p>)}
+            <div class="mt-6 pt-6" style="border-top:1px solid rgba(138,134,128,0.13);">
+              <p class="label mb-4">What's included</p>
+              <ul class="space-y-2.5">
+                {s.items.map(item => (
+                  <li class="flex items-start gap-3 text-sm text-stone">
+                    <svg class="mt-0.5 shrink-0 text-proof" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {s.detailHref && <a href={s.detailHref} class="link-underline mt-6 block w-fit text-sm text-proof">Explore this service in detail →</a>}
+            <a href={`${bp}/contact`} class="btn-primary mt-7 inline-flex">
+              Get started
+              <svg class="arr" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section-rule py-24 md:py-36 px-5 md:px-8 text-center">
+    <div class="mx-auto max-w-xl reveal">
+      <p class="label mb-4">Not sure where to start?</p>
+      <h2 class="text-[clamp(2rem,5vw,3.5rem)] font-light leading-tight tracking-[-0.025em]">Let's <span class="weight-anchor">talk.</span></h2>
+      <p class="mt-4 text-sm text-stone">Free strategy call — no pitch, just a real conversation about your goals.</p>
+      <a href={`${bp}/contact`} class="btn-primary mt-7 inline-flex">
+        Book a free call
+        <svg class="arr" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <script>
     /* Service videos are deferred: no network request until the slot scrolls
        near the viewport, then it loads + plays; it pauses when scrolled away.
        This keeps the initial page load instant even with several videos. */
