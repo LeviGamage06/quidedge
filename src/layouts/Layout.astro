@@ -61,13 +61,13 @@ const orgSchema = {
   "url": siteHome,
   "logo": logoURL,
   "image": ogImage,
-  "slogan": "Engineered for Viral Impact",
+  "slogan": "Clarity. Authority. Impact.",
   "description":
-    "QuidEdge is a video editing and content strategy agency helping founders, executives, and creators grow on YouTube, TikTok, Instagram Reels, and LinkedIn through retention editing, viral engineering, and personal branding.",
+    "QuidEdge is a dedicated expert team providing personal branding, company branding, content creation and business development guidance online for businesses in Australia, the USA, New Zealand and Canada.",
   "email": "inquiries.quidedge.au@gmail.com",
   "founders": [
     { "@type": "Person", "name": "Levi" },
-    { "@type": "Person", "name": "Chami", "jobTitle": "Creative Director" },
+    { "@type": "Person", "name": "Chami" },
   ],
   "knowsAbout": [
     "Video editing",
@@ -80,12 +80,14 @@ const orgSchema = {
   "areaServed": [
     { "@type": "Country", "name": "United States" },
     { "@type": "Country", "name": "Australia" },
+    { "@type": "Country", "name": "New Zealand" },
+    { "@type": "Country", "name": "Canada" },
   ],
   "contactPoint": {
     "@type": "ContactPoint",
     "email": "inquiries.quidedge.au@gmail.com",
     "contactType": "sales",
-    "areaServed": ["US", "AU"],
+    "areaServed": ["AU", "US", "NZ", "CA"],
     "availableLanguage": "English",
   },
   ...(entityProfiles.length ? { "sameAs": entityProfiles } : {}),
@@ -97,7 +99,7 @@ const websiteSchema = {
   "url": siteHome,
   "name": "QuidEdge",
   "description":
-    "Video editing & personal branding agency for founders and creators.",
+    "Personal branding, company branding, content creation and business development guidance for businesses.",
   "publisher": { "@id": `${siteHome}#organization` },
   "inLanguage": "en",
 };
@@ -113,6 +115,8 @@ const webPageSchema = {
   "inLanguage": "en",
   ...(ogImage ? { "primaryImageOfPage": { "@type": "ImageObject", "url": ogImage } } : {}),
 };
+const designClasses = {"//": "qe-live qe-page-home qe-home", "/services/": "qe-live qe-page-services", "/work/": "qe-live qe-page-work", "/about/": "qe-live qe-page-about", "/contact/": "qe-live qe-page-contact", "/personal-branding-for-founders/": "qe-live qe-page-personal-branding-for-founders", "/video-editing-for-creators/": "qe-live qe-page-video-editing-for-creators", "/business-branding/": "qe-live qe-page-business-branding", "/content-creation/": "qe-live qe-page-content-creation", "/business-development-guidance/": "qe-live qe-page-business-development-guidance", "/social-media-management/": "qe-live qe-page-social-media-management"};
+const designBodyClass = designClasses[Astro.url.pathname === "/" ? "//" : canonicalPath] || "qe-live";
 const pageSchemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 
 // ── Content-Security-Policy ──────────────────────────────────────────────────
@@ -158,6 +162,7 @@ const csp = [
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;800&display=swap"/>
   <link rel="preconnect" href="https://www.quidedge.com"/>
   <link rel="dns-prefetch" href="https://www.quidedge.com"/>
+  <link rel="stylesheet" href="/brand.css"/>
   <meta name="generator" content={Astro.generator}/>
   <title>{pageTitle}</title>
   <meta name="description" content={description}/>
@@ -190,13 +195,14 @@ const csp = [
     .reveal { opacity: 1 !important; transform: none !important; }
   </style></noscript>
 </head>
-<body>
+<body class={designBodyClass}>
   <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-proof focus:px-4 focus:py-2 focus:text-paper focus:text-xs">Skip to content</a>
 
   <div id="page-loader" role="status" aria-label="Loading">
     <p id="loader-wordmark" aria-hidden="true">Quid<span class="bold">E</span>dge<span class="dot">.</span></p>
   </div>
 
+  <div id="scroll-progress" aria-hidden="true"></div>
   <Nav/>
   <main id="main"><slot/></main>
   <Footer/>
@@ -343,5 +349,6 @@ const csp = [
     window.addEventListener('resize', upd, { passive: true });
     upd();
   </script>
+  <script is:inline src="/creative.js" defer></script>
 </body>
 </html>
