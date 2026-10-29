@@ -88,23 +88,3 @@ const NEWSLETTER_ENDPOINT = "https://script.google.com/macros/s/AKfycbztf1DpfBnD
     </div>
   </div>
 </footer>
-
-<script define:vars={{ NEWSLETTER_ENDPOINT }}>
-  /* Handles ALL newsletter forms on the page (footer + blog) via delegation. */
-  document.addEventListener('submit', async (e) => {
-    const form = e.target && e.target.closest && e.target.closest('.newsletter-form');
-    if (!form) return;
-    e.preventDefault();
-    if (!form.checkValidity()) { form.reportValidity(); return; }
-    if (!NEWSLETTER_ENDPOINT || NEWSLETTER_ENDPOINT.indexOf('PASTE') !== -1) return;
-    const btn = form.querySelector('button[type="submit"]');
-    const orig = btn ? btn.textContent : '';
-    if (btn) { btn.textContent = '…'; btn.disabled = true; }
-    try {
-      await fetch(NEWSLETTER_ENDPOINT, { method: 'POST', body: new FormData(form), mode: 'no-cors' });
-      form.innerHTML = '<p class="text-sm text-stone">Thanks — you’re subscribed. ✓</p>';
-    } catch (err) {
-      if (btn) { btn.textContent = orig; btn.disabled = false; }
-    }
-  });
-</script>

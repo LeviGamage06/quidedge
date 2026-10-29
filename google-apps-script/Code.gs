@@ -5,7 +5,7 @@
  *   1. Appends the client's details as a new row in your Google Sheet.
  *   2. Emails you "You got a client request" with all the details.
  *
- * Setup steps are in FORM-SETUP.md. You only need to change NOTIFY_EMAIL below
+ * Setup steps are in BOT-PROTECTION.md. You only need to change NOTIFY_EMAIL below
  * if you want the alert to go somewhere other than your inquiries inbox.
  * ---------------------------------------------------------------------------
  */
@@ -28,102 +28,134 @@ var HEADERS = [
  * The script is bound to the spreadsheet, so getActiveSpreadsheet() works.
  */
 function doPost(e) {
+  var p = (e && e.parameter) || {};
+  var rejected = { ok: false, code: 'rejected' };
+  // Apps Script does not expose a trustworthy client IP. Never accept an IP
+  // supplied by the browser as a rate-limit identity or Siteverify remoteip.
+  if (!e || !e.postData || e.postData.length > 16384) return json_(rejected);
+  if (e.parameters && Object.keys(e.parameters).some(function (key) {
+    return e.parameters[key].length !== 1;
+  })) return json_(rejected);
+  if (String(p.website || '').trim()) return json_(rejected);
+  var type = p.form_type;
+  if (type !== 'contact' && type !== 'newsletter') return json_(rejected);
+  var limits = { name: 120, email: 254, whatsapp: 80, revenue: 80, platform: 80, goal: 4000 };
+  if (Object.keys(limits).some(function (key) {
+    return String(p[key] || '').length > limits[key] || /\u0000/.test(String(p[key] || ''));
+  })) return json_(rejected);
+  var name = cleanText_(p.name, 120);
+  var email = cleanEmail_(p.email).toLowerCase();
+  var whatsapp = cleanText_(p.whatsapp, 80);
+  var revenue = cleanText_(p.revenue, 80);
+  var platform = cleanText_(p.platform, 80);
+  var goal = cleanText_(p.goal, 4000);
+  if (!email || /[\r\n]/.test(name)) return json_(rejected);
+  if (type === 'contact') {
+    if (!name || !goal ||
+        ['$10K – $20K', '$20K – $50K', 'More than $50K+'].indexOf(revenue) === -1 ||
+        ['YouTube', 'TikTok', 'Instagram / Reels', 'LinkedIn', 'Multiple platforms'].indexOf(platform) === -1 ||
+        p.consent_marketing !== 'on' || p.consent_updates !== 'on') return json_(rejected);
+  } else {
+    // A caller-controlled goal prefix must never bypass contact validation.
+    name = 'Newsletter subscriber'; goal = 'Newsletter signup';
+    whatsapp = ''; revenue = ''; platform = '';
+  }
+  if (!verifyTurnstile_(p['cf-turnstile-response'], type)) {
+    return json_({ ok: false, code: 'verification_failed' });
+  }
+
   var lock = LockService.getScriptLock();
   try {
-    lock.waitLock(20000); // avoid two submissions writing the same row
-
-    var p = (e && e.parameter) ? e.parameter : {};
-
-    // Invisible bot trap. Real website users never fill this field.
-    if (String(p.website || '').trim()) {
-      return json_({ ok: true });
-    }
-
-    // Reject obviously malformed or abusive payloads before they reach Sheets.
-    var name = cleanText_(p.name, 120);
-    var email = cleanEmail_(p.email);
-    var whatsapp = cleanText_(p.whatsapp, 80);
-    var revenue = cleanText_(p.revenue, 80);
-    var platform = cleanText_(p.platform, 80);
-    var goal = cleanText_(p.goal, 4000);
-
-    if (!email) {
-      return json_({ ok: false, error: 'Invalid email address.' });
-    }
-
-    // The public endpoint is intentionally shared by the strategy-call form and
-    // newsletter forms. Keep both workflows working without changing the sheet.
-    var isNewsletter = /^Newsletter signup/i.test(goal);
-    if (!isNewsletter && (!name || !goal)) {
-      return json_({ ok: false, error: 'Missing required fields.' });
-    }
-
-    // Exact duplicate suppression: prevents accidental double-clicks and basic
-    // bot retries without blocking legitimate people or changing the UI.
-    var fingerprint = [name, email, whatsapp, revenue, platform, goal].join('|').toLowerCase();
-    var digest = Utilities.base64EncodeWebSafe(
-      Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, fingerprint)
-    ).replace(/=+$/, '');
-    var cache = CacheService.getScriptCache();
-    var cacheKey = 'qe-submit-' + digest.substring(0, 40);
-    if (cache.get(cacheKey)) {
+    if (!lock.tryLock(5000)) return json_({ ok: false, code: 'busy' });
+    var properties = PropertiesService.getScriptProperties();
+    var now = Date.now();
+    // Persistent counters survive CacheService eviction. Fixed windows are
+    // intentionally conservative: at most 3/email/hour, 60 total/hour, 300/day.
+    var hour = Math.floor(now / 3600000);
+    var day = Math.floor(now / 86400000);
+    var emailKey = 'qe-email-' + digest_(email);
+    var emailState = JSON.parse(properties.getProperty(emailKey) || '{}');
+    var globalState = JSON.parse(properties.getProperty('qe-traffic') || '{}');
+    var fingerprint = digest_(JSON.stringify([type, name, email, whatsapp, revenue, platform, goal]));
+    if (emailState.fingerprint === fingerprint && emailState.savedAt > now - 86400000) {
       return json_({ ok: true, duplicate: true });
     }
-    cache.put(cacheKey, '1', 90);
+    var emailCount = emailState.hour === hour ? emailState.count : 0;
+    var hourCount = globalState.hour === hour ? globalState.hourCount : 0;
+    var dayCount = globalState.day === day ? globalState.dayCount : 0;
+    if (emailCount >= 3 || hourCount >= 60 || dayCount >= 300) {
+      console.warn('qe_submission_rate_limited');
+      return json_({ ok: false, code: 'rate_limited' });
+    }
 
     var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName(SHEET_NAME);
-    if (!sheet) {
-      sheet = ss.insertSheet(SHEET_NAME);
-    }
-    // First run: write the header row and make it bold.
+    var sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
     if (sheet.getLastRow() === 0) {
       sheet.appendRow(HEADERS);
       sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
       sheet.setFrozenRows(1);
     }
-
-    // Tidy-up: remove the leftover empty default "Sheet1" so there's just one
-    // clear tab and the data is never hidden behind a blank sheet.
-    var blank = ss.getSheetByName('Sheet1');
-    if (blank && blank.getLastRow() === 0 && ss.getSheets().length > 1) {
-      ss.deleteSheet(blank);
-    }
-
-    // Prefix formula-leading user text with an apostrophe so Google Sheets stores
-    // it as literal text. The apostrophe is not displayed in the cell.
-    var row = [
-      new Date(),
-      safeSheetText_(name),
-      safeSheetText_(email),
-      safeSheetText_(whatsapp),
-      safeSheetText_(revenue),
-      safeSheetText_(platform),
-      safeSheetText_(goal),
-      p.consent_marketing ? 'Yes' : 'No',
-      p.consent_updates   ? 'Yes' : 'No'
-    ];
+    var row = [new Date(), safeSheetText_(name), safeSheetText_(email),
+      safeSheetText_(whatsapp), safeSheetText_(revenue), safeSheetText_(platform),
+      safeSheetText_(goal), p.consent_marketing === 'on' ? 'Yes' : 'No',
+      p.consent_updates === 'on' ? 'Yes' : 'No'];
     sheet.appendRow(row);
-    SpreadsheetApp.flush(); // force the write to commit before we email
-
-    // Deep-link straight to the Leads tab so the email button opens the data,
-    // not the spreadsheet's default first tab.
+    SpreadsheetApp.flush();
+    properties.setProperty(emailKey, JSON.stringify({
+      hour: hour, count: emailCount + 1, fingerprint: fingerprint, savedAt: now
+    }));
+    properties.setProperty('qe-traffic', JSON.stringify({
+      hour: hour, hourCount: hourCount + 1, day: day, dayCount: dayCount + 1
+    }));
+    // Remove only this feature's expired email counters. Never touch secrets.
+    var all = properties.getProperties();
+    Object.keys(all).forEach(function (key) {
+      if (key.indexOf('qe-email-') === 0 && JSON.parse(all[key]).savedAt <= now - 86400000) {
+        properties.deleteProperty(key);
+      }
+    });
     var sheetUrl = ss.getUrl() + '#gid=' + sheet.getSheetId();
-    var cleanPayload = {
-      name: name,
-      email: email,
-      whatsapp: whatsapp,
-      revenue: revenue,
-      platform: platform,
-      goal: goal
-    };
-    sendAlert_(cleanPayload, sheetUrl);
-
+    try {
+      sendAlert_({ name: name, email: email, whatsapp: whatsapp,
+        revenue: revenue, platform: platform, goal: goal }, sheetUrl);
+    } catch (mailError) {
+      // The lead is already stored. Do not encourage duplicate retries or leak
+      // provider errors/contact details into the public response or logs.
+      console.error('qe_notification_failed');
+    }
     return json_({ ok: true });
   } catch (err) {
-    return json_({ ok: false, error: String(err) });
+    console.error('qe_submission_failed');
+    return json_({ ok: false, code: 'unavailable' });
   } finally {
     try { lock.releaseLock(); } catch (ignore) {}
+  }
+}
+
+function digest_(value) {
+  return Utilities.base64EncodeWebSafe(
+    Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, value)
+  ).replace(/=+$/, '');
+}
+
+function verifyTurnstile_(token, action) {
+  if (typeof token !== 'string' || !token || token.length > 2048) return false;
+  try {
+    var properties = PropertiesService.getScriptProperties();
+    var secret = properties.getProperty('TURNSTILE_SECRET');
+    // Exact production hostnames only; no localhost wildcard or caller override.
+    var hostnames = ['www.quidedge.com', 'quidedge.com'];
+    if (!secret || !secret.trim()) return false;
+    var response = UrlFetchApp.fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'post', payload: { secret: secret, response: token },
+      muteHttpExceptions: true, followRedirects: false,
+    });
+    if (response.getResponseCode() !== 200) return false;
+    var result = JSON.parse(response.getContentText());
+    return result.success === true && result.action === action &&
+      hostnames.indexOf(result.hostname) !== -1;
+  } catch (error) {
+    return false;
   }
 }
 
@@ -155,7 +187,7 @@ function safeSheetText_(value) {
 /** Sends the "You got a client request" email to you. */
 function sendAlert_(p, sheetUrl) {
   var name = p.name || 'New lead';
-  var subject = '🎉 You got a client request — ' + name;
+  var subject = '🎉 You got a client request — ' + String(name).replace(/[\r\n]+/g, ' ').substring(0, 120);
 
   var rows = [
     ['Name', p.name],

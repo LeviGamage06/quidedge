@@ -13,7 +13,7 @@ export function hardenHtml(html) {
   if (!hashes.length) throw new Error('Expected generated inline scripts');
   return html.replace(meta, (_, policy) => {
     if (!/script-src\s/.test(policy)) throw new Error('Missing script policy');
-    policy = policy.replace(/script-src\s+[^;]+/, `script-src 'self' ${hashes.join(' ')}`);
+    policy = policy.replace(/script-src\s+[^;]+/, `script-src 'self' https://challenges.cloudflare.com ${hashes.join(' ')}`);
     // frame-ancestors is not enforced in meta; enforce it at the edge if added.
     policy = policy.replace(/;\s*frame-ancestors\s+[^;]+/, '');
     return `<meta http-equiv="Content-Security-Policy" content="${policy}">`;
