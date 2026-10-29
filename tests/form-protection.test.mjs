@@ -88,7 +88,7 @@ test('missing, oversized, honeypot and malformed fields never reach verification
     assert.equal(b.calls, 0); assert.equal(b.writes, 0); assert.equal(b.mails.length, 0);
   }
   const b = backend();
-  assert.equal(b.submit({}, { postData: { length: 16385 } }).ok, false);
+  assert.equal(b.submit({}, { postData: { length: 65537 } }).ok, false);
   assert.equal(b.submit({}, { parameters: { name: ['a', 'b'] } }).ok, false);
 });
 

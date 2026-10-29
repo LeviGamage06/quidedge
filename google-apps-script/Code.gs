@@ -32,7 +32,7 @@ function doPost(e) {
   var rejected = { ok: false, code: 'rejected' };
   // Apps Script does not expose a trustworthy client IP. Never accept an IP
   // supplied by the browser as a rate-limit identity or Siteverify remoteip.
-  if (!e || !e.postData || e.postData.length > 16384) return json_(rejected);
+  if (!e || !e.postData || e.postData.length > 65536) return json_(rejected);
   if (e.parameters && Object.keys(e.parameters).some(function (key) {
     return e.parameters[key].length !== 1;
   })) return json_(rejected);

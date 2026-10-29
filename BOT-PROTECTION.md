@@ -11,7 +11,7 @@ Google Apps Script. No live secret or deployment is changed by this PR.
   the matching `contact` or `newsletter` action, and the exact hostname
   `www.quidedge.com` or `quidedge.com`. Missing configuration and upstream errors
   fail closed before sheet writes or notification emails.
-- Honeypot, 16 KB request limit, duplicate-parameter rejection, field length
+- Honeypot, 64 KB request limit, duplicate-parameter rejection, field length
   limits, contact field allowlists and required consent checks run on the server.
   Newsletter mode normalizes its fields and requires its own verified action.
 - Persistent, lock-protected limits: 3 accepted submissions per normalized email
@@ -36,8 +36,9 @@ Google Apps Script. No live secret or deployment is changed by this PR.
    `www.quidedge.com`, `quidedge.com`, `localhost`, and `127.0.0.1`. Production
    verification never accepts the local hostnames. Use Cloudflare's test keys
    only for local/CI testing, never as the deployed production key.
-2. Add its public sitekey as the GitHub repository Actions variable
-   `PUBLIC_TURNSTILE_SITE_KEY`. The Pages workflow passes it to Astro. A production
+2. The approved widget public sitekey is configured as
+   `PUBLIC_TURNSTILE_SITE_KEY` in the Pages workflow and passed to Astro.
+   Sitekey: `0x4AAAAAAFrTPGyHwKW2UPlq`. This is public configuration, not a secret. A production
    build without a sitekey fails, preventing a broken form release. PR CI uses
    the documented public test sitekey; that build is not the production release.
 3. In the existing Google Apps Script project, set Script Property
