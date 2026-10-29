@@ -29,7 +29,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Test form protection
+        run: npm test
+
       - name: Build
+        env:
+          PUBLIC_TURNSTILE_SITE_KEY: 0x4AAAAAAFrTPGyHwKW2UPlq
         run: npm run build
 
       - name: Verify critical site features

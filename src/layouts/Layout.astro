@@ -32,6 +32,10 @@ const {
   robots = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
 } = Astro.props;
 
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+if (import.meta.env.PROD && !turnstileSiteKey) {
+  throw new Error('Set PUBLIC_TURNSTILE_SITE_KEY before building protected forms.');
+}
 const b = import.meta.env.BASE_URL.replace(/\/$/, '');
 const canonicalPath = Astro.url.pathname === "/"
   ? "/"
@@ -127,13 +131,13 @@ const pageSchemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 // service, add its domain to the matching line below.
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: blob: https:",
   "media-src 'self' blob: https:",
-  "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://drive.google.com",
-  "connect-src 'self' https://docs.google.com https://script.google.com https://*.googleusercontent.com",
+  "frame-src https://challenges.cloudflare.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://drive.google.com",
+  "connect-src 'self' https://challenges.cloudflare.com https://docs.google.com https://script.google.com https://*.googleusercontent.com",
   "form-action 'self' https://script.google.com https://formspree.io",
   "base-uri 'self'",
   "object-src 'none'",
@@ -197,6 +201,10 @@ const csp = [
     <p id="loader-wordmark" aria-hidden="true">Quid<span class="bold">E</span>dge<span class="dot">.</span></p>
   </div>
 
+  <div id="qe-form-config" data-sitekey={turnstileSiteKey} hidden></div>
+  <script>
+    import "../lib/protected-forms.js";
+  </script>
   <Nav/>
   <main id="main"><slot/></main>
   <Footer/>

@@ -156,53 +156,5 @@ const contactSchema = {
     </div>
   </section>
 
-  <script define:vars={{ FORM_ENDPOINT }}>
-    const form    = document.getElementById('lead-form');
-    const success = document.getElementById('form-success');
-    const errorEl = document.getElementById('form-error');
-    const btn     = document.getElementById('lead-submit');
 
-    if (form) {
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        errorEl.hidden = true;
-
-        // Native required-field validation first.
-        if (!form.checkValidity()) { form.reportValidity(); return; }
-
-        if (!FORM_ENDPOINT || FORM_ENDPOINT.includes('PASTE_YOUR')) {
-          errorEl.textContent = 'Form is not connected yet — add your Apps Script URL in contact.astro.';
-          errorEl.hidden = false;
-          return;
-        }
-
-        const label = btn.querySelector('.btn-label');
-        const original = label ? label.textContent : '';
-        if (label) label.textContent = 'Sending…';
-        btn.disabled = true;
-        btn.style.opacity = '0.7';
-        btn.style.cursor = 'wait';
-
-        try {
-          // no-cors: the request reaches Apps Script even though we can't read
-          // the opaque response. It resolves on delivery, which is all we need.
-          await fetch(FORM_ENDPOINT, {
-            method: 'POST',
-            body: new FormData(form),
-            mode: 'no-cors',
-          });
-          form.hidden = true;
-          success.hidden = false;
-          success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        } catch (err) {
-          errorEl.textContent = 'Something went wrong. Please try again, or email us directly at inquiries.quidedge.au@gmail.com.';
-          errorEl.hidden = false;
-          if (label) label.textContent = original;
-          btn.disabled = false;
-          btn.style.opacity = '1';
-          btn.style.cursor = '';
-        }
-      });
-    }
-  </script>
 </Layout>
