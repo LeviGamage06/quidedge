@@ -115,7 +115,7 @@ const serviceSchema = {
       </h1>
       <div class="mt-7 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
         <p class="lm max-w-md text-sm text-stone leading-relaxed">
-          <span class="lm-i d4 block">World-class personal branding, retention editing, and strategic storytelling for 7–8 figure founders and creators.</span>
+          <span class="lm-i d4 block">Personal branding, retention-focused video editing and content strategy for 7–8 figure founders and creators in Australia and worldwide.</span>
         </p>
         <div class="lm">
           <span class="lm-i d5 flex flex-wrap gap-3">
@@ -142,7 +142,7 @@ const serviceSchema = {
         ].map(s => (
           <div>
             <p class="text-[clamp(2rem,5vw,3.25rem)] font-extrabold leading-none tracking-[-0.05em]"
-               data-target={s.target} data-suffix={s.suffix}>0</p>
+               data-target={s.target} data-suffix={s.suffix}>{s.target}{s.suffix}</p>
             <p class="label mt-2">{s.label}</p>
           </div>
         ))}
@@ -403,7 +403,7 @@ const serviceSchema = {
       ].map((s,i) => (
         <div class={`reveal reveal-d${i+1} md:px-10 ${i===0?'md:pl-0':''}`}>
           <p class="text-[clamp(2.5rem,5.5vw,4.25rem)] font-extrabold leading-none tracking-[-0.05em]"
-             data-target={s.target} data-suffix={s.suffix}>0</p>
+             data-target={s.target} data-suffix={s.suffix}>{s.target}{s.suffix}</p>
           <p class="mt-3 text-sm font-medium text-paper/80">{s.head}</p>
           <p class="label mt-1">{s.sub}</p>
         </div>
