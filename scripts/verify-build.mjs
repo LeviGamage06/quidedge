@@ -5,6 +5,9 @@ const requiredFiles = [
   "dist/work/index.html",
   "dist/contact/index.html",
   "dist/services/index.html",
+  "dist/personal-branding-for-founders/index.html",
+  "dist/video-editing-for-creators/index.html",
+  "dist/sitemap-0.xml",
   "dist/blog/index.html",
   "dist/sitemap-index.xml",
   "dist/robots.txt",
@@ -28,7 +31,21 @@ const appsScript = "https://script.google.com/macros/s/AKfycbztf1DpfBnDGcIjIrgrr
 const casesCsv = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR3zoUDVE7TJhwtPuRyLcmKXakwXlo4_f19Ef5fbS4RmZGkYTD6MWHsEcuCpe90jG9ZfeGWB_SU0FU0/pub?gid=0&single=true&output=csv";
 const testimonialsCsv = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTXvjE8M9lDwSxgVlBjnbndsN38G320jI0_L3qILSYlYdpn6-5ZNVd8Iph0K9PuVIZfsrKO_mWiQh9d/pub?gid=0&single=true&output=csv";
 
-expectAll("dist/index.html", ["home-cases", casesCsv, "data-reel-autoplay"]);
+expectAll("dist/index.html", ["home-cases", casesCsv, "data-reel-autoplay", "in Australia and worldwide", 'data-suffix="M+">650M+</p>']);
+
+for (const [route, heading, related] of [
+  ["video-editing-for-creators", "How remote video editing works for Australian teams", "personal-branding-for-founders"],
+  ["personal-branding-for-founders", "How founder branding works with Australian teams", "video-editing-for-creators"],
+]) {
+  const url = `https://www.quidedge.com/${route}/`;
+  expectAll(`dist/${route}/index.html`, [
+    `<link rel="canonical" href="${url}"`,
+    `${url}#service`,
+    heading,
+    `href="/${related}/"`,
+  ]);
+  expectAll("dist/sitemap-0.xml", [`<loc>${url}</loc>`]);
+}
 expectAll("dist/work/index.html", ["cases-dynamic", "tm-grid", casesCsv, testimonialsCsv]);
 expectAll("dist/contact/index.html", ["lead-form", appsScript, 'name="website"']);
 expectAll("dist/services/index.html", ['id="foundation"', 'id="growth"', 'id="craft"', 'id="scale"']);
